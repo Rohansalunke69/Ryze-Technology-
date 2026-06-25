@@ -1,0 +1,47 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/usr/local/bin/node\" \"/Users/kunalkhande/Downloads/AyushKh/Ryze Techonology/Website /Ryze-Techonology-v1/.codex/hooks/gsd-check-update.js\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/usr/local/bin/node\" \"/Users/kunalkhande/Downloads/AyushKh/Ryze Techonology/Website /Ryze-Techonology-v1/.codex/hooks/gsd-context-monitor.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/usr/local/bin/node\" \"/Users/kunalkhande/Downloads/AyushKh/Ryze Techonology/Website /Ryze-Techonology-v1/.codex/hooks/gsd-context-monitor.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/usr/local/bin/node\" \"/Users/kunalkhande/Downloads/AyushKh/Ryze Techonology/Website /Ryze-Techonology-v1/.codex/hooks/gsd-context-monitor.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
