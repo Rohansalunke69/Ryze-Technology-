@@ -258,19 +258,19 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 25.2, 21.3, 23.2, 33.1, 33.5, 24.2_
 
 - [ ] 10. Shared UI components
-  - [ ] 10.1 Implement CustomCursor
+  - [x] 10.1 Implement CustomCursor
     - Mount only on fine pointer + motion allowed; hide native cursor; states default/hover-link/magnetic/view/text; unmount and restore native cursor on touch-only, reduced motion, or pointer-leave
     - _Requirements: 22.1, 22.2, 22.3, 22.4, 22.5_
 
-  - [ ] 10.2 Implement Navigation (sticky, dropdowns, mobile menu)
+  - [x] 10.2 Implement Navigation (sticky, dropdowns, mobile menu)
     - Sticky header rendering data-driven nav items with Work/Services/About dropdowns (hover/focus), Contact MagneticButton CTA, optional transparent-until-scroll, `aria-label` per region; mobile hamburger + full-screen Mobile_Menu with focus trap, Esc-to-close, focus restore, and close-on-navigate
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 38.4_
 
-  - [ ] 10.3 Implement Footer and Breadcrumb
+  - [x] 10.3 Implement Footer and Breadcrumb
     - `Footer` rendering site/social links and contact email from site metadata on every page; `Breadcrumb` rendering the trail from `buildBreadcrumbTrail`
     - _Requirements: 4.1, 4.2, 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 10.4 Implement ScrollIndicator, SectionHeader, and CTA
+  - [x] 10.4 Implement ScrollIndicator, SectionHeader, and CTA
     - `ScrollIndicator`, `SectionHeader` (eyebrow/title/align/as), and reusable `CTA` (heading + MagneticButton link)
     - _Requirements: 6.4, 9.3, 38.1_
 
@@ -283,7 +283,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 1.3, 2.3, 2.4, 2.5, 3.1, 4.2, 42.3, 38.4_
 
 - [ ] 11. Capability-gated WebGL hero
-  - [ ] 11.1 Implement canRenderWebGL capability gate
+  - [x] 11.1 Implement canRenderWebGL capability gate
     - `canRenderWebGL(opts)` checks WebGL2 availability, cores ≥ 4, memory ≥ 4 GB, and save-data disabled
     - _Requirements: 19.3, 19.4_
 
