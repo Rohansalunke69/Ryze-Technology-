@@ -339,7 +339,7 @@ export function Navigation({
     <header
       className={[
         'sticky top-0 z-50 w-full transition-colors duration-300',
-        solid ? 'bg-ink-900/95 backdrop-blur border-b border-ink-700' : 'bg-transparent',
+        solid ? 'bg-[#e7e4db]/80 backdrop-blur-md border-b border-ink-600 shadow-[0_1px_12px_-6px_rgba(10,10,8,0.45)]' : 'bg-transparent',
       ].join(' ')}
     >
       <nav
