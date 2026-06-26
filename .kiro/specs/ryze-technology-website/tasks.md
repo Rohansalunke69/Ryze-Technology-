@@ -188,7 +188,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Create `navigation.ts` (Work/Services/About dropdown parents + Contact CTA item) and `siteMetadata.ts` (titleTemplate, baseUrl, default OG, social, contactEmail, env-injected `contactEndpoint`)
     - _Requirements: 1.2, 4.2, 13.3, 40.1, 41.2_
 
-  - [ ]* 6.5 Write data-integrity tests against real shipped data + dev assertions
+  - [x]* 6.5 Write data-integrity tests against real shipped data + dev assertions
     - **Property 17: Slug uniqueness invariant** run against every real collection (`// Feature: ryze-technology-website, Property 17`) — Validates Requirements 29.3, 42.6
     - **Property 18: Process-step contiguity** run against real services data — Validates Requirements 29.4, 42.6
     - Add dev-time assertions that throw on duplicate slugs / non-contiguous process steps
@@ -236,24 +236,24 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
 - [x] 8. Checkpoint - providers and hooks
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 9. Animation utilities and motion primitives
-  - [ ] 9.1 Implement imperative animation utilities
+- [x] 9. Animation utilities and motion primitives
+  - [x] 9.1 Implement imperative animation utilities
     - `revealOnScroll`, `pinSection`, `parallaxLayer`, `applySplit`, `hoverDistort` — all branch on reduced motion (resolve to end-state / neutral position) and return cleanup handles
     - _Requirements: 20.5, 25.1, 25.3, 25.4, 37.2_
 
-  - [ ] 9.2 Implement AnimationWrapper and SplitText
+  - [x] 9.2 Implement AnimationWrapper and SplitText
     - `AnimationWrapper` (rise/fade/clip/scale variants via IntersectionObserver, instant-visible under reduced motion); `SplitText` (word/line/char spans with `aria-label` on wrapper and `aria-hidden` decorative spans, applied only to display/section-opener text)
     - _Requirements: 25.1, 25.2, 25.4, 37.2_
 
-  - [ ] 9.3 Implement MagneticButton and AnimatedCounter
+  - [x] 9.3 Implement MagneticButton and AnimatedCounter
     - `MagneticButton` (pointer-follow transform scaled by strength; CSS-only hover under reduced motion; ≥44×44px target); `AnimatedCounter` (counts up on in-view via useCounter, lands exactly on target with decimals/prefix/suffix)
     - _Requirements: 23.1, 23.2, 21.1, 21.2, 21.3, 36.3_
 
-  - [ ] 9.4 Implement MarqueeText and Lightbox
+  - [x] 9.4 Implement MarqueeText and Lightbox
     - `MarqueeText` (continuous translate, pauseOnHover, pause mechanism for >5s auto-motion, static under reduced motion); `Lightbox` (labeled `role="dialog"`, focus trap + restore, Esc close, index navigation via `wrapIndex`, no-op when gallery empty)
     - _Requirements: 24.1, 24.2, 24.3, 33.1, 33.5, 38.4_
 
-  - [ ]* 9.5 Write tests and a11y checks for primitives
+  - [x]* 9.5 Write tests and a11y checks for primitives
     - RTL + jest-axe for SplitText accessible name, AnimatedCounter final value under reduced motion, MagneticButton no-transform under reduced motion, Lightbox keyboard/focus/wrap and empty no-op, Marquee pause
     - _Requirements: 25.2, 21.3, 23.2, 33.1, 33.5, 24.2_
 
