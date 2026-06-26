@@ -51,7 +51,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - In `src/app-types`, declare `Slug`, `ISODate`, `ServiceKey`, `PortfolioCategory`, `BlogCategory`, `ImageAsset`, `SEOMeta`, `Metric`, `CaseStudy`, `ProcessStep`, `FAQItem`, `Service`, `SocialLink`, `TeamMember`, `BlogAuthor`, `BlogPost`, `Testimonial`, `NavChild`, `NavItem`, `SiteMetadata`, `ViewportCategory`, `EasingFn`, `PageResult<T>`
     - _Requirements: 29.1, 29.3, 40.1_
 
-- [ ] 4. Pure logic layer with property-based tests
+- [x] 4. Pure logic layer with property-based tests
   - [x] 4.1 Implement easing and interpolation helpers
     - Implement `easeOutExpo`, `easeInOutQuint`, `easeOutBack`, `clamp`, `lerp` (t clamped to [0,1]), `mapRange` (optional clampOut), and `interpolateCounter(from, to, progress, easing, decimals)`
     - _Requirements: 34.1, 34.2, 34.3, 34.4, 34.5, 34.6, 21.2_
@@ -115,21 +115,21 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 30.1, 30.2, 30.3, 30.4, 30.5, 7.5, 14.3_
 
-  - [~] 4.11 Implement related-entity helpers
+  - [x] 4.11 Implement related-entity helpers
     - `getRelatedCaseStudies(all, current, limit)` and `getRelatedPosts(all, current, limit)` — exclude self, respect limit, prefer shared service/category, honor explicit `relatedSlugs` overrides
     - _Requirements: 31.1, 31.2, 8.3, 15.3_
 
-  - [ ]* 4.12 Write property tests for related entities
+  - [x]* 4.12 Write property tests for related entities
     - **Property 25: Related excludes self & respects limit** (`// Feature: ryze-technology-website, Property 25`) — Validates Requirement 31.1
     - **Property 26: Related relevance** — Validates Requirement 31.2
     - Minimum 100 iterations per property
     - _Requirements: 31.1, 31.2_
 
-  - [~] 4.13 Implement paginate
+  - [x] 4.13 Implement paginate
     - `paginate<T>(items, page, perPage)` returning `{ items, page, totalPages, hasPrev, hasNext, total }` with page clamped to [1, totalPages]
     - _Requirements: 32.1, 32.2, 32.3, 32.4, 32.5, 14.4, 14.5_
 
-  - [ ]* 4.14 Write property tests for pagination
+  - [x]* 4.14 Write property tests for pagination
     - **Property 27: Page bounds** (`// Feature: ryze-technology-website, Property 27`) — Validates Requirement 32.1
     - **Property 28: Coverage / no loss** — Validates Requirement 32.2
     - **Property 29: Page size** — Validates Requirement 32.3
@@ -138,53 +138,53 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 32.1, 32.2, 32.3, 32.4, 32.5_
 
-  - [~] 4.15 Implement wrapIndex
+  - [x] 4.15 Implement wrapIndex
     - `wrapIndex(index, length)` mapping any integer index into [0, length-1] with wrap continuity
     - _Requirements: 33.2, 33.3, 33.4_
 
-  - [ ]* 4.16 Write property tests for index wrapping
+  - [x]* 4.16 Write property tests for index wrapping
     - **Property 32: In-range** (`// Feature: ryze-technology-website, Property 32`) — Validates Requirement 33.2
     - **Property 33: Wrap continuity** — Validates Requirement 33.3
     - **Property 34: Identity in range** — Validates Requirement 33.4
     - Minimum 100 iterations per property
     - _Requirements: 33.2, 33.3, 33.4_
 
-  - [~] 4.17 Implement viewportCategory
+  - [x] 4.17 Implement viewportCategory
     - `viewportCategory(width)` total, deterministic mapping to `mobile | tablet | desktop | wide` with ordered, non-overlapping boundaries
     - _Requirements: 35.1, 35.2_
 
-  - [ ]* 4.18 Write property tests for viewport category
+  - [x]* 4.18 Write property tests for viewport category
     - **Property 35: Totality & determinism** (`// Feature: ryze-technology-website, Property 35`) — Validates Requirement 35.1
     - **Property 36: Monotonic boundaries** — Validates Requirement 35.2
     - Minimum 100 iterations per property
     - _Requirements: 35.1, 35.2_
 
-  - [~] 4.19 Implement buildBreadcrumbTrail
+  - [x] 4.19 Implement buildBreadcrumbTrail
     - `buildBreadcrumbTrail(pathname, labelMap)` producing a Home-anchored, path-ordered trail where only the last item omits `path`, mapping segments via the label map
     - _Requirements: 3.2, 3.3, 3.4_
 
-  - [ ]* 4.20 Write property tests for breadcrumb building
+  - [x]* 4.20 Write property tests for breadcrumb building
     - **Property 37: Trail consistency** (`// Feature: ryze-technology-website, Property 37`) — Validates Requirements 3.2, 3.3
     - Minimum 100 iterations
     - _Requirements: 3.2, 3.3_
 
-- [~] 5. Checkpoint - pure logic layer
+- [x] 5. Checkpoint - pure logic layer
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 6. Typed static content and data modules
-  - [~] 6.1 Author case studies and services data modules
+  - [ ] 6.1 Author case studies and services data modules
     - Create `caseStudies.ts` and `services.ts` with realistic placeholder content conforming to the types; ensure unique slugs and contiguous 1..n process-step indices per service
     - _Requirements: 29.3, 29.4, 7.1, 9.1, 8.1, 10.1_
 
-  - [~] 6.2 Author team and testimonials data modules
+  - [ ] 6.2 Author team and testimonials data modules
     - Create `team.ts` (members with social links, order) and `testimonials.ts` (linked to case studies via `caseStudySlug`)
     - _Requirements: 11.2, 8.1_
 
-  - [~] 6.3 Author blog posts data module
+  - [ ] 6.3 Author blog posts data module
     - Create `blogPosts.ts` with categories, excerpts, authors, content, and `readingTimeMinutes` precomputed via `computeReadingTime`; unique slugs
     - _Requirements: 14.1, 15.1, 29.3_
 
-  - [~] 6.4 Author navigation and site metadata modules
+  - [ ] 6.4 Author navigation and site metadata modules
     - Create `navigation.ts` (Work/Services/About dropdown parents + Contact CTA item) and `siteMetadata.ts` (titleTemplate, baseUrl, default OG, social, contactEmail, env-injected `contactEndpoint`)
     - _Requirements: 1.2, 4.2, 13.3, 40.1, 41.2_
 
@@ -196,35 +196,35 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 29.3, 29.4, 42.6_
 
 - [ ] 7. Global providers and hooks
-  - [~] 7.1 Implement ReducedMotionProvider and useReducedMotion
+  - [ ] 7.1 Implement ReducedMotionProvider and useReducedMotion
     - Read `matchMedia('(prefers-reduced-motion: reduce)')`, expose via context, update reactively on mid-session preference change
     - _Requirements: 37.1_
 
-  - [~] 7.2 Implement useViewportCategory and useInView
+  - [ ] 7.2 Implement useViewportCategory and useInView
     - `useViewportCategory` reads width through `viewportCategory`; `useInView` wraps IntersectionObserver with threshold/rootMargin/once
     - _Requirements: 35.1, 2.1, 21.1, 25.1_
 
-  - [~] 7.3 Implement SmoothScrollProvider and useLenis
+  - [ ] 7.3 Implement SmoothScrollProvider and useLenis
     - Instantiate Lenis only when motion is allowed; advance it from a single `gsap.ticker` loop; wire `ScrollTrigger.scrollerProxy` and drive `ScrollTrigger.update` from Lenis scroll events; under reduced motion skip Lenis and use native scroll; catch Lenis init failure and fall back to native scroll
     - _Requirements: 20.1, 20.2, 37.3, 42.5_
 
-  - [~] 7.4 Implement useCounter
+  - [ ] 7.4 Implement useCounter
     - Tween numeric value with easing + clamping; return target instantly under reduced motion; never emit a value outside [from, target]
     - _Requirements: 21.1, 21.2, 21.3, 37.2_
 
-  - [~] 7.5 Implement useScrollAnimation and useMagnetic
+  - [ ] 7.5 Implement useScrollAnimation and useMagnetic
     - `useScrollAnimation` registers a `gsap.context()`-scoped timeline/ScrollTrigger and auto-kills on unmount; `useMagnetic` returns pointer-follow motion values, no-op under reduced motion
     - _Requirements: 20.4, 23.1, 23.2_
 
-  - [~] 7.6 Implement ErrorBoundary
+  - [ ] 7.6 Implement ErrorBoundary
     - Top-level error boundary plus a reusable per-route boundary that renders an error state with a retry control that re-imports the failed chunk
     - _Requirements: 42.1, 42.2_
 
-  - [~] 7.7 Implement SEOHead
+  - [ ] 7.7 Implement SEOHead
     - Per-route `react-helmet-async` component setting title via template, normalized description (via `normalizeMetaDescription`), canonical, Open Graph, and `noIndex` support
     - _Requirements: 40.1, 40.2, 18.3, 40.5_
 
-  - [~] 7.8 Implement PageTransition
+  - [ ] 7.8 Implement PageTransition
     - Animate route enter/exit (Framer Motion); always scroll to top; move focus to new page `h1`/main wrapper; announce via `aria-live="polite"` Route_Announcer; under reduced motion perform instant cross-fade ≤ 120ms
     - _Requirements: 26.1, 26.2, 37.4, 38.3, 20.3_
 
@@ -233,23 +233,23 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - useInView/useViewportCategory behavior with mocked observers/matchMedia
     - _Requirements: 37.1, 37.2, 37.3, 21.3_
 
-- [~] 8. Checkpoint - providers and hooks
+- [ ] 8. Checkpoint - providers and hooks
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 9. Animation utilities and motion primitives
-  - [~] 9.1 Implement imperative animation utilities
+  - [ ] 9.1 Implement imperative animation utilities
     - `revealOnScroll`, `pinSection`, `parallaxLayer`, `applySplit`, `hoverDistort` — all branch on reduced motion (resolve to end-state / neutral position) and return cleanup handles
     - _Requirements: 20.5, 25.1, 25.3, 25.4, 37.2_
 
-  - [~] 9.2 Implement AnimationWrapper and SplitText
+  - [ ] 9.2 Implement AnimationWrapper and SplitText
     - `AnimationWrapper` (rise/fade/clip/scale variants via IntersectionObserver, instant-visible under reduced motion); `SplitText` (word/line/char spans with `aria-label` on wrapper and `aria-hidden` decorative spans, applied only to display/section-opener text)
     - _Requirements: 25.1, 25.2, 25.4, 37.2_
 
-  - [~] 9.3 Implement MagneticButton and AnimatedCounter
+  - [ ] 9.3 Implement MagneticButton and AnimatedCounter
     - `MagneticButton` (pointer-follow transform scaled by strength; CSS-only hover under reduced motion; ≥44×44px target); `AnimatedCounter` (counts up on in-view via useCounter, lands exactly on target with decimals/prefix/suffix)
     - _Requirements: 23.1, 23.2, 21.1, 21.2, 21.3, 36.3_
 
-  - [~] 9.4 Implement MarqueeText and Lightbox
+  - [ ] 9.4 Implement MarqueeText and Lightbox
     - `MarqueeText` (continuous translate, pauseOnHover, pause mechanism for >5s auto-motion, static under reduced motion); `Lightbox` (labeled `role="dialog"`, focus trap + restore, Esc close, index navigation via `wrapIndex`, no-op when gallery empty)
     - _Requirements: 24.1, 24.2, 24.3, 33.1, 33.5, 38.4_
 
@@ -258,23 +258,23 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 25.2, 21.3, 23.2, 33.1, 33.5, 24.2_
 
 - [ ] 10. Shared UI components
-  - [~] 10.1 Implement CustomCursor
+  - [ ] 10.1 Implement CustomCursor
     - Mount only on fine pointer + motion allowed; hide native cursor; states default/hover-link/magnetic/view/text; unmount and restore native cursor on touch-only, reduced motion, or pointer-leave
     - _Requirements: 22.1, 22.2, 22.3, 22.4, 22.5_
 
-  - [~] 10.2 Implement Navigation (sticky, dropdowns, mobile menu)
+  - [ ] 10.2 Implement Navigation (sticky, dropdowns, mobile menu)
     - Sticky header rendering data-driven nav items with Work/Services/About dropdowns (hover/focus), Contact MagneticButton CTA, optional transparent-until-scroll, `aria-label` per region; mobile hamburger + full-screen Mobile_Menu with focus trap, Esc-to-close, focus restore, and close-on-navigate
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 38.4_
 
-  - [~] 10.3 Implement Footer and Breadcrumb
+  - [ ] 10.3 Implement Footer and Breadcrumb
     - `Footer` rendering site/social links and contact email from site metadata on every page; `Breadcrumb` rendering the trail from `buildBreadcrumbTrail`
     - _Requirements: 4.1, 4.2, 3.1, 3.2, 3.3, 3.4_
 
-  - [~] 10.4 Implement ScrollIndicator, SectionHeader, and CTA
+  - [ ] 10.4 Implement ScrollIndicator, SectionHeader, and CTA
     - `ScrollIndicator`, `SectionHeader` (eyebrow/title/align/as), and reusable `CTA` (heading + MagneticButton link)
     - _Requirements: 6.4, 9.3, 38.1_
 
-  - [~] 10.5 Implement content cards
+  - [ ] 10.5 Implement content cards
     - `CaseStudyCard`, `ServiceCard`, `TeamCard`, `BlogCard` (image, category, title, excerpt, date, reading time), `TestimonialCard`; reserved aspect-ratio media boxes; image `onError` swap to blurDataURL/placeholder
     - _Requirements: 7.1, 9.1, 11.2, 14.1, 8.1, 39.3, 42.3_
 
@@ -283,15 +283,15 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 1.3, 2.3, 2.4, 2.5, 3.1, 4.2, 42.3, 38.4_
 
 - [ ] 11. Capability-gated WebGL hero
-  - [~] 11.1 Implement canRenderWebGL capability gate
+  - [ ] 11.1 Implement canRenderWebGL capability gate
     - `canRenderWebGL(opts)` checks WebGL2 availability, cores ≥ 4, memory ≥ 4 GB, and save-data disabled
     - _Requirements: 19.3, 19.4_
 
-  - [~] 11.2 Implement HeroFallback and Hero decision component
+  - [ ] 11.2 Implement HeroFallback and Hero decision component
     - `HeroFallback` (static poster/CSS mesh + CSS text reveal); `Hero` renders fallback first, and only when motion is allowed + WebGL2 available + gate passes, lazily imports and mounts Hero_WebGL behind an IntersectionObserver, cross-fading from fallback when ready
     - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6_
 
-  - [~] 11.3 Implement lazy Hero_WebGL R3F scene
+  - [ ] 11.3 Implement lazy Hero_WebGL R3F scene
     - R3F particle→lattice instanced scene (below-route lazy chunk, never in entry bundle), cap DPR at 2, pause render loop when offscreen or tab hidden, handle `webglcontextlost`/`webglcontextrestored` (pause, dispose, swap to fallback, single re-init attempt)
     - _Requirements: 19.5, 19.7, 42.4, 39.1, 5.4_
 
@@ -299,20 +299,20 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Reduced motion → no canvas mounted; WebGL2 unavailable / gate fail → fallback only; cross-fade on ready; pause offscreen; context-loss swap to fallback
     - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.6, 19.7, 42.4_
 
-- [~] 12. Checkpoint - primitives, shared UI, and hero
+- [ ] 12. Checkpoint - primitives, shared UI, and hero
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 13. Router and application shell
-  - [~] 13.1 Implement router with lazy routes, Suspense, and per-route error boundaries
+  - [ ] 13.1 Implement router with lazy routes, Suspense, and per-route error boundaries
     - Configure react-router-dom data router for `/`, `/portfolio`, `/portfolio/:slug`, `/services`, `/services/:slug`, `/about`, `/manifesto`, `/contact`, `/blog`, `/blog/:slug`, `/resources`, `/privacy`, `/terms`, `/cookies`, `*`; lazy-load each Page_Module wrapped in Suspense (branded skeleton) and a per-route error boundary
     - _Requirements: 5.1, 5.2, 18.1, 42.1, 42.2_
 
-  - [~] 13.2 Wire app shell, global providers, and route prefetch
+  - [ ] 13.2 Wire app shell, global providers, and route prefetch
     - Compose ReducedMotionProvider, SmoothScrollProvider, HelmetProvider, CustomCursor, Navigation, Footer, ErrorBoundary, and PageTransition around the router; refresh ScrollTrigger + scroll to top on route change; prefetch the next route chunk on nav-link hover/focus and via requestIdleCallback
     - _Requirements: 5.3, 5.4, 20.3, 26.2, 38.1_
 
 - [ ] 14. Pages
-  - [~] 14.1 Implement HomePage
+  - [ ] 14.1 Implement HomePage
     - Render in order: Hero, Problems, Philosophy, Portfolio-preview (featured case studies), Services (4 cards), Why-Us (AnimatedCounter metrics), Team, CTA (MagneticButton → /contact), Footer; one heavy hero moment, lighter reveals elsewhere; SEOHead
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 20.5, 40.1_
 
@@ -320,7 +320,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Section order, featured-only preview, counters present, CTA links to /contact; jest-axe single-h1/landmarks
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 38.1_
 
-  - [~] 14.3 Implement PortfolioListPage
+  - [ ] 14.3 Implement PortfolioListPage
     - Title + count hero, filter bar (All/Websites/Mobile/Systems) with animated active indicator, grid of CaseStudyCard using `filterCaseStudies`, CTA; order preserved on filter
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
@@ -328,7 +328,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Filter selection updates grid to matching/all items, order preserved; jest-axe
     - _Requirements: 7.3, 7.4, 7.5, 38.1_
 
-  - [~] 14.5 Implement CaseStudyPage
+  - [ ] 14.5 Implement CaseStudyPage
     - Resolve slug via `resolveBySlug`; render Breadcrumb, hero, challenge, solution, results (AnimatedCounter per Metric), gallery + Lightbox ("OPEN" cursor), testimonial, tech breakdown, learnings, related projects (`getRelatedCaseStudies`); in-route not-found state with related suggestions on unknown slug
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
@@ -336,7 +336,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Known slug renders sections + counters; lightbox open/keyboard/wrap; unknown slug → not-found with suggestions; jest-axe
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 33.1, 38.1_
 
-  - [~] 14.7 Implement ServicesPage
+  - [ ] 14.7 Implement ServicesPage
     - Hero, four ServiceCards, numbered process-steps section (scrubbed timeline), support/maintenance band, CTA
     - _Requirements: 9.1, 9.2, 9.3_
 
@@ -344,7 +344,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Four services rendered, process steps + maintenance band + CTA present; jest-axe
     - _Requirements: 9.1, 9.2, 9.3, 38.1_
 
-  - [~] 14.9 Implement ServiceDetailPage
+  - [ ] 14.9 Implement ServiceDetailPage
     - Resolve ServiceKey; render Breadcrumb, hero, what-we-do, features grid, related case studies (`getCaseStudiesByService`), tech stack, process timeline, FAQ accessible accordion; in-route not-found on unknown slug
     - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
@@ -352,7 +352,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resolved service sections, related-by-service, FAQ accordion keyboard/ARIA, unknown slug → not-found; jest-axe
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 38.1_
 
-  - [~] 14.11 Implement AboutPage
+  - [ ] 14.11 Implement AboutPage
     - Story, mission, team profiles (TeamCard per member with social links), differentiators, by-the-numbers (AnimatedCounter), testimonials (carousel/marquee), CTA
     - _Requirements: 11.1, 11.2, 11.3_
 
@@ -360,7 +360,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - All sections, TeamCard per member, counters present; jest-axe
     - _Requirements: 11.1, 11.2, 11.3, 38.1_
 
-  - [~] 14.13 Implement ManifestoPage
+  - [ ] 14.13 Implement ManifestoPage
     - Hero, core-beliefs sequence (pinned sequential reveal where motion allowed, flowing end-state under reduced motion), what-we-stand-against band, the Ryze promise, CTA
     - _Requirements: 12.1, 12.2, 37.2_
 
@@ -368,7 +368,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Sections render; reduced motion → beliefs visible without pinning; jest-axe
     - _Requirements: 12.1, 12.2, 37.2, 38.1_
 
-  - [~] 14.15 Implement ContactPage and Contact_Form
+  - [ ] 14.15 Implement ContactPage and Contact_Form
     - Fields (name, email, company, project type, budget, timeline, message) with inline validation; status union idle/submitting/success/error; invalid → block submit, inline errors, `aria-invalid`, focus error summary; valid → submitting + POST to env `contactEndpoint`; 2xx → success, clear form, polite announce; failure/non-2xx/timeout → error, preserve values, retry control, announce, mailto fallback
     - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 38.6_
 
@@ -376,7 +376,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Invalid submit blocked with errors/aria/focus; valid submit POSTs (mocked); success clears + announces; error preserves values + retry; jest-axe label/aria-describedby associations
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.6, 38.6_
 
-  - [~] 14.17 Implement BlogListPage
+  - [ ] 14.17 Implement BlogListPage
     - Hero, category filter (BlogCategory + All) using `filterPostsByCategory`, BlogCard grid, pagination via `paginate` with prev/next enabled per `hasPrev`/`hasNext`, CTA
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5_
 
@@ -384,7 +384,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Filter matches/all + order preserved, pagination items + prev/next flags; jest-axe
     - _Requirements: 14.3, 14.4, 14.5, 38.1_
 
-  - [~] 14.19 Implement BlogPostPage
+  - [ ] 14.19 Implement BlogPostPage
     - Resolve slug; Breadcrumb, hero (title/category/date/reading-time/author), sticky TOC scroll-spy, prose constrained to 68ch, author bio, related posts (`getRelatedPosts`), share buttons; in-route not-found with suggestions on unknown slug
     - _Requirements: 15.1, 15.2, 15.3, 15.4_
 
@@ -392,15 +392,15 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resolved post sections, 68ch measure, related posts, unknown slug → not-found; jest-axe
     - _Requirements: 15.1, 15.2, 15.3, 15.4, 38.1_
 
-  - [~] 14.21 Implement ResourcesPage
+  - [ ] 14.21 Implement ResourcesPage
     - When feature enabled, render grid of downloadable resource cards with file metadata and download links
     - _Requirements: 16.1_
 
-  - [~] 14.22 Implement LegalPage
+  - [ ] 14.22 Implement LegalPage
     - Param-driven template for `/privacy`, `/terms`, `/cookies`: Breadcrumb, long-form content, auto-generated TOC, last-updated label
     - _Requirements: 17.1_
 
-  - [~] 14.23 Implement NotFoundPage
+  - [ ] 14.23 Implement NotFoundPage
     - Oversized 404 with lazy interactive canvas (static under reduced motion), quick links to top routes, home/back action, `noIndex` metadata
     - _Requirements: 18.1, 18.2, 18.3, 40.5_
 
@@ -408,11 +408,11 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resources grid renders when enabled; legal pages render TOC + last-updated per param; 404 quick links + noIndex meta; jest-axe
     - _Requirements: 16.1, 17.1, 18.2, 18.3, 38.1_
 
-- [~] 15. Checkpoint - pages and routing
+- [ ] 15. Checkpoint - pages and routing
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 16. Cross-cutting: SEO, accessibility, and performance gates
-  - [~] 16.1 Implement SEO output, sitemap/robots, and prerender build step
+  - [ ] 16.1 Implement SEO output, sitemap/robots, and prerender build step
     - Wire SEOHead across all routes with normalized descriptions; generate `sitemap.xml` and `robots.txt` at build from the route table + typed data slugs; add the build-time prerender step for static and `:slug` routes; emit `noIndex` where required
     - _Requirements: 40.1, 40.2, 40.3, 40.4, 40.5, 41.1_
 
@@ -428,7 +428,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Run bundle-budget assertion (initial ≤ 180 KB gzip, no three/R3F in entry chunk), reserved aspect-ratio/CLS checks, and Lighthouse CI smoke against the build
     - _Requirements: 39.1, 39.2, 39.3, 39.4, 39.5, 39.6, 5.4_
 
-- [~] 17. Final checkpoint
+- [ ] 17. Final checkpoint
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
