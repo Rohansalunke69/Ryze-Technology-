@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -14,30 +16,26 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Strict mode */
+    /* Strictness */
     "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitReturns": true,
 
-    /* Test runner globals (describe/it/expect) */
-    "types": ["vitest/globals"],
-
-    /* Path aliases for the layer folders */
+    /* Path aliases */
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@content/*": ["src/content/*"],
-      "@logic/*": ["src/logic/*"],
-      "@logic": ["src/logic/index.ts"],
+      "@lib/*": ["src/lib/*"],
+      "@data/*": ["src/data/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@hooks": ["src/hooks/index.ts"],
-      "@styles/*": ["src/styles/*"],
-      "@apptypes/*": ["src/types/*"],
-      "@apptypes": ["src/types/index.ts"]
+      "@providers/*": ["src/providers/*"],
+      "@pages/*": ["src/pages/*"],
+      "@app-types": ["src/app-types/index.ts"],
+      "@app-types/*": ["src/app-types/*"]
     }
   },
   "include": ["src"]

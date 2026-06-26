@@ -1,0 +1,12 @@
+{
+  "name": "Auto Commit on Task Completion",
+  "version": "1.0.0",
+  "description": "After each spec task completes, stages all changes and creates a git commit with a semantic message describing exactly what was built in that task.",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A spec task just completed. Do the following:\n1. Run `git status` to see what changed.\n2. Run `git diff --cached --stat` and `git diff --stat` to understand the scope.\n3. Stage everything: `git add -A`\n4. Write a concise, semantic commit message in this format:\n   - Start with a type prefix: `feat:`, `fix:`, `test:`, `chore:`, `style:`, or `refactor:`\n   - Follow with a short description (max 72 chars) of what was built/changed in this specific task\n   - Optionally add a blank line then 1-3 bullet points of detail if the change is substantial\n   Examples:\n   - `feat: add HeroSection with animated gradient and CTA`\n   - `feat: implement contact form with validation and error handling`\n   - `test: add property-based tests for viewport selectors`\n   - `chore: scaffold Vite + React + TypeScript + Tailwind foundation`\n5. Commit: `git commit -m \"<your message>\"`\n6. Report the commit hash and message.\nDo NOT push. Do NOT skip if there are no changes — just report 'nothing to commit'."
+  }
+}

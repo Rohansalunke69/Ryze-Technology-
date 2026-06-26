@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "name": "Auto Commit & Push to GitHub",
+  "description": "Automatically stages all changes, creates a timestamped commit, and pushes to GitHub origin/main whenever a file is edited in the project.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*"
+    ]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "cd \"/Users/kunalkhande/Downloads/AyushKh/Ryze Techonology/Website /Ryze-Techonology-v1\" && git add -A && git diff --cached --quiet || git commit -m \"auto: $(date '+%Y-%m-%d %H:%M:%S')\" && git push origin main",
+    "timeout": 30
+  }
+}

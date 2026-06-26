@@ -1,28 +1,27 @@
-/// <reference types="vitest/config" />
+import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { fileURLToPath, URL } from 'node:url';
 
-// https://vite.dev/config/
+const resolvePath = (relative: string): string =>
+  fileURLToPath(new URL(relative, import.meta.url));
+
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@components': fileURLToPath(new URL('./src/components', import.meta.url)),
-      '@content': fileURLToPath(new URL('./src/content', import.meta.url)),
-      '@logic': fileURLToPath(new URL('./src/logic', import.meta.url)),
-      '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
-      '@styles': fileURLToPath(new URL('./src/styles', import.meta.url)),
-      '@apptypes': fileURLToPath(new URL('./src/types', import.meta.url)),
-    },
-  },
-  test: {
-    // Browser-like DOM for React Testing Library.
-    environment: 'jsdom',
-    // Expose describe/it/expect without explicit imports.
-    globals: true,
-    // Registers jest-dom + jest-axe matchers before each test file.
-    setupFiles: ['./src/test/setup.ts'],
-    css: true,
+    alias: [
+      // Bare `@app-types` resolves to the barrel index; must be matched before
+      // the subpath rule so it is not rewritten into `index.ts/...`.
+      { find: /^@app-types$/, replacement: resolvePath('./src/app-types/index.ts') },
+      { find: /^@app-types\//, replacement: `${resolvePath('./src/app-types')}/` },
+      { find: '@components', replacement: resolvePath('./src/components') },
+      { find: '@lib', replacement: resolvePath('./src/lib') },
+      { find: '@data', replacement: resolvePath('./src/data') },
+      { find: '@hooks', replacement: resolvePath('./src/hooks') },
+      { find: '@providers', replacement: resolvePath('./src/providers') },
+      { find: '@pages', replacement: resolvePath('./src/pages') },
+      // `@/` must be last so the more specific aliases take precedence.
+      { find: /^@\//, replacement: `${resolvePath('./src')}/` },
+    ],
   },
 });
