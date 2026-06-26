@@ -302,12 +302,12 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
 - [x] 12. Checkpoint - primitives, shared UI, and hero
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 13. Router and application shell
+- [x] 13. Router and application shell
   - [x] 13.1 Implement router with lazy routes, Suspense, and per-route error boundaries
     - Configure react-router-dom data router for `/`, `/portfolio`, `/portfolio/:slug`, `/services`, `/services/:slug`, `/about`, `/manifesto`, `/contact`, `/blog`, `/blog/:slug`, `/resources`, `/privacy`, `/terms`, `/cookies`, `*`; lazy-load each Page_Module wrapped in Suspense (branded skeleton) and a per-route error boundary
     - _Requirements: 5.1, 5.2, 18.1, 42.1, 42.2_
 
-  - [ ] 13.2 Wire app shell, global providers, and route prefetch
+  - [x] 13.2 Wire app shell, global providers, and route prefetch
     - Compose ReducedMotionProvider, SmoothScrollProvider, HelmetProvider, CustomCursor, Navigation, Footer, ErrorBoundary, and PageTransition around the router; refresh ScrollTrigger + scroll to top on route change; prefetch the next route chunk on nav-link hover/focus and via requestIdleCallback
     - _Requirements: 5.3, 5.4, 20.3, 26.2, 38.1_
 

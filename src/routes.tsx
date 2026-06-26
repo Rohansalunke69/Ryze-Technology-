@@ -31,10 +31,10 @@
 import { lazy, Suspense, type ReactNode } from 'react';
 import {
   createBrowserRouter,
-  Outlet,
   type RouteObject,
 } from 'react-router-dom';
 
+import { AppLayout } from '@components/AppLayout';
 import { RouteErrorBoundary } from '@components/ErrorBoundary';
 import { RouteSkeleton } from '@components/RouteSkeleton';
 
@@ -69,18 +69,14 @@ function withRouteShell(node: ReactNode): ReactNode {
 }
 
 /**
- * Parent layout placeholder. Task 13.2 replaces this with the real `AppLayout`
- * (Navigation + Footer + PageTransition around an `<Outlet />`). Rendering a
- * bare `<Outlet />` here means the child routes already resolve correctly today.
+ * Parent layout route element. Task 13.2 wires the real `AppLayout` shell
+ * (CustomCursor + Navigation + PageTransition around an `<Outlet />` + Footer)
+ * here, so every child route renders inside the shared shell.
  */
-function LayoutOutletPlaceholder(): JSX.Element {
-  return <Outlet />;
-}
 
 export const appRoutes: RouteObject[] = [
   {
-    // 13.2 INTEGRATION POINT: swap `element` for the real AppLayout shell.
-    element: <LayoutOutletPlaceholder />,
+    element: <AppLayout />,
     children: [
       { index: true, element: withRouteShell(<HomePage />) },
       { path: 'portfolio', element: withRouteShell(<PortfolioListPage />) },

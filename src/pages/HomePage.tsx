@@ -6,9 +6,10 @@
  *   Hero → Problems → Philosophy → Portfolio-preview → Services →
  *   Why-Us → Team → CTA
  *
- * (The Footer is part of the global App shell, not this module, and the App
- * shell also provides the `<main>` landmark — so HomePage renders the ordered
- * sections inside a fragment.)
+ * (The Footer and Navigation are part of the global App shell, not this
+ * module. HomePage renders its own single `<main>` landmark wrapping the
+ * ordered sections, matching every other page — the shell deliberately does
+ * not add a `<main>` so there is exactly one per page.)
  *
  * Motion discipline (Requirement 20.5): the page has exactly ONE heavy "hero
  * moment" — the WebGL particle→lattice field owned by {@link Hero}. Every
@@ -128,11 +129,12 @@ export function HomePage(): JSX.Element {
     <>
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
-      {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
-      <Hero
-        headline="We build products that work forever"
-        eyebrow="Ryze Technology"
-      />
+      <main>
+        {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
+        <Hero
+          headline="We build products that work forever"
+          eyebrow="Ryze Technology"
+        />
 
       {/* 2 — Problems: "software that rots". */}
       <section
@@ -299,6 +301,7 @@ export function HomePage(): JSX.Element {
         href="/contact"
         label="Start a project"
       />
+      </main>
     </>
   );
 }
