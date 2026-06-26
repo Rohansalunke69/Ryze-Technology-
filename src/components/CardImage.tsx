@@ -18,6 +18,7 @@
  */
 import { useState, type SyntheticEvent } from 'react';
 import type { ImageAsset } from '@app-types';
+import { brandArtDataUri } from '@lib/brandArt';
 
 export interface CardImageProps {
   /** The image asset with intrinsic dimensions used to reserve the box. */
@@ -72,14 +73,25 @@ export function CardImage({
     }
   };
 
-  // Reserve the aspect ratio from intrinsic dimensions to prevent CLS.
+  // Reserve the aspect ratio from intrinsic dimensions to prevent CLS, and
+  // paint the deterministic brand artwork behind the <img> so a missing/slow
+  // image never flashes a broken box — the art shows through instantly.
   const aspectRatio = `${image.width} / ${image.height}`;
+  const artUri = brandArtDataUri(image.src.length > 0 ? image.src : image.alt);
 
   return (
-    <div className={wrapperClasses} style={{ aspectRatio }}>
+    <div
+      className={wrapperClasses}
+      style={{
+        aspectRatio,
+        backgroundImage: `url("${artUri}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       {showPlaceholder ? (
         <div
-          className="flex h-full w-full items-center justify-center bg-ink-700"
+          className="relative flex h-full w-full items-end"
           data-card-image-placeholder="true"
           {...(image.alt.length > 0
             ? { role: 'img', 'aria-label': image.alt }
@@ -87,7 +99,7 @@ export function CardImage({
         >
           <span
             aria-hidden="true"
-            className="font-mono text-xs uppercase tracking-widest text-mist-300"
+            className="m-3 rounded-full bg-ink-900/80 px-3 py-1 font-mono text-[0.625rem] uppercase tracking-widest text-mist-100 backdrop-blur"
           >
             Ryze
           </span>

@@ -1,5 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+// Self-hosted variable fonts (bundled, no external requests) — load before the
+// global stylesheet so the @font-face families are registered first.
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
 import App from '@/App';
 import '@/index.css';
 

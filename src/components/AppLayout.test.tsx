@@ -70,10 +70,12 @@ describe('AppLayout', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
 
     // The lazy HomePage resolves inside the shell: wait for its single h1.
-    const heading = await screen.findByRole('heading', {
-      level: 1,
-      name: 'We build products that work forever',
-    });
+    // Generous timeout keeps this stable under heavy parallel-suite load.
+    const heading = await screen.findByRole(
+      'heading',
+      { level: 1, name: 'We build products that work forever' },
+      { timeout: 5000 },
+    );
     expect(heading).toBeInTheDocument();
 
     // The page owns the single <main> landmark (the shell deliberately does
@@ -85,7 +87,7 @@ describe('AppLayout', () => {
     renderAt('/');
 
     // Wait for the page to mount so the announcer reflects the route.
-    await screen.findByRole('heading', { level: 1 });
+    await screen.findByRole('heading', { level: 1 }, { timeout: 5000 });
     expect(screen.getByTestId('route-announcer')).toBeInTheDocument();
   });
 });

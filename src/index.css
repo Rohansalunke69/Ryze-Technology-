@@ -44,12 +44,12 @@
   --fs-body: 1.0625rem;
   --fs-mono-eyebrow: 0.8125rem;
 
-  /* Font families — crisp grotesk system stack (renders immediately, no
-   * external font files required). Bold weights at display scale give the
-   * light high-contrast editorial look. */
-  --font-display: 'Helvetica Neue', Helvetica, Arial, 'Inter', system-ui, sans-serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Monaco, monospace;
+  /* Font families — bundled variable fonts (Space Grotesk display + Inter text
+   * + JetBrains Mono), self-hosted via @fontsource-variable (imported in
+   * main.tsx). Distinctive geometric display character for the brand. */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', Inter, -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
 
   /* Spacing — 8px base scale */
   --space-1: 0.5rem;
