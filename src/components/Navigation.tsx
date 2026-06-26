@@ -344,7 +344,7 @@ export function Navigation({
     >
       <nav
         aria-label="Primary"
-        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5"
+        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2"
       >
         <Link
           to="/"
@@ -352,7 +352,7 @@ export function Navigation({
           aria-label="Ryze Technology home"
           className="transition-opacity hover:opacity-80 focus-visible:opacity-80"
         >
-          <Logo variant="full" height={26} />
+          <Logo variant="full" height={24} />
         </Link>
 
         {isMobile ? (
