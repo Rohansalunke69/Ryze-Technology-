@@ -136,63 +136,97 @@ export function HomePage(): JSX.Element {
           eyebrow="Ryze Technology"
         />
 
+        {/* Kinetic marquee band — full-bleed brand statement strip. */}
+        <div className="overflow-hidden border-y border-ink-600 bg-ink-800 py-5">
+          <div className="font-display text-[clamp(1.75rem,5vw,4rem)] font-bold uppercase tracking-tight text-mist-100">
+            <MarqueeText
+              items={[
+                'Built to last',
+                'Engineered permanence',
+                'Web — Mobile — Systems',
+                'Ryze Technology',
+              ]}
+            />
+          </div>
+        </div>
+
       {/* 2 — Problems: "software that rots". */}
       <section
         aria-label="Problems"
-        className="mx-auto w-full max-w-6xl px-6 py-24 sm:px-8"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
       >
-        <SectionHeader
-          eyebrow="The problem"
-          title="Software that rots"
-        />
-        <AnimationWrapper variant="rise" stagger={0.12}>
-          <ul className="mt-12 grid gap-8 md:grid-cols-3">
-            {PROBLEMS.map((problem) => (
-              <li key={problem.title} className="flex flex-col gap-3">
-                <SplitText
-                  as="h3"
-                  by="word"
-                  text={problem.title}
-                  className="font-display text-h3 text-mist-100 line-through decoration-pulse-500 decoration-2"
-                />
-                <p className="font-sans text-body text-mist-300">
-                  {problem.detail}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </AnimationWrapper>
+        <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
+              The problem
+            </p>
+            <SplitText
+              as="h2"
+              by="word"
+              text="Software that rots"
+              className="mt-6 max-w-[12ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100"
+            />
+          </div>
+
+          <AnimationWrapper variant="rise" stagger={0.12}>
+            <ul className="flex flex-col">
+              {PROBLEMS.map((problem, index) => (
+                <li
+                  key={problem.title}
+                  className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)]"
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex flex-col gap-3 pt-1">
+                    <h3 className="font-display text-h3 font-semibold text-mist-100">
+                      {problem.title}
+                    </h3>
+                    <p className="max-w-md font-sans text-body text-mist-300">
+                      {problem.detail}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </AnimationWrapper>
+        </div>
       </section>
 
-      {/* 3 — Philosophy: the "Engineered Permanence" editorial statement. */}
+      {/* 3 — Philosophy: full-bleed inverted brand-blue statement. */}
       <section
         aria-label="Philosophy"
-        className="mx-auto w-full max-w-6xl px-6 py-24 sm:px-8"
+        className="bg-pulse-500 text-ink-900"
       >
-        <p className="font-mono text-mono-eyebrow uppercase tracking-widest text-pulse-500">
-          Our philosophy
-        </p>
-        <AnimationWrapper variant="rise">
-          <SplitText
-            as="h2"
-            by="word"
-            text="Engineered permanence: software built, weighted, and durable — not disposable."
-            className="mt-6 max-w-4xl font-display text-h1 text-mist-100"
-          />
-        </AnimationWrapper>
-        <AnimationWrapper variant="fade" delay={0.1}>
-          <p className="mt-8 max-w-2xl font-sans text-body-l text-mist-300">
-            Anything worth building is worth building to last. We make order that
-            holds — structured, tested, and maintainable — so the products we
-            ship keep working long after launch day.
+        <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
+          <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
+            Our philosophy
           </p>
-        </AnimationWrapper>
+          <AnimationWrapper variant="rise">
+            <SplitText
+              as="h2"
+              by="word"
+              text="Most software is built to ship. We build it to last."
+              className="mt-8 max-w-[18ch] font-display text-[clamp(2.5rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-ink-900"
+            />
+          </AnimationWrapper>
+          <AnimationWrapper variant="fade" delay={0.1}>
+            <p className="mt-10 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
+              Anything worth building is worth building to last. We make order
+              that holds — structured, tested, and maintainable — so the
+              products we ship keep working long after launch day.
+            </p>
+          </AnimationWrapper>
+        </div>
       </section>
 
       {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
       <section
         aria-label="Featured work"
-        className="mx-auto w-full max-w-6xl px-6 py-24 sm:px-8"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
       >
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeader eyebrow="Selected work" title="Built to outlast" />
@@ -221,7 +255,7 @@ export function HomePage(): JSX.Element {
       {/* 5 — Services: the four service cards. */}
       <section
         aria-label="Services"
-        className="mx-auto w-full max-w-6xl px-6 py-24 sm:px-8"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
       >
         <SectionHeader eyebrow="What we do" title="Four ways we build" />
         <AnimationWrapper variant="rise" stagger={0.08}>
@@ -236,14 +270,14 @@ export function HomePage(): JSX.Element {
       {/* 6 — Why Us: AnimatedCounter metric row + differentiators (Req 6.3). */}
       <section
         aria-label="Why Ryze"
-        className="mx-auto w-full max-w-6xl px-6 py-24 sm:px-8"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
       >
         <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
-        <dl className="mt-12 grid gap-10 sm:grid-cols-3">
+        <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
           {METRICS.map((metric) => (
-            <div key={metric.label} className="flex flex-col gap-2">
+            <div key={metric.label} className="flex flex-col gap-3 border-t border-ink-600 pt-6">
               <dt className="sr-only">{metric.label}</dt>
-              <dd className="font-display text-display-l text-mist-100">
+              <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
                 <AnimatedCounter
                   value={metric.value}
                   decimals={metric.decimals ?? 0}
@@ -252,7 +286,7 @@ export function HomePage(): JSX.Element {
               </dd>
               <p
                 aria-hidden="true"
-                className="font-mono text-xs uppercase tracking-widest text-pulse-500"
+                className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
               >
                 {metric.label}
               </p>
@@ -260,14 +294,14 @@ export function HomePage(): JSX.Element {
           ))}
         </dl>
         <AnimationWrapper variant="rise" stagger={0.08}>
-          <ul className="mt-16 grid gap-6 md:grid-cols-2">
+          <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
             {DIFFERENTIATORS.map((item) => (
               <li
                 key={item}
-                className="flex gap-3 font-sans text-body-l text-mist-300"
+                className="flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300"
               >
-                <span aria-hidden="true" className="text-pulse-500">
-                  —
+                <span aria-hidden="true" className="font-mono text-pulse-500">
+                  ↗
                 </span>
                 <span>{item}</span>
               </li>
@@ -279,7 +313,7 @@ export function HomePage(): JSX.Element {
       {/* 7 — Team: the team cards + a marquee of names/roles. */}
       <section
         aria-label="Team"
-        className="mx-auto w-full max-w-6xl px-6 py-24 sm:px-8"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
       >
         <SectionHeader eyebrow="The studio" title="The people who build it" />
         <AnimationWrapper variant="rise" stagger={0.1}>
