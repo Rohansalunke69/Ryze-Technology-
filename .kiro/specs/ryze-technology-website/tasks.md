@@ -416,19 +416,19 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Wire SEOHead across all routes with normalized descriptions; generate `sitemap.xml` and `robots.txt` at build from the route table + typed data slugs; add the build-time prerender step for static and `:slug` routes; emit `noIndex` where required
     - _Requirements: 40.1, 40.2, 40.3, 40.4, 40.5, 41.1_
 
-  - [ ]* 16.2 Write accessibility test suite
+  - [x]* 16.2 Write accessibility test suite
     - jest-axe zero-violations per page, focus management on route change + Route_Announcer, focus trap/restore for Mobile_Menu and Lightbox, reduced-motion end-state rendering across pages, alt/aria-hidden coverage
     - _Requirements: 38.1, 38.2, 38.3, 38.4, 38.5, 38.6, 37.2, 37.3, 37.4_
 
-  - [ ]* 16.3 Write responsive and contrast tests
+  - [x]* 16.3 Write responsive and contrast tests
     - Assert token color pairings meet WCAG AA contrast, interactive targets ≥ 44×44px, fluid type via clamp, and viewport-category-driven layout switches
     - _Requirements: 36.2, 36.3, 36.4, 35.1_
 
-  - [ ]* 16.4 Write performance and bundle-budget smoke checks
+  - [x]* 16.4 Write performance and bundle-budget smoke checks
     - Run bundle-budget assertion (initial ≤ 180 KB gzip, no three/R3F in entry chunk), reserved aspect-ratio/CLS checks, and Lighthouse CI smoke against the build
     - _Requirements: 39.1, 39.2, 39.3, 39.4, 39.5, 39.6, 5.4_
 
-- [ ] 17. Final checkpoint
+- [x] 17. Final checkpoint
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes
