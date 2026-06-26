@@ -52,11 +52,11 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 29.1, 29.3, 40.1_
 
 - [ ] 4. Pure logic layer with property-based tests
-  - [-] 4.1 Implement easing and interpolation helpers
+  - [x] 4.1 Implement easing and interpolation helpers
     - Implement `easeOutExpo`, `easeInOutQuint`, `easeOutBack`, `clamp`, `lerp` (t clamped to [0,1]), `mapRange` (optional clampOut), and `interpolateCounter(from, to, progress, easing, decimals)`
     - _Requirements: 34.1, 34.2, 34.3, 34.4, 34.5, 34.6, 21.2_
 
-  - [ ]* 4.2 Write property tests for easing and interpolation
+  - [x]* 4.2 Write property tests for easing and interpolation
     - **Property 1: Easing endpoints** (`// Feature: ryze-technology-website, Property 1`) — Validates Requirement 34.1
     - **Property 2: Easing monotonicity (non-overshoot fns)** — Validates Requirement 34.2
     - **Property 3: clamp bounds** — Validates Requirement 34.3
@@ -66,11 +66,11 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 34.1, 34.2, 34.3, 34.4, 34.5, 34.6, 21.2_
 
-  - [-] 4.3 Implement computeReadingTime
+  - [x] 4.3 Implement computeReadingTime
     - `computeReadingTime(content, wordsPerMinute = 225)`: word count via whitespace tokenization, ceil to minutes, minimum 1
     - _Requirements: 27.1, 27.2, 27.3, 27.4_
 
-  - [ ]* 4.4 Write property tests for reading time
+  - [x]* 4.4 Write property tests for reading time
     - **Property 7: Positivity** (`// Feature: ryze-technology-website, Property 7`) — Validates Requirement 27.1
     - **Property 8: Monotonic in length** — Validates Requirement 27.2
     - **Property 9: Whitespace invariance** — Validates Requirement 27.3
@@ -78,11 +78,11 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 27.1, 27.2, 27.3, 27.4_
 
-  - [-] 4.5 Implement normalizeMetaDescription
+  - [x] 4.5 Implement normalizeMetaDescription
     - `normalizeMetaDescription(input, maxLen = 160)`: trim, return unchanged when within bound, otherwise cut at last word boundary before maxLen and append ellipsis without exceeding maxLen
     - _Requirements: 28.1, 28.2, 28.3, 28.4, 40.2_
 
-  - [ ]* 4.6 Write property tests for meta-description normalization
+  - [x]* 4.6 Write property tests for meta-description normalization
     - **Property 11: Length bound** (`// Feature: ryze-technology-website, Property 11`) — Validates Requirement 28.1
     - **Property 12: Idempotence** — Validates Requirement 28.2
     - **Property 13: No mid-word cut** — Validates Requirement 28.3
@@ -90,22 +90,22 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 28.1, 28.2, 28.3, 28.4_
 
-  - [-] 4.7 Implement resolveBySlug and uniqueSlugs
+  - [x] 4.7 Implement resolveBySlug and uniqueSlugs
     - `resolveBySlug<T extends {slug:string}>(items, slug)` returns the exact entity or `undefined` without throwing; `uniqueSlugs(items)` invariant check
     - _Requirements: 29.1, 29.2, 29.3_
 
-  - [ ]* 4.8 Write property tests for slug resolution
+  - [x]* 4.8 Write property tests for slug resolution
     - **Property 15: Round-trip resolution** (`// Feature: ryze-technology-website, Property 15`) — Validates Requirement 29.1
     - **Property 16: Unknown slug** — Validates Requirement 29.2
     - **Property 17: Slug uniqueness invariant** (generated input) — Validates Requirement 29.3
     - Minimum 100 iterations per property
     - _Requirements: 29.1, 29.2, 29.3_
 
-  - [-] 4.9 Implement filtering helpers
+  - [x] 4.9 Implement filtering helpers
     - `filterCaseStudies(items, category|'all')`, `filterPostsByCategory(posts, category|'all')`, `getCaseStudiesByService(items, service)` — order-preserving, subset, `'all'` identity
     - _Requirements: 30.1, 30.2, 30.3, 30.4, 30.5, 7.5, 14.3, 10.2_
 
-  - [ ]* 4.10 Write property tests for filtering
+  - [x]* 4.10 Write property tests for filtering
     - **Property 19: Subset** (`// Feature: ryze-technology-website, Property 19`) — Validates Requirement 30.1
     - **Property 20: Predicate soundness** — Validates Requirement 30.2
     - **Property 21: 'all' identity (as set)** — Validates Requirement 30.3
