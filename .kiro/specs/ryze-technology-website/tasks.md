@@ -278,11 +278,11 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - `CaseStudyCard`, `ServiceCard`, `TeamCard`, `BlogCard` (image, category, title, excerpt, date, reading time), `TestimonialCard`; reserved aspect-ratio media boxes; image `onError` swap to blurDataURL/placeholder
     - _Requirements: 7.1, 9.1, 11.2, 14.1, 8.1, 39.3, 42.3_
 
-  - [ ]* 10.6 Write tests and a11y checks for shared UI
+  - [x]* 10.6 Write tests and a11y checks for shared UI
     - jest-axe + RTL: Navigation dropdown keyboard access, Mobile_Menu focus trap/restore/Esc, Breadcrumb trail rendering, Footer content, card rendering and image error fallback
     - _Requirements: 1.3, 2.3, 2.4, 2.5, 3.1, 4.2, 42.3, 38.4_
 
-- [ ] 11. Capability-gated WebGL hero
+- [x] 11. Capability-gated WebGL hero
   - [x] 11.1 Implement canRenderWebGL capability gate
     - `canRenderWebGL(opts)` checks WebGL2 availability, cores ≥ 4, memory ≥ 4 GB, and save-data disabled
     - _Requirements: 19.3, 19.4_
@@ -291,15 +291,15 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - `HeroFallback` (static poster/CSS mesh + CSS text reveal); `Hero` renders fallback first, and only when motion is allowed + WebGL2 available + gate passes, lazily imports and mounts Hero_WebGL behind an IntersectionObserver, cross-fading from fallback when ready
     - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6_
 
-  - [ ] 11.3 Implement lazy Hero_WebGL R3F scene
+  - [x] 11.3 Implement lazy Hero_WebGL R3F scene
     - R3F particle→lattice instanced scene (below-route lazy chunk, never in entry bundle), cap DPR at 2, pause render loop when offscreen or tab hidden, handle `webglcontextlost`/`webglcontextrestored` (pause, dispose, swap to fallback, single re-init attempt)
     - _Requirements: 19.5, 19.7, 42.4, 39.1, 5.4_
 
-  - [ ]* 11.4 Write tests for hero gating and fallback
+  - [x]* 11.4 Write tests for hero gating and fallback
     - Reduced motion → no canvas mounted; WebGL2 unavailable / gate fail → fallback only; cross-fade on ready; pause offscreen; context-loss swap to fallback
     - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.6, 19.7, 42.4_
 
-- [ ] 12. Checkpoint - primitives, shared UI, and hero
+- [x] 12. Checkpoint - primitives, shared UI, and hero
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 13. Router and application shell
