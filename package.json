@@ -11,8 +11,9 @@
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test": "vitest --run",
+    "test:ci": "FAST_CHECK_NUM_RUNS=100 vitest --run",
     "budget": "node scripts/check-bundle-budget.mjs",
-    "verify": "npm run build && npm run budget",
+    "verify": "npm run build && npm run test:ci && npm run budget",
     "lighthouse": "lhci autorun"
   },
   "dependencies": {
