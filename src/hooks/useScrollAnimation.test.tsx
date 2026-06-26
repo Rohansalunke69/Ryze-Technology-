@@ -52,7 +52,19 @@ describe('useScrollAnimation', () => {
     mocks.context.mockClear();
   });
 
-  it('registers the ScrollTrigger plugin on import', () => {
+  it('registers the ScrollTrigger plugin lazily when first used', () => {
+    const element = document.createElement('div');
+    renderHook(
+      () => {
+        const ref = useScrollAnimation(() => {});
+        if (ref.current === null) {
+          // @ts-expect-error -- test wiring of the ref
+          ref.current = element;
+        }
+        return ref;
+      },
+      { wrapper: makeWrapper(false) },
+    );
     expect(mocks.registerPlugin).toHaveBeenCalled();
   });
 

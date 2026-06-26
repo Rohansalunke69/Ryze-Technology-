@@ -29,10 +29,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { useReducedMotion } from './useReducedMotion';
 
-// Register the ScrollTrigger plugin a single time for all callers. GSAP's
-// registerPlugin is idempotent, so this is safe even if other modules also
-// register it.
-gsap.registerPlugin(ScrollTrigger);
+// Tracks whether the ScrollTrigger plugin has been registered. Registration is
+// deferred to the first browser layout effect (below) rather than module load,
+// because `ScrollTrigger.register` touches `window.matchMedia`, which is absent
+// in SSR/jsdom at import time. GSAP's registerPlugin is idempotent, so the flag
+// just avoids redundant calls.
+let scrollTriggerRegistered = false;
 
 /** Context object passed to a {@link useScrollAnimation} setup callback. */
 export interface ScrollAnimationContext {
@@ -74,6 +76,13 @@ export function useScrollAnimation(
     const el = ref.current;
     if (el === null) {
       return;
+    }
+
+    // Register ScrollTrigger lazily, now that we are in a browser layout effect
+    // (window/matchMedia are available). Idempotent + guarded.
+    if (!scrollTriggerRegistered) {
+      gsap.registerPlugin(ScrollTrigger);
+      scrollTriggerRegistered = true;
     }
 
     const ctx = gsap.context(() => {

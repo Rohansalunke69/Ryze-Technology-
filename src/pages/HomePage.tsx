@@ -39,6 +39,7 @@ import type { SEOMeta } from '@app-types';
 import { AnimatedCounter } from '@components/AnimatedCounter';
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { CaseStudyCard } from '@components/CaseStudyCard';
+import { CapabilitiesShowcase } from '@components/CapabilitiesShowcase';
 import { CTA } from '@components/CTA';
 import { Hero } from '@components/Hero';
 import { MarqueeText } from '@components/MarqueeText';
@@ -247,6 +248,9 @@ export function HomePage(): JSX.Element {
           </AnimationWrapper>
         </div>
       </section>
+
+      {/* What we build — pinned horizontal-scroll capabilities showcase. */}
+      <CapabilitiesShowcase services={services} />
 
       {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
       <section
