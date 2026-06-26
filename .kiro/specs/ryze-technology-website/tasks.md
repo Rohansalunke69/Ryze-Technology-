@@ -316,7 +316,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Render in order: Hero, Problems, Philosophy, Portfolio-preview (featured case studies), Services (4 cards), Why-Us (AnimatedCounter metrics), Team, CTA (MagneticButton → /contact), Footer; one heavy hero moment, lighter reveals elsewhere; SEOHead
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 20.5, 40.1_
 
-  - [ ]* 14.2 Write tests for HomePage
+  - [x]* 14.2 Write tests for HomePage
     - Section order, featured-only preview, counters present, CTA links to /contact; jest-axe single-h1/landmarks
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 38.1_
 
@@ -324,7 +324,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Title + count hero, filter bar (All/Websites/Mobile/Systems) with animated active indicator, grid of CaseStudyCard using `filterCaseStudies`, CTA; order preserved on filter
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-  - [ ]* 14.4 Write tests for PortfolioListPage
+  - [x]* 14.4 Write tests for PortfolioListPage
     - Filter selection updates grid to matching/all items, order preserved; jest-axe
     - _Requirements: 7.3, 7.4, 7.5, 38.1_
 
@@ -332,7 +332,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resolve slug via `resolveBySlug`; render Breadcrumb, hero, challenge, solution, results (AnimatedCounter per Metric), gallery + Lightbox ("OPEN" cursor), testimonial, tech breakdown, learnings, related projects (`getRelatedCaseStudies`); in-route not-found state with related suggestions on unknown slug
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-  - [ ]* 14.6 Write tests for CaseStudyPage
+  - [x]* 14.6 Write tests for CaseStudyPage
     - Known slug renders sections + counters; lightbox open/keyboard/wrap; unknown slug → not-found with suggestions; jest-axe
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 33.1, 38.1_
 
@@ -340,7 +340,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Hero, four ServiceCards, numbered process-steps section (scrubbed timeline), support/maintenance band, CTA
     - _Requirements: 9.1, 9.2, 9.3_
 
-  - [ ]* 14.8 Write tests for ServicesPage
+  - [x]* 14.8 Write tests for ServicesPage
     - Four services rendered, process steps + maintenance band + CTA present; jest-axe
     - _Requirements: 9.1, 9.2, 9.3, 38.1_
 
@@ -348,7 +348,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resolve ServiceKey; render Breadcrumb, hero, what-we-do, features grid, related case studies (`getCaseStudiesByService`), tech stack, process timeline, FAQ accessible accordion; in-route not-found on unknown slug
     - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
-  - [ ]* 14.10 Write tests for ServiceDetailPage
+  - [x]* 14.10 Write tests for ServiceDetailPage
     - Resolved service sections, related-by-service, FAQ accordion keyboard/ARIA, unknown slug → not-found; jest-axe
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 38.1_
 
@@ -356,7 +356,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Story, mission, team profiles (TeamCard per member with social links), differentiators, by-the-numbers (AnimatedCounter), testimonials (carousel/marquee), CTA
     - _Requirements: 11.1, 11.2, 11.3_
 
-  - [ ]* 14.12 Write tests for AboutPage
+  - [x]* 14.12 Write tests for AboutPage
     - All sections, TeamCard per member, counters present; jest-axe
     - _Requirements: 11.1, 11.2, 11.3, 38.1_
 
@@ -364,7 +364,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Hero, core-beliefs sequence (pinned sequential reveal where motion allowed, flowing end-state under reduced motion), what-we-stand-against band, the Ryze promise, CTA
     - _Requirements: 12.1, 12.2, 37.2_
 
-  - [ ]* 14.14 Write tests for ManifestoPage
+  - [x]* 14.14 Write tests for ManifestoPage
     - Sections render; reduced motion → beliefs visible without pinning; jest-axe
     - _Requirements: 12.1, 12.2, 37.2, 38.1_
 
@@ -372,7 +372,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Fields (name, email, company, project type, budget, timeline, message) with inline validation; status union idle/submitting/success/error; invalid → block submit, inline errors, `aria-invalid`, focus error summary; valid → submitting + POST to env `contactEndpoint`; 2xx → success, clear form, polite announce; failure/non-2xx/timeout → error, preserve values, retry control, announce, mailto fallback
     - _Requirements: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6, 38.6_
 
-  - [ ]* 14.16 Write tests for ContactPage and form
+  - [x]* 14.16 Write tests for ContactPage and form
     - Invalid submit blocked with errors/aria/focus; valid submit POSTs (mocked); success clears + announces; error preserves values + retry; jest-axe label/aria-describedby associations
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.6, 38.6_
 
@@ -380,7 +380,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Hero, category filter (BlogCategory + All) using `filterPostsByCategory`, BlogCard grid, pagination via `paginate` with prev/next enabled per `hasPrev`/`hasNext`, CTA
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5_
 
-  - [ ]* 14.18 Write tests for BlogListPage
+  - [x]* 14.18 Write tests for BlogListPage
     - Filter matches/all + order preserved, pagination items + prev/next flags; jest-axe
     - _Requirements: 14.3, 14.4, 14.5, 38.1_
 
@@ -388,7 +388,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resolve slug; Breadcrumb, hero (title/category/date/reading-time/author), sticky TOC scroll-spy, prose constrained to 68ch, author bio, related posts (`getRelatedPosts`), share buttons; in-route not-found with suggestions on unknown slug
     - _Requirements: 15.1, 15.2, 15.3, 15.4_
 
-  - [ ]* 14.20 Write tests for BlogPostPage
+  - [x]* 14.20 Write tests for BlogPostPage
     - Resolved post sections, 68ch measure, related posts, unknown slug → not-found; jest-axe
     - _Requirements: 15.1, 15.2, 15.3, 15.4, 38.1_
 
@@ -404,11 +404,11 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Oversized 404 with lazy interactive canvas (static under reduced motion), quick links to top routes, home/back action, `noIndex` metadata
     - _Requirements: 18.1, 18.2, 18.3, 40.5_
 
-  - [ ]* 14.24 Write tests for Resources, Legal, and NotFound pages
+  - [x]* 14.24 Write tests for Resources, Legal, and NotFound pages
     - Resources grid renders when enabled; legal pages render TOC + last-updated per param; 404 quick links + noIndex meta; jest-axe
     - _Requirements: 16.1, 17.1, 18.2, 18.3, 38.1_
 
-- [ ] 15. Checkpoint - pages and routing
+- [x] 15. Checkpoint - pages and routing
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 16. Cross-cutting: SEO, accessibility, and performance gates
