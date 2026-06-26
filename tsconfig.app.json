@@ -16,6 +16,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Ambient types: Vitest globals (describe/it/expect) in tests; node for
+       test setup that reads process.env (fast-check seeding) */
+    "types": ["vitest/globals", "node"],
+
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,

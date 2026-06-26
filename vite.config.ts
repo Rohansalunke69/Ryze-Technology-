@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 const resolvePath = (relative: string): string =>
@@ -23,5 +23,12 @@ export default defineConfig({
       // `@/` must be last so the more specific aliases take precedence.
       { find: /^@\//, replacement: `${resolvePath('./src')}/` },
     ],
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/test/setup.ts'],
+    // Parse/handle CSS so component imports of stylesheets do not error.
+    css: true,
   },
 });

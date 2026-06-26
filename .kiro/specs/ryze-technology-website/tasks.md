@@ -17,7 +17,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Configure Vite to resolve the same aliases; set up the base directory structure (`src/lib`, `src/data`, `src/hooks`, `src/components`, `src/providers`, `src/pages`, `src/app-types`)
     - _Requirements: 41.1_
 
-  - [~] 1.2 Define design tokens as CSS custom properties mirrored into Tailwind
+  - [x] 1.2 Define design tokens as CSS custom properties mirrored into Tailwind
     - Author `:root` CSS custom properties for the "Engineered Permanence" system: ink/mist/pulse/ember/lime color tokens, fluid type scale (`clamp()` for display/heading/body), 8px spacing scale + section rhythm, 12-column grid tokens, and motion/easing tokens (ease-out-expo, ease-in-out-quint, ease-out-back, durations, stagger)
     - Mirror identical values into `tailwind.config.ts` so utilities and JS animation read one source of truth
     - _Requirements: 36.1, 36.4_
@@ -32,22 +32,22 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Wire global styles into the app entry
     - _Requirements: 36.1, 36.2, 38.2, 15.2_
 
-- [ ] 2. Test tooling and CI guardrails
-  - [~] 2.1 Configure Vitest + jsdom + RTL + jest-axe + fast-check
+- [x] 2. Test tooling and CI guardrails
+  - [x] 2.1 Configure Vitest + jsdom + RTL + jest-axe + fast-check
     - Install and configure `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/user-event`, `jest-axe`, `fast-check`
     - Add a test setup file (jest-dom matchers, jest-axe matcher, a `matchMedia` mock helper for reduced-motion tests) and seed fast-check for reproducible CI runs
     - _Requirements: 38.1, 38.2, 37.2_
 
-  - [~] 2.2 Add Lighthouse CI configuration
+  - [x] 2.2 Add Lighthouse CI configuration
     - Add `@lhci/cli` config asserting per-route thresholds (content pages Perf ≥ 95, homepage with deferred WebGL ≥ 85, A11y/Best-Practices/SEO ≥ 95) against the static build
     - _Requirements: 39.6_
 
-  - [~] 2.3 Add bundle-budget guardrail check
+  - [x] 2.3 Add bundle-budget guardrail check
     - Add a build-analysis script that fails CI if the initial route JS exceeds 180 KB gzip or if `three`/`@react-three/fiber` appears in the entry chunk
     - _Requirements: 39.1, 5.4_
 
-- [ ] 3. Shared TypeScript types and data models
-  - [~] 3.1 Define shared domain types and data-model interfaces
+- [x] 3. Shared TypeScript types and data models
+  - [x] 3.1 Define shared domain types and data-model interfaces
     - In `src/app-types`, declare `Slug`, `ISODate`, `ServiceKey`, `PortfolioCategory`, `BlogCategory`, `ImageAsset`, `SEOMeta`, `Metric`, `CaseStudy`, `ProcessStep`, `FAQItem`, `Service`, `SocialLink`, `TeamMember`, `BlogAuthor`, `BlogPost`, `Testimonial`, `NavChild`, `NavItem`, `SiteMetadata`, `ViewportCategory`, `EasingFn`, `PageResult<T>`
     - _Requirements: 29.1, 29.3, 40.1_
 
