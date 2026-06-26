@@ -52,7 +52,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 29.1, 29.3, 40.1_
 
 - [ ] 4. Pure logic layer with property-based tests
-  - [~] 4.1 Implement easing and interpolation helpers
+  - [-] 4.1 Implement easing and interpolation helpers
     - Implement `easeOutExpo`, `easeInOutQuint`, `easeOutBack`, `clamp`, `lerp` (t clamped to [0,1]), `mapRange` (optional clampOut), and `interpolateCounter(from, to, progress, easing, decimals)`
     - _Requirements: 34.1, 34.2, 34.3, 34.4, 34.5, 34.6, 21.2_
 
@@ -66,7 +66,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 34.1, 34.2, 34.3, 34.4, 34.5, 34.6, 21.2_
 
-  - [~] 4.3 Implement computeReadingTime
+  - [-] 4.3 Implement computeReadingTime
     - `computeReadingTime(content, wordsPerMinute = 225)`: word count via whitespace tokenization, ceil to minutes, minimum 1
     - _Requirements: 27.1, 27.2, 27.3, 27.4_
 
@@ -78,7 +78,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 27.1, 27.2, 27.3, 27.4_
 
-  - [~] 4.5 Implement normalizeMetaDescription
+  - [-] 4.5 Implement normalizeMetaDescription
     - `normalizeMetaDescription(input, maxLen = 160)`: trim, return unchanged when within bound, otherwise cut at last word boundary before maxLen and append ellipsis without exceeding maxLen
     - _Requirements: 28.1, 28.2, 28.3, 28.4, 40.2_
 
@@ -90,7 +90,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 28.1, 28.2, 28.3, 28.4_
 
-  - [~] 4.7 Implement resolveBySlug and uniqueSlugs
+  - [-] 4.7 Implement resolveBySlug and uniqueSlugs
     - `resolveBySlug<T extends {slug:string}>(items, slug)` returns the exact entity or `undefined` without throwing; `uniqueSlugs(items)` invariant check
     - _Requirements: 29.1, 29.2, 29.3_
 
@@ -101,7 +101,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Minimum 100 iterations per property
     - _Requirements: 29.1, 29.2, 29.3_
 
-  - [~] 4.9 Implement filtering helpers
+  - [-] 4.9 Implement filtering helpers
     - `filterCaseStudies(items, category|'all')`, `filterPostsByCategory(posts, category|'all')`, `getCaseStudiesByService(items, service)` — order-preserving, subset, `'all'` identity
     - _Requirements: 30.1, 30.2, 30.3, 30.4, 30.5, 7.5, 14.3, 10.2_
 
