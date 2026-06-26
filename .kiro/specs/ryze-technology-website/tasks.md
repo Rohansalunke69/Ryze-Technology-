@@ -352,7 +352,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Resolved service sections, related-by-service, FAQ accordion keyboard/ARIA, unknown slug → not-found; jest-axe
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 38.1_
 
-  - [ ] 14.11 Implement AboutPage
+  - [x] 14.11 Implement AboutPage
     - Story, mission, team profiles (TeamCard per member with social links), differentiators, by-the-numbers (AnimatedCounter), testimonials (carousel/marquee), CTA
     - _Requirements: 11.1, 11.2, 11.3_
 
@@ -360,7 +360,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - All sections, TeamCard per member, counters present; jest-axe
     - _Requirements: 11.1, 11.2, 11.3, 38.1_
 
-  - [ ] 14.13 Implement ManifestoPage
+  - [x] 14.13 Implement ManifestoPage
     - Hero, core-beliefs sequence (pinned sequential reveal where motion allowed, flowing end-state under reduced motion), what-we-stand-against band, the Ryze promise, CTA
     - _Requirements: 12.1, 12.2, 37.2_
 
@@ -376,7 +376,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Invalid submit blocked with errors/aria/focus; valid submit POSTs (mocked); success clears + announces; error preserves values + retry; jest-axe label/aria-describedby associations
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.6, 38.6_
 
-  - [ ] 14.17 Implement BlogListPage
+  - [x] 14.17 Implement BlogListPage
     - Hero, category filter (BlogCategory + All) using `filterPostsByCategory`, BlogCard grid, pagination via `paginate` with prev/next enabled per `hasPrev`/`hasNext`, CTA
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5_
 
@@ -384,7 +384,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Filter matches/all + order preserved, pagination items + prev/next flags; jest-axe
     - _Requirements: 14.3, 14.4, 14.5, 38.1_
 
-  - [ ] 14.19 Implement BlogPostPage
+  - [x] 14.19 Implement BlogPostPage
     - Resolve slug; Breadcrumb, hero (title/category/date/reading-time/author), sticky TOC scroll-spy, prose constrained to 68ch, author bio, related posts (`getRelatedPosts`), share buttons; in-route not-found with suggestions on unknown slug
     - _Requirements: 15.1, 15.2, 15.3, 15.4_
 
