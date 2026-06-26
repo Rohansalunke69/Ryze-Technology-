@@ -411,8 +411,8 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
 - [x] 15. Checkpoint - pages and routing
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 16. Cross-cutting: SEO, accessibility, and performance gates
-  - [ ] 16.1 Implement SEO output, sitemap/robots, and prerender build step
+- [x] 16. Cross-cutting: SEO, accessibility, and performance gates
+  - [x] 16.1 Implement SEO output, sitemap/robots, and prerender build step
     - Wire SEOHead across all routes with normalized descriptions; generate `sitemap.xml` and `robots.txt` at build from the route table + typed data slugs; add the build-time prerender step for static and `:slug` routes; emit `noIndex` where required
     - _Requirements: 40.1, 40.2, 40.3, 40.4, 40.5, 41.1_
 

@@ -1,0 +1,6 @@
+# robots.txt for Ryze Technology (Requirement 40.4)
+# Allow all well-behaved crawlers full access and point them at the sitemap.
+User-agent: *
+Allow: /
+
+Sitemap: https://ryze.technology/sitemap.xml
