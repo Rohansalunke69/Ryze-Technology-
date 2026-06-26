@@ -312,7 +312,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - _Requirements: 5.3, 5.4, 20.3, 26.2, 38.1_
 
 - [ ] 14. Pages
-  - [ ] 14.1 Implement HomePage
+  - [x] 14.1 Implement HomePage
     - Render in order: Hero, Problems, Philosophy, Portfolio-preview (featured case studies), Services (4 cards), Why-Us (AnimatedCounter metrics), Team, CTA (MagneticButton → /contact), Footer; one heavy hero moment, lighter reveals elsewhere; SEOHead
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 20.5, 40.1_
 
@@ -320,7 +320,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Section order, featured-only preview, counters present, CTA links to /contact; jest-axe single-h1/landmarks
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 38.1_
 
-  - [ ] 14.3 Implement PortfolioListPage
+  - [x] 14.3 Implement PortfolioListPage
     - Title + count hero, filter bar (All/Websites/Mobile/Systems) with animated active indicator, grid of CaseStudyCard using `filterCaseStudies`, CTA; order preserved on filter
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
@@ -328,7 +328,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Filter selection updates grid to matching/all items, order preserved; jest-axe
     - _Requirements: 7.3, 7.4, 7.5, 38.1_
 
-  - [ ] 14.5 Implement CaseStudyPage
+  - [x] 14.5 Implement CaseStudyPage
     - Resolve slug via `resolveBySlug`; render Breadcrumb, hero, challenge, solution, results (AnimatedCounter per Metric), gallery + Lightbox ("OPEN" cursor), testimonial, tech breakdown, learnings, related projects (`getRelatedCaseStudies`); in-route not-found state with related suggestions on unknown slug
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
@@ -336,7 +336,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Known slug renders sections + counters; lightbox open/keyboard/wrap; unknown slug → not-found with suggestions; jest-axe
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 33.1, 38.1_
 
-  - [ ] 14.7 Implement ServicesPage
+  - [x] 14.7 Implement ServicesPage
     - Hero, four ServiceCards, numbered process-steps section (scrubbed timeline), support/maintenance band, CTA
     - _Requirements: 9.1, 9.2, 9.3_
 
@@ -344,7 +344,7 @@ Test sub-tasks are marked optional with `*`. Every task references the specific 
     - Four services rendered, process steps + maintenance band + CTA present; jest-axe
     - _Requirements: 9.1, 9.2, 9.3, 38.1_
 
-  - [ ] 14.9 Implement ServiceDetailPage
+  - [x] 14.9 Implement ServiceDetailPage
     - Resolve ServiceKey; render Breadcrumb, hero, what-we-do, features grid, related case studies (`getCaseStudiesByService`), tech stack, process timeline, FAQ accessible accordion; in-route not-found on unknown slug
     - _Requirements: 10.1, 10.2, 10.3, 10.4_
 
