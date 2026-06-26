@@ -28,42 +28,40 @@ export interface CapabilitiesShowcaseProps {
   services: Service[];
 }
 
-/** A single capability panel — large index, name, tagline, and tech chips. */
+/** A single capability panel — compact card with index, scene, name, chips. */
 function Panel({ service, index }: { service: Service; index: number }): JSX.Element {
   return (
     <article
       data-panel=""
-      className="flex w-[88vw] shrink-0 flex-col justify-between gap-10 rounded-2xl border border-ink-600 bg-ink-800 p-8 sm:w-[68vw] sm:p-12 lg:w-[46vw]"
+      className="flex w-[78vw] shrink-0 flex-col gap-5 rounded-2xl border border-ink-600 bg-ink-800 p-6 sm:w-[46vw] lg:w-[31vw] xl:w-[26vw]"
     >
-      <div className="flex items-start justify-between gap-6">
+      <div className="flex items-center justify-between gap-4">
         <span
           aria-hidden="true"
-          className="ghost-numeral text-[clamp(3.5rem,8vw,7rem)]"
+          className="ghost-numeral text-[clamp(2.25rem,4vw,3.25rem)]"
         >
           {String(index + 1).padStart(2, '0')}
         </span>
-        <span className="mt-3 font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500">
+        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-pulse-500">
           Capability
         </span>
       </div>
 
       {/* Animated illustration of this discipline in action. */}
-      <div className="rounded-xl border border-ink-600 bg-ink-900 p-4">
+      <div className="rounded-xl border border-ink-600 bg-ink-900 p-3">
         <CapabilityScene kind={service.slug as CapabilityKind} />
       </div>
 
-      <div className="flex flex-col gap-5">
-        <h3 className="font-display text-[clamp(2rem,4vw,3.25rem)] font-bold leading-[0.98] tracking-[-0.02em] text-mist-100">
+      <div className="flex flex-col gap-3">
+        <h3 className="font-display text-[clamp(1.375rem,2.2vw,1.875rem)] font-bold leading-[1.05] tracking-[-0.01em] text-mist-100">
           {service.name}
         </h3>
-        <p className="max-w-md font-sans text-body-l text-mist-300">
-          {service.tagline}
-        </p>
-        <ul className="mt-2 flex flex-wrap gap-2">
-          {service.techStack.slice(0, 5).map((tech) => (
+        <p className="font-sans text-body text-mist-300">{service.tagline}</p>
+        <ul className="mt-1 flex flex-wrap gap-1.5">
+          {service.techStack.slice(0, 4).map((tech) => (
             <li
               key={tech}
-              className="rounded-full border border-ink-600 px-3 py-1 font-mono text-xs text-mist-300"
+              className="rounded-full border border-ink-600 px-2.5 py-0.5 font-mono text-[0.6875rem] text-mist-300"
             >
               {tech}
             </li>
@@ -109,34 +107,34 @@ export function CapabilitiesShowcase({
       aria-label="What we build"
       className="relative overflow-hidden bg-ink-900"
     >
-      <div className="mx-auto w-full max-w-site px-6 pt-[clamp(5rem,10vh,8rem)] sm:px-10">
+      <div className="px-6 pt-[clamp(4rem,8vh,6rem)] sm:px-10">
         <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
           What we build
         </p>
-        <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.25rem,6vw,5rem)] font-bold leading-[0.96] tracking-[-0.02em] text-mist-100">
+        <h2 className="mt-5 max-w-[16ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-[0.98] tracking-[-0.02em] text-mist-100">
           Four disciplines, one standard.
         </h2>
       </div>
 
       {reducedMotion ? (
         // Reduced motion: static, fully-visible responsive grid (no pin/scrub).
-        <div className="mx-auto grid w-full max-w-site gap-6 px-6 py-12 sm:grid-cols-2 sm:px-10">
+        <div className="grid w-full gap-6 px-6 py-12 sm:grid-cols-2 sm:px-10 lg:grid-cols-4">
           {services.map((service, index) => (
             <Panel key={service.slug} service={service} index={index} />
           ))}
         </div>
       ) : (
-        // Motion: a horizontal track that gets pinned + scrubbed by GSAP.
-        <div className="py-[clamp(3rem,6vh,5rem)]">
+        // Motion: a horizontal track, vertically centered in the pinned viewport.
+        <div className="flex min-h-[78vh] items-center">
           <div
             data-track=""
-            className="flex gap-6 px-6 will-change-transform sm:gap-10 sm:px-10"
+            className="flex gap-6 px-6 will-change-transform sm:gap-8 sm:px-10"
           >
             {services.map((service, index) => (
               <Panel key={service.slug} service={service} index={index} />
             ))}
             {/* Trailing spacer so the last panel can rest fully in view. */}
-            <div aria-hidden="true" className="w-[10vw] shrink-0" />
+            <div aria-hidden="true" className="w-[6vw] shrink-0" />
           </div>
         </div>
       )}
