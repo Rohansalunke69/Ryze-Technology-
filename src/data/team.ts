@@ -1,7 +1,6 @@
-// Team profiles for the Ryze Technology studio in Nagpur.
+// Team profiles for the Ryze Technology studio.
 // See design.md "Data Models" (TeamMember) and requirements 11.2.
-// Portrait ids reuse the shared author ids where sensible so the same
-// placeholder square portraits under /images/team/<id>.jpg are used everywhere.
+// Portraits live under /public/images/team/<id>.jpg (square, 640×640).
 
 import type { ImageAsset, TeamMember } from '@app-types';
 
@@ -9,62 +8,74 @@ import type { ImageAsset, TeamMember } from '@app-types';
 function portrait(id: string, name: string): ImageAsset {
   return {
     src: `/images/team/${id}.jpg`,
-    width: 480,
-    height: 480,
+    width: 640,
+    height: 640,
     alt: `Portrait of ${name}`,
   };
 }
 
 export const team: TeamMember[] = [
   {
-    id: 'aanya-deshmukh',
-    name: 'Aanya Deshmukh',
-    role: 'Founder & Principal Engineer',
-    bio: 'Aanya started Ryze to build software that holds up under real Indian conditions. She leads architecture across the studio and still ships code most weeks.',
-    portrait: portrait('aanya-deshmukh', 'Aanya Deshmukh'),
-    socials: [
-      { platform: 'linkedin', url: 'https://www.linkedin.com/in/aanya-deshmukh' },
-      { platform: 'github', url: 'https://github.com/aanya-deshmukh' },
-      { platform: 'email', url: 'mailto:aanya@ryze.technology' },
-    ],
+    id: 'rohan-salunke',
+    name: 'Rohan Salunke',
+    role: 'Founder & CEO',
+    bio: 'Rohan founded Ryze to build software that lasts. He sets the studio’s direction and keeps every project anchored to real client outcomes.',
+    portrait: portrait('rohan-salunke', 'Rohan Salunke'),
+    socials: [{ platform: 'email', url: 'mailto:rohan@ryze.technology' }],
     order: 1,
   },
   {
-    id: 'rohan-iyer',
-    name: 'Rohan Iyer',
-    role: 'Head of Platform',
-    bio: 'Rohan owns the backend and infrastructure that keeps client systems fast and reliable. He cares about boring, dependable software that quietly does its job.',
-    portrait: portrait('rohan-iyer', 'Rohan Iyer'),
-    socials: [
-      { platform: 'linkedin', url: 'https://www.linkedin.com/in/rohan-iyer' },
-      { platform: 'github', url: 'https://github.com/rohan-iyer' },
-      { platform: 'x', url: 'https://x.com/rohan_iyer' },
-    ],
+    id: 'kunal-khande',
+    name: 'Kunal Khande',
+    role: 'Co-Founder & Head of Technology',
+    bio: 'Kunal leads engineering across the studio — architecture, code quality, and the systems that keep client products fast and dependable.',
+    portrait: portrait('kunal-khande', 'Kunal Khande'),
+    socials: [{ platform: 'email', url: 'mailto:kunal@ryze.technology' }],
     order: 2,
   },
   {
-    id: 'meera-kulkarni',
-    name: 'Meera Kulkarni',
-    role: 'Design Systems Lead',
-    bio: 'Meera turns dense product requirements into interfaces people actually enjoy using. She maintains the studio design system and obsesses over accessibility.',
-    portrait: portrait('meera-kulkarni', 'Meera Kulkarni'),
-    socials: [
-      { platform: 'linkedin', url: 'https://www.linkedin.com/in/meera-kulkarni' },
-      { platform: 'dribbble', url: 'https://dribbble.com/meera-kulkarni' },
-      { platform: 'email', url: 'mailto:meera@ryze.technology' },
-    ],
+    id: 'gaurav-dhage',
+    name: 'Gaurav Dhage',
+    role: 'UI/UX Designer & UI/UX Lead',
+    bio: 'Gaurav turns dense requirements into interfaces people enjoy using. He owns the studio design language and obsesses over accessibility and detail.',
+    portrait: portrait('gaurav-dhage', 'Gaurav Dhage'),
+    socials: [{ platform: 'email', url: 'mailto:gaurav@ryze.technology' }],
     order: 3,
   },
   {
-    id: 'kabir-sharma',
-    name: 'Kabir Sharma',
-    role: 'Mobile & Client Engineering Lead',
-    bio: 'Kabir builds the mobile and desktop experiences clients put in front of their customers. He has a soft spot for offline-first apps that work on any network.',
-    portrait: portrait('kabir-sharma', 'Kabir Sharma'),
-    socials: [
-      { platform: 'linkedin', url: 'https://www.linkedin.com/in/kabir-sharma' },
-      { platform: 'github', url: 'https://github.com/kabir-sharma' },
-    ],
+    id: 'gokul-pawar',
+    name: 'Gokul Pawar',
+    role: 'Marketing Lead',
+    bio: 'Gokul shapes how Ryze shows up in the world — positioning, campaigns, and the story behind the work the studio ships.',
+    portrait: portrait('gokul-pawar', 'Gokul Pawar'),
+    socials: [{ platform: 'email', url: 'mailto:gokul@ryze.technology' }],
     order: 4,
+  },
+  {
+    id: 'sakshant-waghmare',
+    name: 'Sakshant Waghmare',
+    role: 'Social Media Manager',
+    bio: 'Sakshant runs Ryze’s social presence — building the audience, the voice, and the day-to-day conversations that grow the brand.',
+    portrait: portrait('sakshant-waghmare', 'Sakshant Waghmare'),
+    socials: [{ platform: 'email', url: 'mailto:sakshant@ryze.technology' }],
+    order: 5,
+  },
+  {
+    id: 'harshal-harode',
+    name: 'Harshal Harode',
+    role: 'Business Development & Client Acquisition Lead',
+    bio: 'Harshal connects Ryze with the right clients and partnerships, turning conversations into long-term working relationships.',
+    portrait: portrait('harshal-harode', 'Harshal Harode'),
+    socials: [{ platform: 'email', url: 'mailto:harshal@ryze.technology' }],
+    order: 6,
+  },
+  {
+    id: 'aryan-dhabale',
+    name: 'Aryan Dhabale',
+    role: 'Finance & Operations Lead',
+    bio: 'Aryan keeps the studio running smoothly — finance, operations, and the behind-the-scenes structure that lets the team focus on building.',
+    portrait: portrait('aryan-dhabale', 'Aryan Dhabale'),
+    socials: [{ platform: 'email', url: 'mailto:aryan@ryze.technology' }],
+    order: 7,
   },
 ];
