@@ -181,7 +181,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
             id={menuId}
             role="menu"
             aria-label={item.label}
-            className="flex w-[min(92vw,22rem)] flex-col gap-1 rounded-xl border border-ink-600 bg-white p-2.5 shadow-[0_28px_70px_-18px_rgba(10,10,8,0.45)] ring-1 ring-black/5"
+            className="flex w-[min(92vw,22rem)] flex-col divide-y divide-[#e9e6dc] rounded-xl border border-[#cbc8bc] bg-[#ffffff] p-1.5 shadow-[0_28px_70px_-18px_rgba(10,10,8,0.45)] ring-1 ring-black/5"
           >
             {item.children.map((child) => (
               <li key={`${child.label}-${child.path}`} role="none">
@@ -189,14 +189,15 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
                   role="menuitem"
                   to={child.path}
                   data-cursor="link"
-                  className="flex h-full flex-col gap-1 rounded-lg border border-transparent px-3.5 py-3 transition-colors hover:border-ink-600 hover:bg-ink-700 focus-visible:border-ink-600 focus-visible:bg-ink-700"
+                  style={{ color: '#0a0a08' }}
+                  className="flex flex-col gap-0.5 rounded-lg px-3.5 py-2.5 transition-colors hover:bg-[#eef2fb] focus-visible:bg-[#eef2fb]"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="font-mono text-sm font-medium tracking-wide text-mist-100">
+                  <span className="font-mono text-sm font-semibold tracking-wide text-[#0a0a08]">
                     {child.label}
                   </span>
                   {child.description !== undefined ? (
-                    <span className="block text-xs leading-snug text-mist-300">
+                    <span className="block text-xs leading-snug text-[#54524a]">
                       {child.description}
                     </span>
                   ) : null}
