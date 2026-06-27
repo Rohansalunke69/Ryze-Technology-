@@ -26,7 +26,6 @@ import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import type { PortfolioCategory, SEOMeta } from '@app-types';
-import { SectionHeader } from '@components/SectionHeader';
 import { CaseStudyCard } from '@components/CaseStudyCard';
 import { CTA } from '@components/CTA';
 import { SEOHead } from '@components/SEOHead';
@@ -69,19 +68,31 @@ export function PortfolioListPage(): JSX.Element {
       <SEOHead meta={seo} />
 
       <main>
-        {/* Hero: eyebrow + title + count (design "/portfolio" hero). */}
-        <section className="px-6 pb-12 pt-32">
+        {/* Hero: eyebrow + oversized title + count + lead. */}
+        <section className="mx-auto w-full max-w-site px-6 pb-14 pt-[clamp(8.5rem,20vh,13rem)] sm:px-10">
           <AnimationWrapper variant="rise">
-            <SectionHeader as="h1" eyebrow="Our Work" title="Our Work" />
-            <p className="mt-6 font-mono text-mono-eyebrow uppercase tracking-widest text-mist-300">
-              {caseStudies.length}{' '}
-              {caseStudies.length === 1 ? 'project' : 'projects'}
+            <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
+              Selected work
             </p>
+            <h1 className="mt-5 max-w-[14ch] font-display text-[clamp(2.75rem,9vw,8rem)] font-bold leading-[0.92] tracking-[-0.03em] text-mist-100">
+              Our Work
+            </h1>
+            <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
+              <p className="max-w-xl font-sans text-body-l text-mist-300">
+                A selection of products we've designed and engineered to last —
+                across the web, mobile, desktop, and the systems that run a
+                business.
+              </p>
+              <p className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-mist-300">
+                {String(caseStudies.length).padStart(2, '0')}{' '}
+                {caseStudies.length === 1 ? 'project' : 'projects'}
+              </p>
+            </div>
           </AnimationWrapper>
         </section>
 
         {/* Filter bar with animated active indicator (Req 7.2). */}
-        <section className="px-6 pb-12">
+        <section className="mx-auto w-full max-w-site px-6 pb-12 sm:px-10">
           <div
             role="group"
             aria-label="Filter projects by category"
@@ -121,7 +132,7 @@ export function PortfolioListPage(): JSX.Element {
         </section>
 
         {/* Responsive case-study grid (Req 7.1). Reflows on filter change. */}
-        <section aria-labelledby="portfolio-grid-heading" className="px-6 pb-24">
+        <section aria-labelledby="portfolio-grid-heading" className="mx-auto w-full max-w-site px-6 pb-24 sm:px-10">
           <h2 id="portfolio-grid-heading" className="sr-only">
             Projects
           </h2>
