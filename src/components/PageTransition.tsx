@@ -23,7 +23,7 @@
  * _Requirements: 26.1, 26.2, 37.4, 38.3, 20.3_
  */
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { useReducedMotion } from '@hooks/useReducedMotion';
 
 export interface PageTransitionProps {
@@ -119,7 +119,6 @@ function RouteContent({
       variants={reducedMotion ? REDUCED_VARIANTS : MOTION_VARIANTS}
       initial="initial"
       animate="animate"
-      exit="exit"
       transition={
         reducedMotion
           ? { duration: 0.12, ease: 'linear' }
@@ -142,7 +141,7 @@ export function PageTransition({ children, routeKey }: PageTransitionProps): JSX
   return (
     <>
       {/*
-        Stable Route_Announcer. It lives OUTSIDE AnimatePresence so it is never
+        Stable Route_Announcer. It lives OUTSIDE the keyed content so it is never
         unmounted/remounted between routes — assistive tech only announces text
         changes within a persistent live region.
       */}
@@ -156,16 +155,20 @@ export function PageTransition({ children, routeKey }: PageTransitionProps): JSX
         {announcement}
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        <RouteContent
-          key={routeKey}
-          routeKey={routeKey}
-          reducedMotion={reducedMotion}
-          onEnter={handleEnter}
-        >
-          {children}
-        </RouteContent>
-      </AnimatePresence>
+      {/*
+        Enter-only transition. A fresh, keyed RouteContent mounts on every route
+        change and animates in; React unmounts the previous one immediately, so
+        there is never a "waiting for exit" gap that could blank the screen when
+        a navigation interrupts an in-flight transition.
+      */}
+      <RouteContent
+        key={routeKey}
+        routeKey={routeKey}
+        reducedMotion={reducedMotion}
+        onEnter={handleEnter}
+      >
+        {children}
+      </RouteContent>
     </>
   );
 }
