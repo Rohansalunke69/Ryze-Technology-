@@ -33,35 +33,37 @@ function Panel({ service, index }: { service: Service; index: number }): JSX.Ele
   return (
     <article
       data-panel=""
-      className="flex w-[78vw] shrink-0 flex-col gap-5 rounded-2xl border border-ink-600 bg-ink-800 p-6 sm:w-[46vw] lg:w-[31vw] xl:w-[26vw]"
+      className="flex w-[76vw] shrink-0 flex-col gap-4 rounded-2xl border border-ink-600 bg-ink-800 p-5 sm:w-[44vw] lg:w-[29vw] xl:w-[24vw]"
     >
       <div className="flex items-center justify-between gap-4">
         <span
           aria-hidden="true"
-          className="ghost-numeral text-[clamp(2.25rem,4vw,3.25rem)]"
+          className="ghost-numeral text-[clamp(2rem,3.5vw,3rem)]"
         >
           {String(index + 1).padStart(2, '0')}
         </span>
-        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-pulse-500">
+        <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-pulse-500">
           Capability
         </span>
       </div>
 
-      {/* Animated illustration of this discipline in action. */}
-      <div className="rounded-xl border border-ink-600 bg-ink-900 p-3">
+      {/* Animated illustration — height-capped so the card fits the viewport. */}
+      <div className="flex h-[clamp(104px,19vh,164px)] items-center justify-center rounded-xl border border-ink-600 bg-ink-900 p-3">
         <CapabilityScene kind={service.slug as CapabilityKind} />
       </div>
 
-      <div className="flex flex-col gap-3">
-        <h3 className="font-display text-[clamp(1.375rem,2.2vw,1.875rem)] font-bold leading-[1.05] tracking-[-0.01em] text-mist-100">
+      <div className="flex flex-col gap-2.5">
+        <h3 className="font-display text-[clamp(1.25rem,2vw,1.75rem)] font-bold leading-[1.05] tracking-[-0.01em] text-mist-100">
           {service.name}
         </h3>
-        <p className="font-sans text-body text-mist-300">{service.tagline}</p>
-        <ul className="mt-1 flex flex-wrap gap-1.5">
+        <p className="font-sans text-sm leading-snug text-mist-300">
+          {service.tagline}
+        </p>
+        <ul className="mt-0.5 flex flex-wrap gap-1.5">
           {service.techStack.slice(0, 4).map((tech) => (
             <li
               key={tech}
-              className="rounded-full border border-ink-600 px-2.5 py-0.5 font-mono text-[0.6875rem] text-mist-300"
+              className="rounded-full border border-ink-600 px-2.5 py-0.5 font-mono text-[0.625rem] text-mist-300"
             >
               {tech}
             </li>
@@ -127,11 +129,11 @@ export function CapabilitiesShowcase({
         // horizontal track vertically centered in the remaining space so the
         // cards always fit on screen (no clipped chips).
         <div className="flex h-screen flex-col">
-          <div className="shrink-0 px-6 pt-[clamp(4.5rem,8vh,6rem)] sm:px-10">
+          <div className="shrink-0 px-6 pt-[clamp(4rem,7vh,5rem)] sm:px-10">
             <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
               What we build
             </p>
-            <h2 className="mt-3 max-w-[16ch] font-display text-[clamp(1.75rem,3.6vw,3rem)] font-bold leading-[1] tracking-[-0.02em] text-mist-100">
+            <h2 className="mt-2 max-w-[18ch] font-display text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-0.02em] text-mist-100">
               Four disciplines, one standard.
             </h2>
           </div>

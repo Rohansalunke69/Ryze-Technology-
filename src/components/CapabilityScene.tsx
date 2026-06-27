@@ -133,7 +133,8 @@ export function CapabilityScene({ kind, className }: CapabilitySceneProps): JSX.
     <svg
       viewBox="0 0 320 208"
       aria-hidden="true"
-      className={['scene-float h-auto w-full', className ?? ''].filter(Boolean).join(' ')}
+      preserveAspectRatio="xMidYMid meet"
+      className={['scene-float block h-full w-full', className ?? ''].filter(Boolean).join(' ')}
       role="presentation"
     >
       <Scene />
