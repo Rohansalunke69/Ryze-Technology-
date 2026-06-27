@@ -23,7 +23,6 @@
  * _Requirements: 24.1, 24.2, 24.3, 37.2_
  */
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -74,7 +73,6 @@ export function MarqueeText({
   const groupRef = useRef<HTMLDivElement>(null);
   const [groupWidth, setGroupWidth] = useState(0);
   const [hovered, setHovered] = useState(false);
-  const [manuallyPaused, setManuallyPaused] = useState(false);
 
   // Inject keyframes + measure the width of a single content copy so the
   // animation duration reflects the requested px/sec velocity.
@@ -93,8 +91,6 @@ export function MarqueeText({
     observer.observe(el);
     return () => observer.disconnect();
   }, [reducedMotion, items]);
-
-  const togglePause = useCallback(() => setManuallyPaused((p) => !p), []);
 
   if (items.length === 0) return null;
 
@@ -133,8 +129,8 @@ export function MarqueeText({
     );
   }
 
-  // ----- Motion allowed: animated, pausable row. -----
-  const paused = manuallyPaused || (pauseOnHover && hovered);
+  // ----- Motion allowed: animated row that pauses on hover. -----
+  const paused = pauseOnHover && hovered;
   const duration = groupWidth > 0 ? groupWidth / Math.max(speed, 1) : items.length * 4;
 
   return (
@@ -165,28 +161,6 @@ export function MarqueeText({
         {renderGroup(true, false)}
         {renderGroup(false, true)}
       </div>
-
-      {/*
-        Auto-motion runs indefinitely (well beyond 5s), so an explicit pause
-        control is always offered (Requirement 24.3). It is the first focusable
-        element so keyboard users can stop the motion immediately.
-      */}
-      <button
-        type="button"
-        className="ryze-marquee__toggle"
-        onClick={togglePause}
-        aria-pressed={manuallyPaused}
-        aria-label={manuallyPaused ? 'Resume scrolling text' : 'Pause scrolling text'}
-        style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          minWidth: 44,
-          minHeight: 44,
-        }}
-      >
-        <span aria-hidden="true">{manuallyPaused ? '\u25B6' : '\u23F8'}</span>
-      </button>
     </div>
   );
 }

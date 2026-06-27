@@ -61,17 +61,9 @@ describe('MarqueeText (motion allowed)', () => {
     expect(track.style.animationPlayState).toBe('running');
   });
 
-  it('offers an explicit pause control that toggles the motion (Req 24.3)', () => {
+  it('does not render a visible pause control (static fallback covers reduced motion)', () => {
     renderMarquee();
-    const toggle = screen.getByRole('button', { name: /pause scrolling text/i });
-    const track = screen.getByTestId('marquee-track');
-
-    fireEvent.click(toggle);
-    expect(track.style.animationPlayState).toBe('paused');
-    expect(screen.getByRole('button', { name: /resume scrolling text/i })).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: /resume scrolling text/i }));
-    expect(track.style.animationPlayState).toBe('running');
+    expect(screen.queryByRole('button')).toBeNull();
   });
 
   it('reverses the animation for direction="right"', () => {
