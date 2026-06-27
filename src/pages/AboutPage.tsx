@@ -91,14 +91,37 @@ export function AboutPage(): JSX.Element {
 
       <main>
         {/* Hero / story (Req 11.1) */}
-        <section className="px-6 pb-16 pt-32">
+        <section className="mx-auto w-full max-w-site px-6 pb-16 pt-[clamp(8.5rem,20vh,13rem)] sm:px-10">
           <AnimationWrapper variant="rise">
-            <SectionHeader
-              as="h1"
-              eyebrow="Who we are"
-              title="A studio that sweats the details"
-            />
-            <p className="mt-6 max-w-2xl font-sans text-body-l text-mist-300">
+            <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+              <div>
+                <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
+                  Who we are
+                </p>
+                <h1 className="mt-5 max-w-[16ch] font-display text-[clamp(2.5rem,7vw,6rem)] font-bold leading-[0.95] tracking-[-0.03em] text-mist-100">
+                  A studio that sweats the details
+                </h1>
+              </div>
+              <dl className="grid grid-cols-2 gap-x-6 gap-y-6 border-t border-ink-600 pt-6">
+                <div className="flex flex-col gap-1">
+                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Founded</dt>
+                  <dd className="font-display text-h3 font-bold text-mist-100">Nagpur, IN</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Focus</dt>
+                  <dd className="font-display text-h3 font-bold text-mist-100">Durable software</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Disciplines</dt>
+                  <dd className="font-display text-h3 font-bold text-mist-100">Web · Mobile · Systems</dd>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Working</dt>
+                  <dd className="font-display text-h3 font-bold text-mist-100">Worldwide</dd>
+                </div>
+              </dl>
+            </div>
+            <p className="mt-10 max-w-3xl font-sans text-body-l text-mist-300">
               Ryze Technology started in Nagpur with a simple conviction: that
               software built carefully, by people who care, holds up where
               software built quickly does not. We design and engineer the
@@ -108,26 +131,24 @@ export function AboutPage(): JSX.Element {
         </section>
 
         {/* Mission (Req 11.1) */}
-        <section aria-label="Our mission" className="px-6 py-24">
-          <AnimationWrapper variant="fade">
-            <div className="mx-auto flex max-w-4xl flex-col gap-6 rounded-lg border border-ink-600 bg-ink-800 p-10">
-              <SectionHeader
-                as="h2"
-                eyebrow="Our mission"
-                title="Software that earns its keep"
-              />
-              <p className="max-w-2xl font-sans text-body-l text-mist-300">
-                We are here to build software that does real work — quietly,
-                reliably, for years. Not the flashiest demo, but the system your
-                team trusts, the app your customers come back to, the site that
-                still feels fast long after launch.
-              </p>
-            </div>
-          </AnimationWrapper>
+        <section aria-label="Our mission" className="border-y border-ink-600 bg-ink-800">
+          <div className="mx-auto grid w-full max-w-site gap-10 px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+            <SectionHeader
+              as="h2"
+              eyebrow="Our mission"
+              title="Software that earns its keep"
+            />
+            <p className="max-w-2xl font-sans text-body-l text-mist-300">
+              We are here to build software that does real work — quietly,
+              reliably, for years. Not the flashiest demo, but the system your
+              team trusts, the app your customers come back to, the site that
+              still feels fast long after launch.
+            </p>
+          </div>
         </section>
 
         {/* Team profiles (Req 11.2) */}
-        <section aria-label="Our team" className="px-6 py-24">
+        <section aria-label="Our team" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
           <SectionHeader as="h2" eyebrow="The people" title="Meet the team" />
           <AnimationWrapper variant="rise" stagger={0.08}>
             <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -139,7 +160,8 @@ export function AboutPage(): JSX.Element {
         </section>
 
         {/* Differentiators (Req 11.1) */}
-        <section aria-label="Why Ryze" className="px-6 py-24">
+        <section aria-label="Why Ryze" className="border-y border-ink-600 bg-ink-800">
+          <div className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
           <SectionHeader
             as="h2"
             eyebrow="Why Ryze"
@@ -162,10 +184,11 @@ export function AboutPage(): JSX.Element {
               ))}
             </ul>
           </AnimationWrapper>
+          </div>
         </section>
 
         {/* By-the-numbers (Req 11.3) */}
-        <section aria-label="By the numbers" className="px-6 py-24">
+        <section aria-label="By the numbers" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
           <SectionHeader
             as="h2"
             align="center"
@@ -196,7 +219,7 @@ export function AboutPage(): JSX.Element {
         </section>
 
         {/* Testimonials (Req 11.1) */}
-        <section aria-label="What clients say" className="px-6 py-24">
+        <section aria-label="What clients say" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
           <SectionHeader
             as="h2"
             eyebrow="In their words"
