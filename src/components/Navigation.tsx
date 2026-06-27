@@ -140,31 +140,38 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
       </button>
 
       {open ? (
-        <ul
-          id={menuId}
-          role="menu"
-          aria-label={item.label}
-          className="absolute left-0 top-full z-50 mt-2 min-w-56 rounded-lg border border-ink-700 bg-ink-900 p-2 shadow-xl"
-        >
-          {item.children.map((child) => (
-            <li key={`${child.label}-${child.path}`} role="none">
-              <Link
-                role="menuitem"
-                to={child.path}
-                data-cursor="link"
-                className="block rounded-md px-3 py-2 text-sm text-mist-100 transition-colors hover:bg-ink-800 hover:text-pulse-500 focus-visible:bg-ink-800 focus-visible:text-pulse-500"
-                onClick={() => setOpen(false)}
-              >
-                {child.label}
-                {child.description !== undefined ? (
-                  <span className="mt-0.5 block text-xs text-mist-300">
-                    {child.description}
+        // Wrapper carries a transparent top padding that BRIDGES the gap to the
+        // button, so moving the cursor from the button to the panel never
+        // leaves the hover container (fixes the "closes before click" bug).
+        <div className="absolute left-0 top-full z-50 pt-3">
+          <ul
+            id={menuId}
+            role="menu"
+            aria-label={item.label}
+            className="flex max-w-[min(92vw,44rem)] flex-wrap gap-2 rounded-xl border border-ink-600 bg-ink-800 p-2 shadow-[0_24px_60px_-24px_rgba(10,10,8,0.45)]"
+          >
+            {item.children.map((child) => (
+              <li key={`${child.label}-${child.path}`} role="none" className="w-48 shrink-0">
+                <Link
+                  role="menuitem"
+                  to={child.path}
+                  data-cursor="link"
+                  className="flex h-full flex-col gap-1 rounded-lg px-3 py-3 text-mist-100 transition-colors hover:bg-ink-700 hover:text-pulse-500 focus-visible:bg-ink-700 focus-visible:text-pulse-500"
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="font-mono text-sm tracking-wide">
+                    {child.label}
                   </span>
-                ) : null}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                  {child.description !== undefined ? (
+                    <span className="block text-xs leading-snug text-mist-300">
+                      {child.description}
+                    </span>
+                  ) : null}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
     </li>
   );
