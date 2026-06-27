@@ -345,8 +345,8 @@ export function Navigation({
   return (
     <header
       className={[
-        'fixed inset-x-0 top-0 z-50 w-full transition-colors duration-300',
-        solid ? 'bg-[#cdcabf]/90 backdrop-blur-md border-b border-ink-600 shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]' : 'bg-transparent',
+        'fixed inset-x-0 top-0 z-50 w-full border-b border-[#0a0a08] transition-colors duration-300',
+        solid ? 'bg-[#cdcabf]/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]' : 'bg-transparent',
       ].join(' ')}
     >
       <nav
