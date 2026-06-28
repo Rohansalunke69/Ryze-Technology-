@@ -149,10 +149,11 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           }}
         />
 
-        {/* Page h1 — oversized, white, tight tracking. Contrast vs #060607: ≥ 15:1 (WCAG AAA). */}
+        {/* Page h1 — single horizontal line on sm+. Font clamped so the full
+            "Design. Develop. Grow." string fits without wrapping at desktop. */}
         <h1
-          className="relative font-display font-bold leading-[0.92] tracking-[-0.03em] text-white"
-          style={{ fontSize: 'clamp(3rem, 9.5vw, 9.5rem)' }}
+          className="relative font-display font-bold leading-none tracking-[-0.03em] text-white sm:whitespace-nowrap"
+          style={{ fontSize: 'clamp(1.8rem, 5.2vw, 6.2rem)' }}
         >
           {headline}
         </h1>
