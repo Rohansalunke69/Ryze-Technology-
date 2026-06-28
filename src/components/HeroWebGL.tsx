@@ -288,12 +288,12 @@ function CardMesh({ card, params, index, paused, hidden }: CardMeshProps): JSX.E
 // Cards field — manages all cards and their orbit params
 // ---------------------------------------------------------------------------
 
-/** Card counts per viewport category. */
+/** Card counts per viewport category — capped at heroCards.length so no card ever repeats. */
 const CARD_COUNTS: Record<string, number> = {
-  mobile:  7,
-  tablet:  10,
-  desktop: 14,
-  wide:    14,
+  mobile:  6,
+  tablet:  8,
+  desktop: 9,
+  wide:    9,
 };
 
 interface FloatingCardsFieldProps {
