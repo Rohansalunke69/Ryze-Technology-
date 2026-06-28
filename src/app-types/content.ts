@@ -83,7 +83,7 @@ export interface Service {
 
 // ---------- Team ----------
 export interface SocialLink {
-  platform: 'github' | 'linkedin' | 'x' | 'dribbble' | 'email';
+  platform: 'github' | 'linkedin' | 'x' | 'dribbble' | 'email' | 'instagram' | 'facebook' | 'whatsapp';
   url: string;
 }
 

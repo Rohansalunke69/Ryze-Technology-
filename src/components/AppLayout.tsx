@@ -38,7 +38,6 @@ import { CustomCursor } from '@components/CustomCursor';
 import { Navigation } from '@components/Navigation';
 import { Footer } from '@components/Footer';
 import { PageTransition } from '@components/PageTransition';
-import { BottomNav } from './BottomNav';
 
 /**
  * Map of top-level route pathnames → a dynamic-import thunk for that route's
@@ -200,7 +199,6 @@ export function AppLayout(): JSX.Element {
       <PageTransition routeKey={location.pathname}>
         <Outlet />
       </PageTransition>
-      <BottomNav />
       {/* Visual bridge: fades the page surface into the footer ink tone. */}
       <div
         aria-hidden="true"

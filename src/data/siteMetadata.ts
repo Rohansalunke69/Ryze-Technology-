@@ -34,9 +34,11 @@ const defaultOgImage: ImageAsset = {
 };
 
 const social: SocialLink[] = [
-  { platform: 'linkedin', url: 'https://www.linkedin.com/company/ryze-technology' },
-  { platform: 'github', url: 'https://github.com/ryze-technology' },
-  { platform: 'x', url: 'https://x.com/ryzetech' },
+  { platform: 'instagram', url: 'https://www.instagram.com/ryzetechnologyy' },
+  { platform: 'linkedin', url: 'https://www.linkedin.com/groups/36950024' },
+  { platform: 'facebook', url: 'https://www.facebook.com/share/1Mefe2LzFN/' },
+  { platform: 'x', url: 'https://x.com/RyzeTechnologyy' },
+  { platform: 'whatsapp', url: 'https://whatsapp.com/channel/0029VbCJcIG2kNFjSjODp82k' },
 ];
 
 export const siteMetadata: SiteMetadata = {
@@ -49,6 +51,6 @@ export const siteMetadata: SiteMetadata = {
   baseUrl: 'https://ryze.technology',
   defaultOgImage,
   social,
-  contactEmail: 'hello@ryze.technology',
+  contactEmail: 'ryzetechonologyy@gmail.com',
   contactEndpoint,
 };

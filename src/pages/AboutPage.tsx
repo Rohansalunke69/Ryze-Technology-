@@ -94,8 +94,8 @@ export function AboutPage(): JSX.Element {
               </div>
               <dl className="grid grid-cols-2 gap-x-6 gap-y-6 border-t border-ink-600 pt-6">
                 <div className="flex flex-col gap-1">
-                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Location</dt>
-                  <dd className="font-display text-h3 font-bold text-mist-100">Nagpur, India</dd>
+                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Founded</dt>
+                  <dd className="font-display text-h3 font-bold text-mist-100">Nagpur, IN</dd>
                 </div>
                 <div className="flex flex-col gap-1">
                   <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Focus</dt>
@@ -106,7 +106,7 @@ export function AboutPage(): JSX.Element {
                   <dd className="font-display text-h3 font-bold text-mist-100">Web · Mobile · Systems</dd>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Reach</dt>
+                  <dt className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300">Working</dt>
                   <dd className="font-display text-h3 font-bold text-mist-100">Worldwide</dd>
                 </div>
               </dl>
@@ -121,7 +121,7 @@ export function AboutPage(): JSX.Element {
         </section>
 
         {/* Mission (Req 11.1) */}
-        <section aria-label="Our mission" className="relative border-y border-ink-600 bg-ink-800 overflow-hidden">
+        <section aria-label="Our mission" className="border-y border-ink-600 bg-ink-800">
           <div className="mx-auto grid w-full max-w-site gap-10 px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
             <SectionHeader
               as="h2"

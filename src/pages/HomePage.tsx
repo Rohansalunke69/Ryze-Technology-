@@ -1,15 +1,44 @@
 /**
  * HomePage — the `/` route module (task 14.1).
  *
- * Renders the homepage story:
+ * Renders the homepage story in the exact order mandated by Requirement 6.1:
+ *
  *   Hero → Problems → Philosophy → Portfolio-preview → Services →
  *   Why-Us → Team → CTA
+ *
+ * (The Footer and Navigation are part of the global App shell, not this
+ * module. HomePage renders its own single `<main>` landmark wrapping the
+ * ordered sections, matching every other page — the shell deliberately does
+ * not add a `<main>` so there is exactly one per page.)
+ *
+ * Motion discipline (Requirement 20.5): the page has exactly ONE heavy "hero
+ * moment" — the WebGL particle→lattice field owned by {@link Hero}. Every
+ * subsequent section uses only the lighter scroll-reveal primitives
+ * (`AnimationWrapper`, `SplitText`, `AnimatedCounter`, `MarqueeText`), each of
+ * which degrades to a static end-state under `prefers-reduced-motion`.
+ *
+ * Section specifics:
+ *  - Portfolio-preview surfaces only the Case_Study entities flagged `featured`
+ *    (Requirement 6.2). The selector is a boolean flag rather than a category,
+ *    so we filter on `.featured` directly.
+ *  - Why-Us renders its metric row with {@link AnimatedCounter} (Requirement 6.3).
+ *  - CTA links to `/contact` through a MagneticButton (Requirement 6.4), which
+ *    {@link CTA} composes internally.
+ *  - {@link SEOHead} sets the homepage title/description/canonical/OG metadata
+ *    (Requirement 40.1).
+ *
+ * Heading hierarchy (Requirement 38.1): the Hero owns the single page `h1`;
+ * every section opener is an `h2` (via `SectionHeader`/`CTA`), and the cards
+ * within use `h3`.
+ *
+ * _Requirements: 6.1, 6.2, 6.3, 6.4, 20.5, 40.1_
  */
 import type { SEOMeta } from '@app-types';
 
 import { AnimatedCounter } from '@components/AnimatedCounter';
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { FeaturedWork } from '@components/FeaturedWork';
+import { ProcessTimeline } from '@components/ProcessTimeline';
 import { CapabilitiesShowcase } from '@components/CapabilitiesShowcase';
 import { CTA } from '@components/CTA';
 import { Hero } from '@components/Hero';
@@ -27,12 +56,40 @@ import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
 import { studioMetrics } from '@data/metrics';
 
+/** Four-step delivery process shown in the "How we work" band. */
+const PROCESS_STEPS: { title: string; detail: string }[] = [
+  {
+    title: 'Discover',
+    detail:
+      'We map your goals, users, and constraints, then pressure-test the idea before a line of code is written.',
+  },
+  {
+    title: 'Design',
+    detail:
+      'We shape the system and the key flows early, so you react to something real — not a slide deck.',
+  },
+  {
+    title: 'Build',
+    detail:
+      'We engineer in vertical slices, shipping working software continuously with tests baked in from day one.',
+  },
+  {
+    title: 'Sustain',
+    detail:
+      'We stay on after launch — monitoring, hardening, and evolving the product so it keeps earning its place.',
+  },
+];
+
+/** Homepage document metadata (Requirement 40.1). */
 const homeMeta: SEOMeta = {
+  // Using the site name collapses to `siteMetadata.defaultTitle` in SEOHead,
+  // avoiding a doubled-up "Ryze Technology — Ryze Technology".
   title: siteMetadata.siteName,
   description: siteMetadata.defaultDescription,
   canonical: siteMetadata.baseUrl,
 };
 
+/** Organization structured data for richer search results. */
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -43,6 +100,10 @@ const organizationJsonLd = {
   sameAs: siteMetadata.social.map((s) => s.url),
 };
 
+/**
+ * The failure modes the studio exists to prevent — "software that rots". Pure
+ * content; revealed with split-text/stagger when motion is allowed.
+ */
 const PROBLEMS: ReadonlyArray<{ title: string; detail: string }> = [
   {
     title: 'Broken handoffs',
@@ -61,8 +122,10 @@ const PROBLEMS: ReadonlyArray<{ title: string; detail: string }> = [
   },
 ];
 
+/** "Why Us" metrics — sourced from the shared studio metrics (single source of truth). */
 const METRICS = studioMetrics.slice(0, 3);
 
+/** What sets the studio apart — the differentiator list under the metrics. */
 const DIFFERENTIATORS: ReadonlyArray<string> = [
   'We own outcomes end to end — strategy, design, and engineering under one roof.',
   'We build for real Indian conditions: patchy networks, low-end devices, high stakes.',
@@ -71,20 +134,25 @@ const DIFFERENTIATORS: ReadonlyArray<string> = [
 ];
 
 export function HomePage(): JSX.Element {
+  // Portfolio-preview shows only featured case studies (Requirement 6.2).
   const featuredCaseStudies = caseStudies.filter((c) => c.featured);
-  const orderedTeam = [...team].sort((a, b) => a.order - b.order);
-  const marqueeItems = orderedTeam.map((member) => `${member.name} — ${member.role}`);
+
+  // Marquee of team names + roles for the Team section.
+  const marqueeItems = team.map((member) => `${member.name} — ${member.role}`);
 
   return (
     <>
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
       <main>
-        {/* 1 — Hero */}
-        <Hero headline="We build products that work forever" />
+        {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
+        <Hero
+          headline="We build products that work forever"
+          eyebrow="Ryze Technology"
+        />
 
-        {/* Kinetic marquee brand strip */}
-        <div className="marquee-band overflow-hidden py-5">
+        {/* Kinetic marquee band — full-bleed brand statement strip. */}
+        <div className="overflow-hidden border-y border-ink-600 bg-ink-800 py-5">
           <div className="font-display text-[clamp(1.75rem,5vw,4rem)] font-bold uppercase tracking-tight text-mist-100">
             <MarqueeText
               items={[
@@ -92,7 +160,6 @@ export function HomePage(): JSX.Element {
                 'Engineered permanence',
                 'Web — Mobile — Systems',
                 'Ryze Technology',
-                'Nagpur → Worldwide',
               ]}
             />
           </div>
@@ -103,7 +170,7 @@ export function HomePage(): JSX.Element {
           aria-label="Problems"
           className="section-glow mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
         >
-          <div className="grid gap-x-16 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
                 The problem
@@ -195,141 +262,129 @@ export function HomePage(): JSX.Element {
           </div>
         </section>
 
-        {/* What we build — capabilities showcase */}
-        <CapabilitiesShowcase services={services} />
+      {/* What we build — pinned horizontal-scroll capabilities showcase. */}
+      <CapabilitiesShowcase services={services} />
 
-        {/* 4 — Portfolio preview */}
-        <FeaturedWork caseStudies={featuredCaseStudies} />
+      {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
+      <FeaturedWork caseStudies={featuredCaseStudies} />
 
-        {/* 5 — Services */}
-        <section
-          aria-label="Services"
-          className="section-glow mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-        >
-          <SectionHeader eyebrow="What we do" title="Four ways we build" />
-          <AnimationWrapper variant="rise" stagger={0.08}>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {services.map((service, index) => (
-                <ServiceCard key={service.slug} service={service} index={index} />
-              ))}
+      {/* 5 — Services: the four service cards. */}
+      <section
+        aria-label="Services"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+      >
+        <SectionHeader eyebrow="What we do" title="Four ways we build" />
+        <AnimationWrapper variant="rise" stagger={0.08}>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service, index) => (
+              <ServiceCard key={service.slug} service={service} index={index} />
+            ))}
+          </div>
+        </AnimationWrapper>
+      </section>
+
+      {/* How we work — process band with a scroll-drawn progress line. */}
+      <ProcessTimeline steps={PROCESS_STEPS} />
+
+      {/* 6 — Why Us: AnimatedCounter metric row + differentiators (Req 6.3). */}
+      <section
+        aria-label="Why Ryze"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+      >
+        <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
+        <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
+          {METRICS.map((metric) => (
+            <div key={metric.label} className="flex flex-col gap-3 border-t border-ink-600 pt-6">
+              <dt className="sr-only">{metric.label}</dt>
+              <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
+                <AnimatedCounter
+                  value={metric.value}
+                  decimals={metric.decimals ?? 0}
+                  suffix={metric.suffix}
+                />
+              </dd>
+              <p
+                aria-hidden="true"
+                className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
+              >
+                {metric.label}
+              </p>
             </div>
+          ))}
+        </dl>
+        <AnimationWrapper variant="rise" stagger={0.08}>
+          <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
+            {DIFFERENTIATORS.map((item) => (
+              <li
+                key={item}
+                className="flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300"
+              >
+                <span aria-hidden="true" className="font-mono text-pulse-500">
+                  ↗
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </AnimationWrapper>
+      </section>
+
+      {/* 7 — Team: the team cards + a marquee of names/roles. */}
+      <section
+        aria-label="Team"
+        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+      >
+        <SectionHeader eyebrow="The studio" title="The people who build it" />
+        <AnimationWrapper variant="rise" stagger={0.1}>
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {team.map((member, index) => (
+              <TeamCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </AnimationWrapper>
+        <div className="mt-16 font-display text-h3 text-mist-100">
+          <MarqueeText items={marqueeItems} />
+        </div>
+      </section>
+
+      {/* Testimonial pull-quote (added content). */}
+      {testimonials[0] !== undefined ? (
+        <section
+          aria-label="Client testimonial"
+          className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+        >
+          <AnimationWrapper variant="rise">
+            <figure className="mx-auto max-w-5xl">
+              <p
+                aria-hidden="true"
+                className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none text-pulse-500"
+              >
+                &ldquo;
+              </p>
+              <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
+                {testimonials[0].quote}
+              </blockquote>
+              <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
+                <span className="text-mist-100">{testimonials[0].author}</span>
+                <span aria-hidden="true" className="text-pulse-500">
+                  /
+                </span>
+                <span>
+                  {testimonials[0].authorRole}, {testimonials[0].company}
+                </span>
+              </figcaption>
+            </figure>
           </AnimationWrapper>
         </section>
+      ) : null}
 
-        {/* 6 — Why Us */}
-        <section
-          aria-label="Why Ryze"
-          className="border-t border-ink-600 bg-ink-800 py-[clamp(6rem,14vh,11rem)]"
-        >
-          <div className="mx-auto w-full max-w-site px-6 sm:px-10">
-            <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
-            <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
-              {METRICS.map((metric) => (
-                <div
-                  key={metric.label}
-                  className="flex flex-col gap-3 border-t border-ink-600 pt-6"
-                >
-                  <dt className="sr-only">{metric.label}</dt>
-                  <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
-                    <AnimatedCounter
-                      value={metric.value}
-                      decimals={metric.decimals ?? 0}
-                      suffix={metric.suffix}
-                    />
-                  </dd>
-                  <p
-                    aria-hidden="true"
-                    className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
-                  >
-                    {metric.label}
-                  </p>
-                </div>
-              ))}
-            </dl>
-
-            <AnimationWrapper variant="rise" stagger={0.08}>
-              <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
-                {DIFFERENTIATORS.map((item) => (
-                  <li
-                    key={item}
-                    className="group flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300 transition-colors duration-200 hover:text-mist-100"
-                  >
-                    <span aria-hidden="true" className="font-mono text-pulse-500 transition-transform duration-200 group-hover:translate-x-0.5">
-                      ↗
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </AnimationWrapper>
-          </div>
-        </section>
-
-        {/* 7 — Team */}
-        <section
-          aria-label="Team"
-          className="section-glow mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-        >
-          <SectionHeader eyebrow="The studio" title="The people who build it" />
-          <AnimationWrapper variant="rise" stagger={0.1}>
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {orderedTeam.map((member, index) => (
-                <TeamCard key={member.id} member={member} index={index} />
-              ))}
-            </div>
-          </AnimationWrapper>
-          <div className="mt-16 font-display text-h3 text-mist-100">
-            <MarqueeText items={marqueeItems} />
-          </div>
-        </section>
-
-        {/* Testimonial pull-quote */}
-        {testimonials[0] !== undefined ? (
-          <section
-            aria-label="Client testimonial"
-            className="relative overflow-hidden border-t border-ink-600 bg-ink-800"
-          >
-            {/* Ambient */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  'radial-gradient(ellipse 60% 80% at 50% 100%, rgba(37,99,235,0.08) 0%, transparent 70%)',
-              }}
-            />
-            <div className="relative mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10">
-              <AnimationWrapper variant="rise">
-                <figure className="mx-auto max-w-5xl">
-                  <p
-                    aria-hidden="true"
-                    className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none glow-text"
-                  >
-                    &ldquo;
-                  </p>
-                  <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
-                    {testimonials[0].quote}
-                  </blockquote>
-                  <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
-                    <span className="text-mist-100">{testimonials[0].author}</span>
-                    <span aria-hidden="true" className="text-pulse-500">/</span>
-                    <span>
-                      {testimonials[0].authorRole}, {testimonials[0].company}
-                    </span>
-                  </figcaption>
-                </figure>
-              </AnimationWrapper>
-            </div>
-          </section>
-        ) : null}
-
-        {/* 8 — CTA */}
-        <CTA
-          heading="Let's build something permanent"
-          sub="Tell us what you're building. We'll help you make it last."
-          href="/contact"
-          label="Start a project"
-        />
+      {/* 8 — CTA: MagneticButton → /contact (Requirement 6.4). */}
+      <CTA
+        heading="Let's build something permanent"
+        sub="Tell us what you're building. We'll help you make it last."
+        href="/contact"
+        label="Start a project"
+      />
       </main>
     </>
   );

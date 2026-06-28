@@ -18,8 +18,6 @@
  * visible "Loading" label is also exposed to sighted users. The pulse
  * animation is purely decorative.
  */
-import { Loader } from './Loader';
-
 export interface RouteSkeletonProps {
   /** Optional accessible label; defaults to a generic "Loading page". */
   label?: string;
@@ -31,14 +29,18 @@ export function RouteSkeleton({ label = 'Loading page' }: RouteSkeletonProps = {
       role="status"
       aria-live="polite"
       aria-label={label}
-      className="flex min-h-[60vh] flex-col items-center justify-center gap-12 bg-ink-900 px-6 py-24 text-center"
+      className="flex min-h-[60vh] flex-col items-center justify-center gap-6 bg-ink-900 px-6 py-24 text-center"
     >
       <p className="font-mono text-mono-eyebrow uppercase tracking-widest text-pulse-500">
         Loading
       </p>
 
-      {/* Premium 3D boxes loader */}
-      <Loader />
+      {/* Pulsing accent bar + muted placeholder lines suggesting page content. */}
+      <div className="flex w-full max-w-site flex-col items-center gap-4">
+        <span className="h-1 w-24 animate-pulse rounded-full bg-pulse-500" />
+        <span className="h-3 w-3/4 max-w-md animate-pulse rounded-sm bg-mist-300/20" />
+        <span className="h-3 w-2/3 max-w-sm animate-pulse rounded-sm bg-mist-300/10" />
+      </div>
     </div>
   );
 }

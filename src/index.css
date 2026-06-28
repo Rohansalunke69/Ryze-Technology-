@@ -1,6 +1,5 @@
 /* Self-hosted @font-face declarations + metric-matched fallbacks (task 1.3).
  * MUST be imported before @tailwind so the faces register first. */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
 @import './styles/fonts.css';
 
 @tailwind base;
@@ -8,28 +7,33 @@
 @tailwind utilities;
 
 /*
- * "Engineered Permanence" design tokens — LIGHT THEME.
- * ink-* = light surfaces, mist-* = dark text.
+ * "Engineered Permanence" design tokens — single source of truth.
+ * Authored in task 1.2. These :root custom properties are mirrored verbatim
+ * into tailwind.config.ts so Tailwind utilities and JS animation read the
+ * same values. Self-hosted @font-face (1.3) and global styles / grain overlay
+ * (1.4) are appended after this token block.
  */
 :root {
-  /* Color — paper surfaces (light high-contrast theme) */
-  --ink-900: #F9FAFB; /* Base material (page bg) — clean cool gray */
-  --ink-800: #FFFFFF; /* Raised surfaces / cards — clean white */
-  --ink-700: #F3F4F6; /* Hover surface — light gray */
-  --ink-600: #E5E7EB; /* Subtle dividers / borders */
+  /* Color — paper surfaces (light high-contrast theme).
+   * Semantic roles are preserved from the original system: `ink-*` = surfaces,
+   * `mist-*` = text. Flipping these values flips the whole site to light. */
+  --ink-900: #f3f1ea; /* base material (page bg) — warm paper */
+  --ink-800: #ffffff; /* raised surfaces / cards */
+  --ink-700: #e9e6dc; /* hover surface */
+  --ink-600: #cbc8bc; /* subtle dividers / borders */
 
   /* Color — text (near-black on paper for maximum contrast) */
-  --mist-300: #6B7280; /* Secondary text — Gray */
-  --mist-100: #111827; /* Primary text — near-black */
+  --mist-300: #54524a; /* secondary text (AA on paper) */
+  --mist-100: #0a0a08; /* primary text — near-black */
 
   /* Color — pulse (Ryze brand blue on light) */
-  --pulse-500: #1E40AF; /* Primary accent — Blue */
-  --pulse-400: #3B82F6; /* Brighter brand blue — hover / gradient */
-  --pulse-700: #1D4ED8; /* Deep brand blue — links, focus rings */
+  --pulse-500: #2156c9; /* primary accent — brand cobalt (AA on paper) */
+  --pulse-400: #3a6fe0; /* brighter brand blue — hover / gradient */
+  --pulse-700: #163e96; /* deep brand blue — links, focus rings */
 
   /* Color — signal accents */
-  --ember-500: #EF4444; /* Warm signal accent */
-  --lime-500: #10B981; /* Success accent */
+  --ember-500: #ff4d1f; /* warm signal accent (sparing) */
+  --lime-500: #3fae00; /* rare success/live accent (darkened for light bg) */
 
   /* Fluid type scale */
   --fs-display-xl: clamp(3.5rem, 12vw, 11rem);
@@ -40,9 +44,11 @@
   --fs-body: 1.0625rem;
   --fs-mono-eyebrow: 0.8125rem;
 
-  /* Font families */
-  --font-display: 'Montserrat', system-ui, sans-serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  /* Font families — bundled variable fonts (Space Grotesk display + Inter text
+   * + JetBrains Mono), self-hosted via @fontsource-variable (imported in
+   * main.tsx). Distinctive geometric display character for the brand. */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', Inter, -apple-system, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
 
   /* Spacing — 8px base scale */
@@ -85,11 +91,6 @@ body {
   padding: 0;
 }
 
-/* Light theme — scrollbars and form controls in light mode. */
-html {
-  color-scheme: light;
-}
-
 body {
   background-color: var(--ink-900);
   color: var(--mist-100);
@@ -98,10 +99,25 @@ body {
 }
 
 /* =====================================================================
- * Global styles — dark material, grain overlay, focus ring, utilities.
+ * Global styles & film-grain material overlay (task 1.4)
+ * Appended after the token block / base body rule. Implements the
+ * "Engineered Permanence" surface treatment: light-on-dark material,
+ * grain + vignette, a never-removed focus ring, the 68ch prose measure,
+ * the opt-in exposed blueprint grid, screen-reader/skip utilities, and a
+ * reduced-motion guard. Requirements: 36.1, 36.2, 38.2, 15.2.
  * ===================================================================== */
 
+/* --- Base material -------------------------------------------------- */
+html {
+  /* Light theme: let the UA render form controls, scrollbars in light mode. */
+  color-scheme: light;
+}
+
 body {
+  /* Reinforce the ink material base + mist primary text (Req 36.1/36.2).
+   * background-color is already set in the base rule above; we add the
+   * relative positioning context the grain layer pins against and the
+   * cross-browser smoothing pair. */
   position: relative;
   min-height: 100vh;
   background-color: var(--ink-900);
@@ -111,22 +127,21 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Custom scrollbar for light theme */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--ink-700); }
-::-webkit-scrollbar-thumb {
-  background: var(--ink-600);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--pulse-500); }
-
-/* Film-grain + vignette overlay for light paper feel */
+/* --- Film-grain material overlay + vignette ------------------------- */
+/* A fixed, non-interactive layer that sits behind all content (z-index: 0
+ * while #root is lifted to z-index: 1). The grain is a static inline-SVG
+ * fractal-noise data URI at ~4% opacity; a faint radial vignette darkens
+ * the edges so the dark base reads as a physical material rather than a
+ * flat fill (design: "light on dark material"). Static => safe to keep
+ * under reduced motion. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  /* Light theme: a barely-there warm grain for tactile paper feel, plus a very
+   * faint edge vignette. No heavy darkening — keep the surface bright. */
   background-image:
     radial-gradient(
       ellipse at center,
@@ -139,13 +154,14 @@ body::before {
   opacity: 0.03;
 }
 
-/* Lift the app above the material layer. */
+/* Lift the app above the material layer so content stays crisp. */
 #root {
   position: relative;
   z-index: 1;
 }
 
-/* Reusable `.grain` layer for nested surfaces */
+/* A reusable `.grain` layer for any nested surface (cards, sections) that
+ * wants the same texture without relying on the body pseudo-element. */
 .grain {
   position: relative;
 }
@@ -161,7 +177,11 @@ body::before {
   opacity: 0.04;
 }
 
-/* Visible focus ring — never removed */
+/* --- Visible focus ring (never removed) ----------------------------- */
+/* Req 38.2: every interactive element keeps a visible focus indicator.
+ * We only strip the default outline for non-keyboard focus, and apply the
+ * pulse ring for `:focus-visible`. The ring is NEVER removed for keyboard
+ * users. 2px outline + 2px offset per the design's keyboard spec. */
 :focus:not(:focus-visible) {
   outline: none;
 }
@@ -172,13 +192,17 @@ body::before {
   border-radius: 2px;
 }
 
-/* Prose measure */
+/* --- Prose measure -------------------------------------------------- */
+/* Req 15.2: cap long-form line length at 68ch for readability. */
 .prose {
   max-width: 68ch;
   line-height: 1.6;
 }
 
-/* Blueprint grid overlay (opt-in) */
+/* --- Exposed blueprint grid overlay (opt-in) ------------------------ */
+/* The "blueprint" motif: hairline column/row rules in ink-600 at low
+ * opacity. Opt-in via the `.grid-overlay` class on a positioned ancestor.
+ * Purely decorative and non-interactive. */
 .grid-overlay {
   position: relative;
 }
@@ -207,7 +231,7 @@ body::before {
     );
 }
 
-/* Screen-reader-only utility */
+/* --- Screen-reader-only utility ------------------------------------- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -220,7 +244,9 @@ body::before {
   border: 0;
 }
 
-/* Skip-to-content link */
+/* --- Skip-to-content link ------------------------------------------- */
+/* The link element itself is rendered in the app shell later; this styles
+ * it so it stays visually hidden until focused, then anchors top-left. */
 .skip-link {
   position: fixed;
   top: 0;
@@ -241,7 +267,10 @@ body::before {
   transform: translateY(0);
 }
 
-/* Reduced-motion guard */
+/* --- Reduced-motion guard ------------------------------------------- */
+/* Disable non-essential transitions/animations for visitors who prefer
+ * reduced motion. The static grain/vignette stays (it does not animate);
+ * smooth-scroll is also neutralised here as a safety net. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -255,10 +284,18 @@ body::before {
 
 
 /* =====================================================================
- * Signature art-direction: aurora, gradient type, ghost numerals, ticker.
+ * Signature art-direction utilities (v2 — elevated agency aesthetic)
+ * Original work for Ryze: a living "aurora" energy field behind the hero,
+ * gradient + outlined display type, and a hairline ticker. All effects are
+ * GPU-friendly, decorative, and fully neutralised under reduced motion by
+ * the global guard above (animations collapse to a single static frame).
  * ===================================================================== */
 
 /* --- Aurora energy field -------------------------------------------- */
+/* Two slow-drifting radial blooms (cyan "pulse" + a deep teal) plus a faint
+ * warm ember kiss. Sits behind hero content as atmosphere, never a flat wash
+ * (design law: "cyan is a verb"). Heavily blurred so it reads as light, not
+ * shape. */
 .aurora {
   position: absolute;
   inset: -20% -10% -20% -10%;
@@ -287,6 +324,7 @@ body::before {
 }
 
 /* --- Gradient display ink ------------------------------------------- */
+/* Cyan→mist gradient fill for a single emphasized display word/line. */
 .text-gradient-pulse {
   background-image: linear-gradient(
     104deg,
@@ -300,6 +338,8 @@ body::before {
 }
 
 /* --- Outlined display ink ------------------------------------------- */
+/* A "ghost" stroked word — fill is transparent, only the hairline stroke
+ * shows. Used for an emphasized term so the headline reads as constructed. */
 .text-outline {
   color: transparent;
   -webkit-text-stroke: 1.25px var(--mist-300);
@@ -307,12 +347,14 @@ body::before {
 }
 
 @supports not ((-webkit-text-stroke: 1px black) or (text-stroke: 1px black)) {
+  /* Fallback for engines without text-stroke: fall back to mist fill. */
   .text-outline {
     color: var(--mist-300);
   }
 }
 
 /* --- Oversized ghost numeral ---------------------------------------- */
+/* Big translucent index numerals behind section content for editorial scale. */
 .ghost-numeral {
   font-family: var(--font-display);
   line-height: 0.8;
@@ -338,264 +380,13 @@ body::before {
 
 
 /* =====================================================================
- * New premium animation keyframes
+ * Animated device "scenes" — literal illustrations of the studio at work
+ * (a browser building a layout, a phone assembling UI, a dashboard plotting,
+ * an automation pipeline moving packets). Continuous, GPU-friendly loops; all
+ * are frozen under the global reduced-motion guard above.
  * ===================================================================== */
 
-/* Shimmer — light sweeping over a surface */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-/* Glow pulse — pulsating luminance (adapted for light theme) */
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(30, 64, 175, 0.2), 0 0 24px rgba(30, 64, 175, 0.08); }
-  50% { box-shadow: 0 0 20px rgba(30, 64, 175, 0.35), 0 0 60px rgba(30, 64, 175, 0.15); }
-}
-
-/* Float gentle — subtle organic floating */
-@keyframes float-gentle {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-10px) rotate(1deg); }
-  66% { transform: translateY(5px) rotate(-0.5deg); }
-}
-
-/* Border flow — animated gradient border */
-@keyframes border-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Gradient shift — moving gradient background */
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Rotate slow — for geometric decorative elements */
-@keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Scale breathe — subtle breathing scale */
-@keyframes scale-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
-}
-
-/* Slide up fade — for staggered reveals */
-@keyframes slide-up-fade {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Text shimmer — metallic text effect */
-@keyframes text-shimmer {
-  0% { background-position: -100% center; }
-  100% { background-position: 200% center; }
-}
-
-/* Ripple — for button clicks */
-@keyframes ripple-out {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(2.4); opacity: 0; }
-}
-
-/* Beam sweep — horizontal light beam */
-@keyframes beam-sweep {
-  0% { transform: translateX(-100%) skewX(-10deg); }
-  100% { transform: translateX(300%) skewX(-10deg); }
-}
-
-/* Orbit — elements orbiting a center */
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
-}
-
-
-/* =====================================================================
- * Premium utility classes
- * ===================================================================== */
-
-/* Frosted-glass surface (light theme) */
-.glass-surface {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(30, 64, 175, 0.1);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-/* Brand-blue glow text */
-.glow-text {
-  color: var(--pulse-500);
-  text-shadow:
-    0 0 20px rgba(30, 64, 175, 0.25),
-    0 0 40px rgba(30, 64, 175, 0.12);
-}
-
-/* Shimmer text effect */
-.text-shimmer {
-  background: linear-gradient(
-    105deg,
-    var(--mist-300) 30%,
-    var(--mist-100) 50%,
-    var(--pulse-500) 55%,
-    var(--mist-100) 60%,
-    var(--mist-300) 70%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: text-shimmer 3s linear infinite;
-}
-
-/* Animated gradient border card */
-.gradient-border-card {
-  position: relative;
-  border-radius: 1rem;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(87, 197, 247, 0.3), rgba(99, 102, 241, 0.3), rgba(87, 197, 247, 0.3));
-  background-size: 200% 200%;
-  animation: border-flow 4s ease infinite;
-}
-
-.gradient-border-card-inner {
-  background: var(--ink-800);
-  border-radius: calc(1rem - 1px);
-  width: 100%;
-  height: 100%;
-}
-
-/* Floating animation utility */
-.animate-float {
-  animation: float-gentle 6s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float-gentle 8s ease-in-out infinite 2s;
-}
-
-.animate-float-slow {
-  animation: float-gentle 12s ease-in-out infinite 4s;
-}
-
-/* Glow card on hover (light theme) */
-.glow-card {
-  transition: box-shadow 0.4s var(--ease-out-expo), transform 0.3s var(--ease-out-expo), border-color 0.3s ease;
-}
-
-.glow-card:hover {
-  box-shadow:
-    0 0 0 1px rgba(30, 64, 175, 0.15),
-    0 12px 40px -8px rgba(30, 64, 175, 0.2),
-    0 4px 16px rgba(0, 0, 0, 0.08);
-  transform: translateY(-4px);
-}
-
-/* Section ambient glow (light theme) */
-.section-glow {
-  position: relative;
-}
-
-.section-glow::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: 50%;
-  width: 60%;
-  height: 100%;
-  transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, rgba(30, 64, 175, 0.04) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-/* Blue border accent */
-.neon-border {
-  border: 1px solid rgba(30, 64, 175, 0.25);
-  box-shadow:
-    0 0 8px rgba(30, 64, 175, 0.08),
-    inset 0 0 8px rgba(30, 64, 175, 0.03);
-}
-
-/* Beam sweep overlay (for card shimmer on hover) */
-.beam-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.beam-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.03) 50%,
-    transparent 60%
-  );
-  transform: translateX(-100%) skewX(-10deg);
-  transition: none;
-}
-
-.beam-card:hover::after {
-  animation: beam-sweep 0.6s ease forwards;
-}
-
-/* Tag / badge style (light theme) */
-.tag-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(30, 64, 175, 0.2);
-  background: rgba(30, 64, 175, 0.05);
-  color: var(--pulse-500);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-/* Pulse dot indicator */
-.pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--lime-500);
-  box-shadow: 0 0 0 0 rgba(57, 217, 138, 0.4);
-  animation: pulse512 2s ease infinite;
-}
-
-/* Shimmer loading skeleton */
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--ink-700) 25%,
-    var(--ink-600) 37%,
-    var(--ink-700) 63%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.4s ease infinite;
-}
-
-
-/* =====================================================================
- * Animated device "scenes"
- * ===================================================================== */
-
+/* Code/line draw — stroke reveals and retracts on a loop. */
 @keyframes scene-draw {
   0% { stroke-dashoffset: var(--dash, 120); }
   45% { stroke-dashoffset: 0; }
@@ -607,6 +398,7 @@ body::before {
   animation: scene-draw 3.2s var(--ease-in-out-quint) infinite;
 }
 
+/* Content blocks growing in width — like a page laying itself out. */
 @keyframes scene-grow {
   0% { transform: scaleX(0); }
   50% { transform: scaleX(1); }
@@ -618,6 +410,7 @@ body::before {
   animation: scene-grow 3s var(--ease-out-expo) infinite;
 }
 
+/* Bars rising — a chart plotting itself. */
 @keyframes scene-rise {
   0% { transform: scaleY(0.1); }
   50% { transform: scaleY(1); }
@@ -629,6 +422,7 @@ body::before {
   animation: scene-rise 2.6s var(--ease-out-back) infinite;
 }
 
+/* Blinking caret / cursor. */
 @keyframes scene-blink {
   0%, 45% { opacity: 1; }
   50%, 95% { opacity: 0; }
@@ -636,6 +430,7 @@ body::before {
 }
 .scene-blink { animation: scene-blink 1.1s steps(1, end) infinite; }
 
+/* Spinning gear (automation). */
 @keyframes scene-spin {
   to { transform: rotate(360deg); }
 }
@@ -650,6 +445,7 @@ body::before {
   animation: scene-spin 8s linear infinite reverse;
 }
 
+/* Packet traveling along a pipeline path. */
 @keyframes scene-packet {
   0% { offset-distance: 0%; opacity: 0; }
   10% { opacity: 1; }
@@ -660,200 +456,9 @@ body::before {
   animation: scene-packet 2.4s var(--ease-in-out-quint) infinite;
 }
 
+/* Soft floating bob for whole scenes. */
 @keyframes scene-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
 .scene-float { animation: scene-float 6s ease-in-out infinite; }
-
-
-/* =====================================================================
- * Isometric 3D Box Loading Animation
- * ===================================================================== */
-.boxes {
-  --size: 32px;
-  --duration: 800ms;
-  height: calc(var(--size) * 2);
-  width: calc(var(--size) * 3);
-  position: relative;
-  transform-style: preserve-3d;
-  transform-origin: 50% 50%;
-  margin-top: calc(var(--size) * 1.5 * -1);
-  transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
-}
-
-.boxes .box {
-  width: var(--size);
-  height: var(--size);
-  top: 0;
-  left: 0;
-  position: absolute;
-  transform-style: preserve-3d;
-}
-
-.boxes .box:nth-child(1) {
-  transform: translate(100%, 0);
-  animation: box1 var(--duration) linear infinite;
-}
-
-.boxes .box:nth-child(2) {
-  transform: translate(0, 100%);
-  animation: box2 var(--duration) linear infinite;
-}
-
-.boxes .box:nth-child(3) {
-  transform: translate(100%, 100%);
-  animation: box3 var(--duration) linear infinite;
-}
-
-.boxes .box:nth-child(4) {
-  transform: translate(200%, 0);
-  animation: box4 var(--duration) linear infinite;
-}
-
-.boxes .box > div {
-  --background: var(--pulse-400);
-  --top: auto;
-  --right: auto;
-  --bottom: auto;
-  --left: auto;
-  --translateZ: calc(var(--size) / 2);
-  --rotateY: 0deg;
-  --rotateX: 0deg;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: var(--background);
-  top: var(--top);
-  right: var(--right);
-  bottom: var(--bottom);
-  left: var(--left);
-  transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
-}
-
-.boxes .box > div:nth-child(1) { --top: 0; --left: 0; }
-.boxes .box > div:nth-child(2) { --background: var(--pulse-700); --right: 0; --rotateY: 90deg; }
-.boxes .box > div:nth-child(3) { --background: var(--pulse-500); --rotateX: -90deg; }
-.boxes .box > div:nth-child(4) { --background: var(--ink-700); --top: 0; --left: 0; --translateZ: calc(var(--size) * 3 * -1); }
-
-@keyframes box1 {
-  0%, 50% { transform: translate(100%, 0); }
-  100% { transform: translate(200%, 0); }
-}
-
-@keyframes box2 {
-  0% { transform: translate(0, 100%); }
-  50% { transform: translate(0, 0); }
-  100% { transform: translate(100%, 0); }
-}
-
-@keyframes box3 {
-  0%, 50% { transform: translate(100%, 100%); }
-  100% { transform: translate(0, 100%); }
-}
-
-@keyframes box4 {
-  0% { transform: translate(200%, 0); }
-  50% { transform: translate(200%, 100%); }
-  100% { transform: translate(100%, 100%); }
-}
-
-
-/* =====================================================================
- * Premium Pulsing Gradient Button
- * ===================================================================== */
-.btn-gradient-pulse {
-  border: none !important;
-  color: #ffffff !important;
-  background-image: linear-gradient(135deg, #0400ff, #2563eb, #57c5f7) !important;
-  background-size: 200% auto !important;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35) !important;
-  transition: all 0.4s ease !important;
-}
-
-.btn-gradient-pulse:hover,
-.btn-gradient-pulse:focus-visible {
-  background-position: right center !important;
-  background-size: 200% auto !important;
-  color: #ffffff !important;
-  animation: pulse512 1.5s infinite !important;
-  box-shadow: 0 6px 30px rgba(87, 197, 247, 0.5), 0 0 60px rgba(87, 197, 247, 0.15) !important;
-}
-
-@keyframes pulse512 {
-  0% { box-shadow: 0 0 0 0 rgba(87, 197, 247, 0.5); }
-  70% { box-shadow: 0 0 0 14px rgba(87, 197, 247, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(87, 197, 247, 0); }
-}
-
-
-/* =====================================================================
- * Enhanced Card Styles (light / neomorphic)
- * ===================================================================== */
-.premium-3d-card {
-  background: rgb(223, 225, 235) !important;
-  border-radius: 40px !important;
-  border: none !important;
-  box-shadow:
-    rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
-    rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-    rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
-    rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px,
-    rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px,
-    rgba(0, 0, 0, 0.09) 0px 32px 16px !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-}
-
-.premium-3d-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow:
-    rgba(0, 0, 0, 0.22) 0px -23px 25px 0px inset,
-    rgba(0, 0, 0, 0.18) 0px -36px 30px 0px inset,
-    rgba(0, 0, 0, 0.12) 0px -79px 40px 0px inset,
-    rgba(0, 0, 0, 0.08) 0px 4px 2px,
-    rgba(0, 0, 0, 0.12) 0px 8px 4px,
-    rgba(0, 0, 0, 0.12) 0px 16px 8px,
-    rgba(0, 0, 0, 0.12) 0px 32px 16px,
-    rgba(30, 64, 175, 0.25) 0px 0px 24px 0px !important;
-}
-
-/* Hero floating element — large translucent rings (visible on light bg) */
-.hero-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(30, 64, 175, 0.1);
-  pointer-events: none;
-}
-
-/* Animated gradient CTA background */
-.cta-gradient-bg {
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(30, 64, 175, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 50%, rgba(59, 130, 246, 0.06) 0%, transparent 60%),
-    var(--ink-800);
-}
-
-/* Stats counter emphasis (light theme — no glow, just weight) */
-.stat-glow {
-  /* On light bg glows are distracting; rely on font-weight */
-}
-
-/* Marquee band — dark with neon accent */
-.marquee-band {
-  background: var(--ink-800);
-  border-top: 1px solid var(--ink-600);
-  border-bottom: 1px solid var(--ink-600);
-}
-
-/* Active nav indicator */
-.nav-indicator {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--pulse-500), transparent);
-  border-radius: 1px;
-}

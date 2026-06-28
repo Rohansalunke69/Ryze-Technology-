@@ -52,7 +52,7 @@ export interface MagneticButtonProps {
 const BASE_CLASSES =
   'inline-flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] ' +
   'px-6 py-3 rounded-full border border-pulse-500 text-pulse-500 ' +
-  'font-display font-bold text-xs uppercase tracking-widest cursor-pointer select-none ' +
+  'font-mono text-sm tracking-wide cursor-pointer select-none ' +
   'transition-colors duration-200 ease-out ' +
   'hover:bg-pulse-500 hover:text-ink-900 ' +
   'focus-visible:bg-pulse-500 focus-visible:text-ink-900';
