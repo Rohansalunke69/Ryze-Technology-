@@ -235,6 +235,7 @@ export function HomePage(): JSX.Element {
                 </ul>
               </AnimationWrapper>
             </div>
+          </div>
           </section>
         </StackSection>
 
