@@ -48,6 +48,13 @@ export interface NavigationProps {
    * switches to a solid background once the visitor scrolls (Requirement 1.5).
    */
   transparentUntilScroll?: boolean;
+  /**
+   * When enabled the header is HIDDEN over the full-screen hero and only
+   * reveals (sliding down from the top) once the visitor scrolls past the hero,
+   * re-hiding when they scroll back up into it. Used on the homepage so the
+   * immersive hero owns the first viewport. No-op on pages without a hero.
+   */
+  hideUntilScrolled?: boolean;
 }
 
 /** Path the Contact CTA links to (Requirement 1.4). */
@@ -88,6 +95,41 @@ function useScrolledPastTop(enabled: boolean): boolean {
   }, [enabled]);
 
   return scrolled;
+}
+
+/**
+ * Tracks whether the visitor has scrolled past the full-screen hero. Returns
+ * `true` once `scrollY` crosses ~one viewport (minus the header height), which
+ * is the cue to reveal the header. When `enabled` is false the header is always
+ * considered "revealed" (normal pages). SSR/jsdom-safe.
+ */
+function useScrolledPastHero(enabled: boolean): boolean {
+  const computeThreshold = (): number =>
+    typeof window === 'undefined' ? 0 : Math.max(0, window.innerHeight - 72);
+
+  const [past, setPast] = useState<boolean>(() => {
+    if (!enabled || typeof window === 'undefined') return true;
+    return window.scrollY >= computeThreshold();
+  });
+
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') {
+      setPast(true);
+      return undefined;
+    }
+    const update = (): void => {
+      setPast(window.scrollY >= computeThreshold());
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [enabled]);
+
+  return enabled ? past : true;
 }
 
 /**
@@ -350,6 +392,7 @@ function MobileMenu({
 export function Navigation({
   items = defaultNavItems,
   transparentUntilScroll = false,
+  hideUntilScrolled = false,
 }: NavigationProps): JSX.Element {
   const category = useViewportCategory();
   const isMobile = category === 'mobile';
@@ -377,13 +420,27 @@ export function Navigation({
   const solid = !transparentUntilScroll || scrolled || menuOpen;
   const scrollProgress = useScrollProgress();
 
+  // Homepage: hide the header over the hero, reveal it (slide down) once the
+  // visitor scrolls past the first viewport, re-hide on scroll back up.
+  const pastHero = useScrolledPastHero(hideUntilScrolled);
+  const hidden = hideUntilScrolled && !pastHero;
+  // When the hero-reveal mode is on, the header is solid the moment it appears
+  // (it now sits over page content, never over the hero).
+  const isSolid = hideUntilScrolled ? pastHero : solid;
+
   return (
     <header
-      style={{ borderBottomColor: underlineColor(scrollProgress) }}
+      style={{
+        borderBottomColor: underlineColor(scrollProgress),
+        transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
+        opacity: hidden ? 0 : 1,
+      }}
       className={[
-        'fixed inset-x-0 top-0 z-50 w-full border-b transition-colors duration-300',
-        solid ? 'bg-ink-700/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]' : 'bg-transparent',
-      ].join(' ')}
+        'fixed inset-x-0 top-0 z-50 w-full border-b',
+        'transition-[transform,opacity,background-color,border-color] duration-300 ease-out motion-reduce:transition-none',
+        hidden ? 'pointer-events-none' : '',
+        isSolid ? 'bg-ink-700/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]' : 'bg-transparent',
+      ].filter(Boolean).join(' ')}
     >
       <nav
         aria-label="Primary"
