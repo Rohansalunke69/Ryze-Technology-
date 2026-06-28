@@ -239,8 +239,10 @@ export function HomePage(): JSX.Element {
           </section>
         </StackSection>
 
-        {/* ── Layer 3 — Philosophy (z:30) ───────────────────────────────────── */}
-        <StackSection zIndex={30}>
+        {/* ── Layer 3 — Philosophy (z:30) — pinned storytelling panel ─────── */}
+        {/* pinned:true adds a GSAP pin that releases with pinSpacing:true,     */}
+        {/* so Team / Testimonials / CTA are fully reachable after this panel.  */}
+        <StackSection zIndex={30} pinned>
           <section aria-label="Philosophy" className="bg-pulse-500 text-ink-900">
             <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
               <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
