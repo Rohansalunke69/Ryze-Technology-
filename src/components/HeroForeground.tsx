@@ -78,9 +78,9 @@ const MID_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 8 })
         .set(el,  { x: W * 0.42,  y: -240,     rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.55,  y: H * 0.20, rotation:  7, scale: 1.00, duration: 6,  ease: 'none' })
-        .to(el,   { x: W * 0.28,  y: H * 0.52, rotation: -9, scale: 1.05, duration: 7,  ease: 'none' })
-        .to(el,   { x: W * 0.46,  y: H + 240,  rotation:  4, scale: 0.98, duration: 6,  ease: 'none' }),
+        .to(el,   { x: W * 0.55,  y: H * 0.20, rotation:  7, scale: 1.00, duration: 4,  ease: 'none' })
+        .to(el,   { x: W * 0.28,  y: H * 0.52, rotation: -9, scale: 1.05, duration: 4,  ease: 'none' })
+        .to(el,   { x: W * 0.46,  y: H + 240,  rotation:  4, scale: 0.98, duration: 4,  ease: 'none' }),
   },
 ];
 
