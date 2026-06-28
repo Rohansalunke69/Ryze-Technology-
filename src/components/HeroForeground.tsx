@@ -99,9 +99,9 @@ const FRONT_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 2 })
         .set(el,  { x: W + 250,  y: H * 0.08, rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.66, y: H * 0.14, rotation: -7, scale: 1.04, duration: 7,  ease: 'none' })
-        .to(el,   { x: W * 0.26, y: H * 0.40, rotation:  9, scale: 0.96, duration: 9,  ease: 'none' })
-        .to(el,   { x: -250,     y: H * 0.58, rotation: -5, scale: 1.00, duration: 7,  ease: 'none' }),
+        .to(el,   { x: W * 0.66, y: H * 0.14, rotation: -7, scale: 1.04, duration: 4,  ease: 'none' })
+        .to(el,   { x: W * 0.26, y: H * 0.40, rotation:  9, scale: 0.96, duration: 5,  ease: 'none' })
+        .to(el,   { x: -250,     y: H * 0.58, rotation: -5, scale: 1.00, duration: 4,  ease: 'none' }),
   },
   {
     // brand-glowup (portrait) — enters left-bottom, rises to right-top
