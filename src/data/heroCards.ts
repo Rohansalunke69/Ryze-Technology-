@@ -68,8 +68,8 @@ export const heroCards: HeroCard[] = [
     orientation: 'portrait',
   },
   {
-    src: '/images/hero/team-collab.webp',
-    alt: 'Team collaboration — birds-eye view of a meeting around a table',
+    src: '/images/hero/stopwatch-collab.png',
+    alt: 'Time management collaboration — team around a pink stopwatch from above',
     orientation: 'square',
   },
 ];

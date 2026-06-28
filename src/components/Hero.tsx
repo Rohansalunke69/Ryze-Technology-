@@ -148,10 +148,9 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           }}
         />
 
-        {/* Page h1 — oversized, white, tight tracking. Contrast vs #060607: ≥ 15:1 (WCAG AAA). */}
         <h1
-          className="relative font-display font-bold leading-[0.92] tracking-[-0.03em] text-white"
-          style={{ fontSize: 'clamp(3rem, 9.5vw, 9.5rem)' }}
+          className="relative font-display font-bold leading-none tracking-[-0.03em] text-white sm:whitespace-nowrap"
+          style={{ fontSize: 'clamp(1.8rem, 5.2vw, 6.2rem)' }}
         >
           {headline}
         </h1>
@@ -164,15 +163,6 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           {SUBTITLE}
         </p>
 
-        {/* CTA — rounded pill button. Uses real <a> for crawlability + a11y. */}
-        <div className="relative mt-10">
-          <a
-            href="/contact"
-            className="inline-block rounded-full border border-white/20 bg-white/10 px-8 py-3 font-sans text-sm font-semibold tracking-wide text-white backdrop-blur-sm transition-colors duration-200 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
-          >
-            Get in touch
-          </a>
-        </div>
       </div>
 
       {/* Scroll affordance pinned to the bottom. */}
