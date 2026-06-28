@@ -299,8 +299,8 @@ export function HomePage(): JSX.Element {
           </section>
         </StackSection>
 
-        {/* ── Layer 3 — Philosophy (z:30) — storytelling pin, releases cleanly  */}
-        <StackSection zIndex={30} pinned>
+        {/* ── Layer 3 — Philosophy (z:30) — storytelling pin managed externally */}
+        <StackSection ref={philosophyRef} zIndex={30}>
           <section aria-label="Philosophy" className="bg-pulse-500 text-ink-900">
             <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
               <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
