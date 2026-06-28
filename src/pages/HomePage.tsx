@@ -268,13 +268,12 @@ export function HomePage(): JSX.Element {
         </StackSection>
 
         {/* ── Layer 4 — Services / CapabilitiesShowcase (z:40) ─────────────── */}
-        {/*   sticky:false — this component owns its own GSAP pin internally.  */}
-        <StackSection zIndex={40} sticky={false}>
+        <StackSection zIndex={40}>
           <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
         </StackSection>
 
         {/* ── Layer 5 — Work / FeaturedWork (z:50) ─────────────────────────── */}
-        <StackSection zIndex={50} sticky={false}>
+        <StackSection zIndex={50}>
           <FeaturedWork caseStudies={featuredCaseStudies} />
         </StackSection>
 
