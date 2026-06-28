@@ -55,6 +55,13 @@ export interface NavigationProps {
    * immersive hero owns the first viewport. No-op on pages without a hero.
    */
   hideUntilScrolled?: boolean;
+  /**
+   * Signals that the page's top region (behind a transparent header) is a dark
+   * surface — e.g. the homepage hero. When true, the brand logo flips to its
+   * white monochrome variant while the header is transparent, then back to the
+   * default lockup once the header turns solid (light). No-op on light pages.
+   */
+  heroIsDark?: boolean;
 }
 
 /** Path the Contact CTA links to (Requirement 1.4). */
@@ -393,6 +400,7 @@ export function Navigation({
   items = defaultNavItems,
   transparentUntilScroll = false,
   hideUntilScrolled = false,
+  heroIsDark = false,
 }: NavigationProps): JSX.Element {
   const category = useViewportCategory();
   const isMobile = category === 'mobile';
@@ -428,6 +436,10 @@ export function Navigation({
   // (it now sits over page content, never over the hero).
   const isSolid = hideUntilScrolled ? pastHero : solid;
 
+  // Flip to the white logo only while the header is transparent over a dark
+  // hero; once it turns solid (light surface) the default lockup returns.
+  const logoTone: 'default' | 'light' = !isSolid && heroIsDark ? 'light' : 'default';
+
   return (
     <header
       style={{
@@ -452,7 +464,7 @@ export function Navigation({
           aria-label="Ryze Technology home"
           className="transition-opacity hover:opacity-80 focus-visible:opacity-80"
         >
-          <Logo variant="full" height={32} />
+          <Logo variant="full" height={32} tone={logoTone} />
         </Link>
 
         {isMobile ? (

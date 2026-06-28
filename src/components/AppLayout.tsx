@@ -216,7 +216,11 @@ export function AppLayout(): JSX.Element {
 
   return (
     <>
-      <Navigation transparentUntilScroll hideUntilScrolled={location.pathname === '/'} />
+      <Navigation
+        transparentUntilScroll
+        hideUntilScrolled={location.pathname === '/'}
+        heroIsDark={location.pathname === '/'}
+      />
       {/*
         No wrapping <main> here: every routed page renders its own single
         <main> landmark, so adding one in the shell would produce nested/double
