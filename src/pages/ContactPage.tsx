@@ -82,9 +82,9 @@ export function ContactPage(): JSX.Element {
 
             <AnimationWrapper variant="fade">
               <div className="flex flex-col gap-8 lg:border-l lg:border-ink-600 lg:pl-12">
-                <h2 className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
+                <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
                   What happens next
-                </h2>
+                </p>
                 <ol className="flex flex-col gap-8">
                   {NEXT_STEPS.map((step, index) => (
                     <li key={step.title} className="flex gap-4">
@@ -95,9 +95,9 @@ export function ContactPage(): JSX.Element {
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <div className="flex flex-col gap-1.5">
-                        <h3 className="font-display text-h4 text-mist-100">
+                        <h2 className="font-display text-h4 text-mist-100">
                           {step.title}
-                        </h3>
+                        </h2>
                         <p className="font-sans text-body text-mist-300">
                           {step.description}
                         </p>

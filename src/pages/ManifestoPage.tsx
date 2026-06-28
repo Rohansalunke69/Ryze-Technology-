@@ -137,7 +137,7 @@ export function ManifestoPage(): JSX.Element {
                 >
                   <span
                     aria-hidden="true"
-                    className="inline-block font-mono text-mono-eyebrow tracking-widest text-pulse-500 transition-transform duration-300 group-hover:translate-x-1"
+                    className="font-mono text-mono-eyebrow tracking-widest text-pulse-500"
                   >
                     {ordinal(index + 1)}
                   </span>
@@ -170,15 +170,9 @@ export function ManifestoPage(): JSX.Element {
                 {STAND_AGAINST.map((item) => (
                   <li
                     key={item}
-                    className="group relative border-t border-ink-900/15 pt-6 font-display text-h3 text-ink-900"
+                    className="border-t border-ink-900/15 pt-6 font-display text-h3 text-ink-900"
                   >
-                    <span className="relative inline-block">
-                      {item}
-                      <span
-                        className="absolute left-0 top-1/2 h-[2px] w-0 bg-ember-500 transition-all duration-300 ease-out group-hover:w-full"
-                        aria-hidden="true"
-                      />
-                    </span>
+                    {item}
                   </li>
                 ))}
               </ul>

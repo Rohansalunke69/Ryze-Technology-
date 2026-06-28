@@ -128,10 +128,10 @@ export function ServicesPage(): JSX.Element {
           </div>
         </section>
 
-        {/* Service Alternating Layout (Req 9.1) */}
+        {/* Service cards (Req 9.1) */}
         <section
           aria-labelledby="services-heading"
-          className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10"
+          className="mx-auto w-full max-w-site px-6 py-[clamp(4rem,10vh,7rem)] sm:px-10"
         >
           <h2 id="services-heading" className="sr-only">
             Services

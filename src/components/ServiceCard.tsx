@@ -119,19 +119,18 @@ export function ServiceCard({ service, index = 0 }: ServiceCardProps): JSX.Eleme
     <article
       style={{ ['--card-index' as string]: index }}
       className={[
-        'group flex flex-col gap-4 rounded-xl border border-ink-600 bg-ink-800 p-6',
-        'transition-all duration-300 ease-out',
-        'hover:-translate-y-1 hover:border-pulse-500 hover:shadow-lg hover:shadow-pulse-500/5',
-        'focus-within:border-pulse-500 focus-within:-translate-y-1 focus-within:shadow-lg focus-within:shadow-pulse-500/5',
+        'group flex flex-col gap-4 rounded-lg border border-ink-600 bg-ink-800 p-6',
+        'transition-colors duration-300 ease-out',
+        'hover:border-pulse-500 focus-within:border-pulse-500',
       ].join(' ')}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-ink-900 border border-ink-600 text-pulse-500 transition-all duration-300 group-hover:border-pulse-500/30 group-hover:bg-pulse-500/5">
+      <span className="text-pulse-500 transition-colors duration-300">
         <ServiceIcon name={service.icon} />
-      </div>
+      </span>
 
-      <div className="flex flex-col gap-2 mt-2">
+      <div className="flex flex-col gap-2">
         <h3 className="font-display text-h3 text-mist-100">{service.name}</h3>
-        <p className="font-sans text-body text-mist-300 leading-relaxed">
+        <p className="font-sans text-body text-mist-300">
           {service.tagline.length > 0 ? service.tagline : service.summary}
         </p>
       </div>
@@ -142,13 +141,13 @@ export function ServiceCard({ service, index = 0 }: ServiceCardProps): JSX.Eleme
         aria-label={`Learn more about ${service.name}`}
         className={[
           'mt-auto inline-flex min-h-[44px] items-center gap-2 self-start',
-          'font-mono text-sm font-semibold tracking-wide text-pulse-500',
-          'transition-colors duration-200',
-          'hover:text-pulse-700',
+          'font-mono text-sm tracking-wide text-pulse-500',
+          'transition-transform duration-200 ease-out',
+          'hover:translate-x-1 focus-visible:translate-x-1',
         ].join(' ')}
       >
         Learn More
-        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        <span aria-hidden="true">→</span>
       </Link>
     </article>
   );

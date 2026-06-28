@@ -32,7 +32,7 @@ interface MiniPost {
 }
 
 const CATEGORIES = ['web', 'mobile', 'brand', 'desktop'] as const;
-const SERVICES = ['development', 'design', 'digital-marketing', 'sales-strategy', 'maintenance-support'] as const;
+const SERVICES = ['websites', 'mobile-apps', 'desktop', 'business-systems'] as const;
 const TAGS = ['react', 'perf', 'design', 'webgl', 'a11y'] as const;
 
 const slugArb = fc.string({ minLength: 1, maxLength: 8 });
