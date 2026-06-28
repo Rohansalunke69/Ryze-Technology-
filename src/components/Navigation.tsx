@@ -33,6 +33,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { navItems as defaultNavItems } from '@data/navigation';
 import type { NavChild, NavItem } from '@app-types';
@@ -267,36 +268,42 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
         </span>
       </button>
 
-      {open ? (
-        // Wrapper carries a transparent top padding that BRIDGES the gap to the
-        // button, so moving the cursor from the button to the panel never
-        // leaves the hover container (fixes the "closes before click" bug).
-        <div className="absolute left-0 top-full z-[70] pt-3">
-          <ul
-            id={menuId}
-            role="menu"
-            aria-label={item.label}
-            className="flex w-[min(92vw,21rem)] flex-col rounded-2xl border border-ink-600 bg-ink-800 p-2 shadow-[0_28px_70px_-18px_rgba(10,10,8,0.45)] ring-1 ring-black/5"
-          >
-            {item.children.map((child, index) => (
-              <li key={`${child.label}-${child.path}`} role="none">
-                {index > 0 ? (
-                  <div aria-hidden="true" className="mx-2 my-0.5 h-px bg-black/25" />
-                ) : null}
-                <Link
-                  role="menuitem"
-                  to={child.path}
-                  data-cursor="link"
-                  className="block rounded-lg px-4 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors duration-150 hover:bg-ink-700 hover:text-pulse-500 focus-visible:bg-ink-700 focus-visible:text-pulse-500"
-                  onClick={() => setOpen(false)}
-                >
-                  {child.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      <AnimatePresence>
+        {open ? (
+          // Wrapper carries a transparent top padding that BRIDGES the gap to the
+          // button, so moving the cursor from the button to the panel never
+          // leaves the hover container (fixes the "closes before click" bug).
+          <div className="absolute left-0 top-full z-[70] pt-3">
+            <motion.ul
+              id={menuId}
+              role="menu"
+              aria-label={item.label}
+              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.96 }}
+              transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="flex w-[min(92vw,21rem)] flex-col rounded-2xl border border-ink-600 bg-ink-800 p-2 shadow-[0_28px_70px_-18px_rgba(10,10,8,0.45)] ring-1 ring-black/5"
+            >
+              {item.children.map((child, index) => (
+                <li key={`${child.label}-${child.path}`} role="none">
+                  {index > 0 ? (
+                    <div aria-hidden="true" className="mx-2 my-0.5 h-px bg-black/25" />
+                  ) : null}
+                  <Link
+                    role="menuitem"
+                    to={child.path}
+                    data-cursor="link"
+                    className="block rounded-lg px-4 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors duration-150 hover:bg-ink-700 hover:text-pulse-500 focus-visible:bg-ink-700 focus-visible:text-pulse-500"
+                    onClick={() => setOpen(false)}
+                  >
+                    {child.label}
+                  </Link>
+                </li>
+              ))}
+            </motion.ul>
+          </div>
+        ) : null}
+      </AnimatePresence>
     </li>
   );
 }

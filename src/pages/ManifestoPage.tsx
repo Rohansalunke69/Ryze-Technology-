@@ -133,7 +133,7 @@ export function ManifestoPage(): JSX.Element {
               {BELIEFS.map((belief, index) => (
                 <li
                   key={belief.statement}
-                  className="flex flex-col gap-3 border-t border-ink-600 pt-6"
+                  className="group flex flex-col gap-4 border-t border-ink-600 pt-8 transition-colors duration-300 hover:border-pulse-500/30"
                 >
                   <span
                     aria-hidden="true"
@@ -141,7 +141,7 @@ export function ManifestoPage(): JSX.Element {
                   >
                     {ordinal(index + 1)}
                   </span>
-                  <h3 className="max-w-4xl font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.02em] text-mist-100">
+                  <h3 className="max-w-4xl font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.02em] text-mist-100 transition-colors duration-300 group-hover:text-pulse-500">
                     {belief.statement}
                   </h3>
                   <p className="max-w-2xl font-sans text-body-l text-mist-300">

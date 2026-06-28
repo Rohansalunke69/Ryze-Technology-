@@ -16,6 +16,8 @@
 import { MagneticButton } from './MagneticButton';
 
 export interface CTAProps {
+  /** Optional category/status eyebrow label. */
+  eyebrow?: string;
   /** Oversized headline for the band. */
   heading: string;
   /** Optional supporting subtext beneath the heading. */
@@ -27,6 +29,7 @@ export interface CTAProps {
 }
 
 export function CTA({
+  eyebrow,
   heading,
   sub,
   href = '/contact',
@@ -34,6 +37,13 @@ export function CTA({
 }: CTAProps): JSX.Element {
   return (
     <section className="flex flex-col items-center gap-6 px-6 py-24 text-center">
+      {eyebrow !== undefined && eyebrow.length > 0 ? (
+        <div className="inline-flex items-center justify-center rounded-full border border-pulse-500/20 bg-pulse-500/10 px-5 py-2 mb-3 shadow-sm">
+          <span className="font-mono text-base font-extrabold uppercase tracking-[0.2em] text-pulse-500">
+            {eyebrow}
+          </span>
+        </div>
+      ) : null}
       <h2 className="max-w-4xl font-display text-display-l text-mist-100">
         {heading}
       </h2>

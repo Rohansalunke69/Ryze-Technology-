@@ -46,9 +46,11 @@ import { MarqueeText } from '@components/MarqueeText';
 import { SectionHeader } from '@components/SectionHeader';
 import { SplitText } from '@components/SplitText';
 import { TeamCard } from '@components/TeamCard';
+import { ServiceCard } from '@components/ServiceCard';
 import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
+import { services } from '@data/services';
 import { team } from '@data/team';
 import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
@@ -130,25 +132,25 @@ const METRICS = studioMetrics.slice(0, 3);
  */
 const CAPABILITIES: ReadonlyArray<Capability> = [
   {
-    kind: 'websites',
+    kind: 'development',
     name: 'Web Platforms',
     tagline: 'Fast, accessible websites, storefronts, and web apps that convert.',
     techStack: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
   },
   {
-    kind: 'mobile-apps',
+    kind: 'design',
     name: 'Mobile Apps',
     tagline: 'Native-quality iOS and Android apps from one codebase.',
     techStack: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
   },
   {
-    kind: 'desktop',
+    kind: 'digital-marketing',
     name: 'Dashboards & Systems',
     tagline: 'Admin panels, dashboards, and the back-end systems that run a business.',
     techStack: ['Node.js', 'PostgreSQL', 'Prisma', 'Redis'],
   },
   {
-    kind: 'business-systems',
+    kind: 'sales-strategy',
     name: 'Automation & APIs',
     tagline: 'Workflow automation and integrations that remove manual busywork.',
     techStack: ['APIs', 'Webhooks', 'Automation', 'Integrations'],
@@ -277,6 +279,20 @@ export function HomePage(): JSX.Element {
       {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
       <FeaturedWork caseStudies={featuredCaseStudies} />
 
+      {/* 5 — Services: the five service cards. */}
+      <section
+        aria-label="Services"
+        className="section-glow mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+      >
+        <SectionHeader eyebrow="What we do" title="Five ways we build" />
+        <AnimationWrapper variant="rise" stagger={0.08}>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {services.map((service, index) => (
+              <ServiceCard key={service.slug} service={service} index={index} />
+            ))}
+          </div>
+        </AnimationWrapper>
+      </section>
       {/* How we work — process band with a scroll-drawn progress line. */}
       <ProcessTimeline steps={PROCESS_STEPS} />
 

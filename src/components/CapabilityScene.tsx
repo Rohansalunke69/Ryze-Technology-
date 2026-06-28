@@ -13,10 +13,11 @@
  * and the parent supplies the accessible label.
  */
 export type CapabilityKind =
-  | 'websites'
-  | 'mobile-apps'
-  | 'desktop'
-  | 'business-systems'
+  | 'development'
+  | 'design'
+  | 'digital-marketing'
+  | 'sales-strategy'
+  | 'maintenance-support'
   | 'social-media-marketing';
 
 export interface CapabilitySceneProps {
@@ -151,10 +152,11 @@ function SocialScene(): JSX.Element {
 }
 
 const SCENES: Record<CapabilityKind, () => JSX.Element> = {
-  websites: WebsiteScene,
-  'mobile-apps': MobileScene,
-  desktop: DesktopScene,
-  'business-systems': SystemsScene,
+  'development': WebsiteScene,
+  'design': MobileScene,
+  'digital-marketing': DesktopScene,
+  'sales-strategy': SystemsScene,
+  'maintenance-support': SystemsScene,
   'social-media-marketing': SocialScene,
 };
 
