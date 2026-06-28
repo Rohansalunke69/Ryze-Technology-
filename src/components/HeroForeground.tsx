@@ -50,9 +50,9 @@ const MID_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 0 })
         .set(el,  { x: -220,      y: H * 0.30, rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.22,  y: H * 0.23, rotation:  8, scale: 1.02, duration: 17, ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.58,  y: H * 0.46, rotation: -6, scale: 0.96, duration: 19, ease: 'sine.inOut' })
-        .to(el,   { x: W + 220,   y: H * 0.36, rotation: 10, scale: 1.00, duration: 16, ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.22,  y: H * 0.23, rotation:  8, scale: 1.02, duration: 7,  ease: 'sine.inOut' })
+        .to(el,   { x: W * 0.58,  y: H * 0.46, rotation: -6, scale: 0.96, duration: 8,  ease: 'sine.inOut' })
+        .to(el,   { x: W + 220,   y: H * 0.36, rotation: 10, scale: 1.00, duration: 7,  ease: 'sine.inOut' }),
   },
   {
     // developers (landscape) — enters right, exits left diagonally
