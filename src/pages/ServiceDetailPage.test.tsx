@@ -51,7 +51,7 @@ describe('ServiceDetailPage', () => {
     ).toBeInTheDocument();
 
     // A feature from the development service (Requirement 10.1).
-    expect(screen.getByText('Custom Web Application Development')).toBeInTheDocument();
+    expect(screen.getByText('E-commerce Stores')).toBeInTheDocument();
 
     // A FAQ question rendered as an accordion trigger (Requirements 10.1, 10.3).
     expect(
@@ -82,15 +82,14 @@ describe('ServiceDetailPage', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('renders related-by-service case study cards (getCaseStudiesByService)', () => {
+  it('renders the development portfolio call-to-action block', () => {
     renderAt('/services/development');
 
-    // orange-city-grocers lists 'development' in its services[] (Requirement 10.2).
-    const card = screen.getByRole('link', {
-      name: /aisle browsers into loyal subscribers/i,
-    });
-    expect(card).toBeInTheDocument();
-    expect(card).toHaveAttribute('href', '/portfolio/orange-city-grocers');
+    // The development page now surfaces a portfolio CTA block instead of
+    // related case-study cards.
+    const viewAll = screen.getByRole('link', { name: /view all projects/i });
+    expect(viewAll).toBeInTheDocument();
+    expect(viewAll).toHaveAttribute('href', '/portfolio');
   });
 
   it('renders the in-route not-found state for an unknown slug', () => {

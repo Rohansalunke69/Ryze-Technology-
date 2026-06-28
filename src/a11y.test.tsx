@@ -308,7 +308,7 @@ describe('Reduced-motion end-state rendering (Req 37.2, 37.4)', () => {
 
     // Representative gated content is present and reachable.
     expect(
-      screen.getByRole('region', { name: 'Why Ryze' }),
+      screen.getByRole('region', { name: 'Team' }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { level: 1 }),

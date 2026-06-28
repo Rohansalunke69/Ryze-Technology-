@@ -15,6 +15,10 @@ import type { NavChild, NavItem } from '@app-types';
  */
 export const navItems: NavItem[] = [
   {
+    label: 'Home',
+    path: '/',
+  },
+  {
     label: 'Work',
     path: '/portfolio',
   },

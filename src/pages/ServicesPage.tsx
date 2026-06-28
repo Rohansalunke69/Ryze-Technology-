@@ -18,9 +18,10 @@
  *
  * _Requirements: 9.1, 9.2, 9.3_
  */
+import { Link } from 'react-router-dom';
 import type { SEOMeta } from '@app-types';
 import { SectionHeader } from '@components/SectionHeader';
-import { ServiceCard } from '@components/ServiceCard';
+import { CapabilityScene, type CapabilityKind } from '@components/CapabilityScene';
 import { CTA } from '@components/CTA';
 import { SEOHead } from '@components/SEOHead';
 import { AnimationWrapper } from '@components/AnimationWrapper';
@@ -135,15 +136,86 @@ export function ServicesPage(): JSX.Element {
           <h2 id="services-heading" className="sr-only">
             Services
           </h2>
-          <AnimationWrapper variant="rise" stagger={0.08}>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((service, index) => (
-                <ServiceCard
-                  key={service.slug}
-                  service={service}
-                  index={index}
-                />
-              ))}
+          <AnimationWrapper variant="rise" stagger={0.12}>
+            <div className="flex flex-col gap-24">
+              {services.map((service, index) => {
+                const isEven = index % 2 === 0;
+                return (
+                  <article
+                    key={service.slug}
+                    className="group grid grid-cols-1 gap-12 border-t border-ink-600 pt-16 md:grid-cols-2 md:items-center"
+                  >
+                    {/* Visual Section */}
+                    <div
+                      className={`flex aspect-[4/3] w-full items-center justify-center rounded-2xl border border-ink-600 p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] ring-1 ring-ink-600/30 transition-all duration-500 group-hover:border-pulse-500/40 group-hover:ring-pulse-500/20 group-hover:shadow-[0_12px_40px_rgba(33,86,201,0.06)] ${
+                        isEven ? 'order-1 md:order-2 bg-ink-800' : 'order-1 bg-ink-900/60'
+                      }`}
+                    >
+                      <div className="h-full w-full max-w-xs transition-transform duration-500 group-hover:scale-105">
+                        <CapabilityScene kind={service.slug as CapabilityKind} />
+                      </div>
+                    </div>
+
+                    {/* Text Section */}
+                    <div
+                      className={`flex flex-col gap-6 ${
+                        isEven ? 'order-2 md:order-1' : 'order-2'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span
+                          aria-hidden="true"
+                          className="ghost-numeral text-[clamp(2rem,4vw,3.5rem)]"
+                        >
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-[0.2em] text-pulse-500 font-semibold">
+                          Capability
+                        </span>
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        <h3 className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-[1.05] tracking-[-0.02em] text-mist-100">
+                          {service.name}
+                        </h3>
+                        <p className="font-sans text-body-l text-pulse-500 font-medium">
+                          {service.tagline}
+                        </p>
+                      </div>
+
+                      <p className="font-sans text-body text-mist-300 leading-relaxed">
+                        {service.summary}
+                      </p>
+
+                      <div className="flex flex-col gap-4">
+                        <h4 className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300 font-semibold">
+                          Core Technologies
+                        </h4>
+                        <ul className="flex flex-wrap gap-2">
+                          {service.techStack.map((tech) => (
+                            <li
+                              key={tech}
+                              className="rounded-full border border-ink-600 bg-ink-800 px-3.5 py-1 font-mono text-[0.75rem] text-mist-300 transition-colors group-hover:border-pulse-500/20 group-hover:text-pulse-500"
+                            >
+                              {tech}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <Link
+                        to={`/services/${service.slug}`}
+                        data-cursor="link"
+                        aria-label={`Learn more about ${service.name}`}
+                        className="group/link mt-2 inline-flex min-h-[44px] items-center gap-2 self-start font-mono text-sm font-semibold tracking-wide text-pulse-500 transition-colors hover:text-pulse-700"
+                      >
+                        Explore Service
+                        <span aria-hidden="true" className="transition-transform duration-200 group-hover/link:translate-x-1.5">→</span>
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </AnimationWrapper>
         </section>
