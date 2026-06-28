@@ -224,7 +224,12 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
         if (item.cta === true) {
           return (
             <li key={item.label}>
-              <MagneticButton as="a" href={item.path ?? CONTACT_PATH} ariaLabel={item.label}>
+              <MagneticButton
+                as="a"
+                href={item.path ?? CONTACT_PATH}
+                ariaLabel={item.label}
+                className="!px-4 !py-1.5 text-xs"
+              >
                 {item.label}
               </MagneticButton>
             </li>
