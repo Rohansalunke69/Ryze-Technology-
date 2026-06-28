@@ -20,6 +20,12 @@ export interface StackSectionProps {
    * Use on Hero (independent, needs no cross-section coordination).
    */
   overlap?: boolean;
+  /**
+   * Override the card's base background colour.
+   * Defaults to 'var(--ink-900)'.  Set to 'transparent' when the section
+   * inside provides its own full-bleed background (e.g. Philosophy's blue).
+   */
+  cardBackground?: string;
   children: ReactNode;
   id?: string;
 }
