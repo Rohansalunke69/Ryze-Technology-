@@ -249,8 +249,8 @@ export function HomePage(): JSX.Element {
           <PremiumMarquee />
         </StackSection>
 
-        {/* ── Layer 2 — Problems (z:20) — overlap pin so Philosophy slides over */}
-        <StackSection zIndex={20} overlap>
+        {/* ── Layer 2 — Problems (z:20) — co-pinned externally via problemsRef */}
+        <StackSection ref={problemsRef} zIndex={20}>
           <section
             aria-label="Problems"
             className="w-full bg-ink-900"
