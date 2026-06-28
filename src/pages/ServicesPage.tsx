@@ -143,15 +143,15 @@ export function ServicesPage(): JSX.Element {
                 return (
                   <article
                     key={service.slug}
-                    className="grid grid-cols-1 gap-12 border-t border-ink-600 pt-16 md:grid-cols-2 md:items-center"
+                    className="group grid grid-cols-1 gap-12 border-t border-ink-600 pt-16 md:grid-cols-2 md:items-center"
                   >
                     {/* Visual Section */}
                     <div
-                      className={`flex aspect-[4/3] w-full items-center justify-center rounded-2xl border border-ink-600 bg-ink-900 p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] ring-1 ring-ink-600/30 ${
-                        isEven ? 'order-1 md:order-2' : 'order-1'
+                      className={`flex aspect-[4/3] w-full items-center justify-center rounded-2xl border border-ink-600 p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] ring-1 ring-ink-600/30 transition-all duration-500 group-hover:border-pulse-500/40 group-hover:ring-pulse-500/20 group-hover:shadow-[0_12px_40px_rgba(33,86,201,0.06)] ${
+                        isEven ? 'order-1 md:order-2 bg-ink-800' : 'order-1 bg-ink-900/60'
                       }`}
                     >
-                      <div className="h-full w-full max-w-xs transition-transform duration-500 hover:scale-105">
+                      <div className="h-full w-full max-w-xs transition-transform duration-500 group-hover:scale-105">
                         <CapabilityScene kind={service.slug as CapabilityKind} />
                       </div>
                     </div>
@@ -195,7 +195,7 @@ export function ServicesPage(): JSX.Element {
                           {service.techStack.map((tech) => (
                             <li
                               key={tech}
-                              className="rounded-full border border-ink-600 bg-ink-800 px-3.5 py-1 font-mono text-[0.75rem] text-mist-300 transition-colors hover:border-pulse-500/30 hover:text-mist-100"
+                              className="rounded-full border border-ink-600 bg-ink-800 px-3.5 py-1 font-mono text-[0.75rem] text-mist-300 transition-colors group-hover:border-pulse-500/20 group-hover:text-pulse-500"
                             >
                               {tech}
                             </li>
@@ -207,10 +207,10 @@ export function ServicesPage(): JSX.Element {
                         to={`/services/${service.slug}`}
                         data-cursor="link"
                         aria-label={`Learn more about ${service.name}`}
-                        className="group mt-2 inline-flex min-h-[44px] items-center gap-2 self-start font-mono text-sm font-semibold tracking-wide text-pulse-500 transition-colors hover:text-pulse-700"
+                        className="group/link mt-2 inline-flex min-h-[44px] items-center gap-2 self-start font-mono text-sm font-semibold tracking-wide text-pulse-500 transition-colors hover:text-pulse-700"
                       >
                         Explore Service
-                        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1.5">→</span>
+                        <span aria-hidden="true" className="transition-transform duration-200 group-hover/link:translate-x-1.5">→</span>
                       </Link>
                     </div>
                   </article>

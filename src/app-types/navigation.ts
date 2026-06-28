@@ -30,6 +30,8 @@ export interface SiteMetadata {
   defaultOgImage: ImageAsset;
   social: SocialLink[];
   contactEmail: string;
+  /** Public contact phone number (digits, no formatting). */
+  contactPhone?: string;
   /** Form POST target (env-injected). */
   contactEndpoint: string;
 }

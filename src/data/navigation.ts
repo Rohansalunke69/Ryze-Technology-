@@ -16,10 +16,7 @@ import type { NavChild, NavItem } from '@app-types';
 export const navItems: NavItem[] = [
   {
     label: 'Work',
-    children: [
-      { label: 'Portfolio', path: '/portfolio', description: 'Selected projects across web, mobile, and systems' },
-      { label: 'Case Studies', path: '/portfolio', description: 'Deep dives into challenge, solution, and results' },
-    ],
+    path: '/portfolio',
   },
   {
     label: 'Services',

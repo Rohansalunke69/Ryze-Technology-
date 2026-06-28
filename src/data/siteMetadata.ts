@@ -52,5 +52,6 @@ export const siteMetadata: SiteMetadata = {
   defaultOgImage,
   social,
   contactEmail: 'ryzetechonologyy@gmail.com',
+  contactPhone: '7517358091',
   contactEndpoint,
 };

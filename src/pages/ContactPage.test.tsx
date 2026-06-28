@@ -75,13 +75,12 @@ describe('ContactPage', () => {
     expect(h1.tagName).toBe('H1');
   });
 
-  it('renders all seven Contact_Form fields (Req 13.1)', () => {
+  it('renders all six Contact_Form fields (Req 13.1)', () => {
     renderPage();
     expect(screen.getByLabelText('Name *')).toBeInTheDocument();
     expect(screen.getByLabelText('Email *')).toBeInTheDocument();
     expect(screen.getByLabelText('Company')).toBeInTheDocument();
     expect(screen.getByLabelText('Project type')).toBeInTheDocument();
-    expect(screen.getByLabelText('Budget')).toBeInTheDocument();
     expect(screen.getByLabelText('Timeline')).toBeInTheDocument();
     expect(screen.getByLabelText('Message *')).toBeInTheDocument();
   });

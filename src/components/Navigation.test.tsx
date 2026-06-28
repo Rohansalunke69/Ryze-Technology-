@@ -65,18 +65,18 @@ describe('Navigation — desktop', () => {
 
   it('reveals dropdown children when the parent is focused (Req 1.3)', async () => {
     renderNav();
-    const workToggle = screen.getByRole('button', { name: /work/i });
+    const servicesToggle = screen.getByRole('button', { name: /services/i });
 
     // Collapsed by default: children are not in the DOM.
-    expect(workToggle).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('menuitem', { name: /portfolio/i })).not.toBeInTheDocument();
+    expect(servicesToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('menuitem', { name: /mobile apps/i })).not.toBeInTheDocument();
 
     // Focusing the parent opens the disclosure and reveals children.
-    workToggle.focus();
+    servicesToggle.focus();
     await waitFor(() => {
-      expect(workToggle).toHaveAttribute('aria-expanded', 'true');
+      expect(servicesToggle).toHaveAttribute('aria-expanded', 'true');
     });
-    expect(screen.getByRole('menuitem', { name: /portfolio/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /mobile apps/i })).toBeInTheDocument();
   });
 
   it('renders the Contact item as a CTA linking to /contact (Req 1.4)', () => {
@@ -173,8 +173,8 @@ describe('Navigation — mobile menu (Req 2.x, 38.4)', () => {
     await user.click(screen.getByRole('button', { name: /open menu/i }));
 
     const dialog = await screen.findByRole('dialog', { name: /site menu/i });
-    const portfolio = within(dialog).getByRole('link', { name: /portfolio/i });
-    await user.click(portfolio);
+    const workLink = within(dialog).getByRole('link', { name: /work/i });
+    await user.click(workLink);
 
     await waitFor(() => {
       expect(screen.queryByRole('dialog', { name: /site menu/i })).not.toBeInTheDocument();

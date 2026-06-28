@@ -1,8 +1,8 @@
 /**
  * ContactForm — the `/contact` submission form (task 14.15).
  *
- * Renders the seven Contact_Form fields (name, email, company, project type,
- * budget, timeline, message) with inline validation and a strict status union
+ * Renders the Contact_Form fields (name, email, company, project type,
+ * timeline, message) with inline validation and a strict status union
  * of exactly one of `idle | submitting | success | error` at any time
  * (Requirement 13.1, 13.6).
  *
@@ -31,13 +31,13 @@ import { siteMetadata } from '@data/siteMetadata';
 /** The lifecycle status of a Contact_Form submission (Requirement 13.6). */
 export type ContactStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-/** The seven Contact_Form field values (Requirement 13.1). */
+/** The Contact_Form field values (Requirement 13.1). */
 export interface ContactValues {
   name: string;
   email: string;
+  phone: string;
   company: string;
   projectType: string;
-  budget: string;
   timeline: string;
   message: string;
 }
@@ -48,9 +48,9 @@ type ContactErrors = Partial<Record<keyof ContactValues, string>>;
 const EMPTY_VALUES: ContactValues = {
   name: '',
   email: '',
+  phone: '',
   company: '',
   projectType: '',
-  budget: '',
   timeline: '',
   message: '',
 };
@@ -71,14 +71,6 @@ const PROJECT_TYPE_OPTIONS = [
   'Something else',
 ] as const;
 
-const BUDGET_OPTIONS = [
-  'Under $10k',
-  '$10k–$25k',
-  '$25k–$50k',
-  '$50k–$100k',
-  '$100k+',
-] as const;
-
 const TIMELINE_OPTIONS = [
   'ASAP',
   '1–3 months',
@@ -89,7 +81,7 @@ const TIMELINE_OPTIONS = [
 
 /**
  * Validate the required fields (name, email, message). Company, project type,
- * budget, and timeline are optional and never produce an error.
+ * and timeline are optional and never produce an error.
  */
 function validate(values: ContactValues): ContactErrors {
   const errors: ContactErrors = {};
@@ -298,6 +290,25 @@ export function ContactForm(): JSX.Element {
           ) : null}
         </div>
 
+        {/* Phone (optional) */}
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="contact-phone"
+            className="font-mono text-mono-eyebrow uppercase tracking-widest text-mist-300"
+          >
+            Phone
+          </label>
+          <input
+            id="contact-phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            value={values.phone}
+            onChange={(e) => updateField('phone', e.target.value)}
+            className={fieldClasses(false)}
+          />
+        </div>
+
         {/* Company (optional) */}
         <div className="flex flex-col gap-2">
           <label
@@ -334,30 +345,6 @@ export function ContactForm(): JSX.Element {
           >
             <option value="">Select…</option>
             {PROJECT_TYPE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Budget (optional) */}
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="contact-budget"
-            className="font-mono text-mono-eyebrow uppercase tracking-widest text-mist-300"
-          >
-            Budget
-          </label>
-          <select
-            id="contact-budget"
-            name="budget"
-            value={values.budget}
-            onChange={(e) => updateField('budget', e.target.value)}
-            className={fieldClasses(false)}
-          >
-            <option value="">Select…</option>
-            {BUDGET_OPTIONS.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>

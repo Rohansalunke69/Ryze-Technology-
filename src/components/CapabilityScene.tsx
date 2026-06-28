@@ -121,6 +121,35 @@ function SystemsScene(): JSX.Element {
   );
 }
 
+/** A social-media scene: a phone post with a rising engagement chart and likes. */
+function SocialScene(): JSX.Element {
+  return (
+    <g>
+      {/* phone with a post card */}
+      <rect x="34" y="30" width="104" height="148" rx="14" fill={PAPER} stroke={INK} strokeWidth="2.5" />
+      <rect x="48" y="44" width="76" height="40" rx="6" fill={BLUE} className="scene-grow" style={{ animationDelay: '0s' }} />
+      <circle cx="60" cy="98" r="7" fill={BLUE_LT} />
+      <rect x="74" y="94" width="50" height="7" rx="3" fill={LINE} />
+      <rect x="48" y="112" width="76" height="6" rx="3" fill={LINE} />
+      <rect x="48" y="124" width="60" height="6" rx="3" fill={LINE} />
+      {/* heart "like" pulsing */}
+      <path
+        d="M58 150 c-6 -6 -16 -1 -16 7 c0 7 16 16 16 16 c0 0 16 -9 16 -16 c0 -8 -10 -13 -16 -7 z"
+        fill={BLUE}
+        className="scene-grow"
+        style={{ animationDelay: '0.5s' }}
+      />
+      {/* engagement chart climbing */}
+      <rect x="170" y="48" width="116" height="120" rx="10" fill="#ffffff" stroke={LINE} strokeWidth="2" />
+      <rect x="186" y="120" width="16" height="32" rx="3" fill={BLUE_LT} className="scene-rise" style={{ animationDelay: '0s' }} />
+      <rect x="210" y="104" width="16" height="48" rx="3" fill={BLUE} className="scene-rise" style={{ animationDelay: '0.2s' }} />
+      <rect x="234" y="84" width="16" height="68" rx="3" fill={BLUE_LT} className="scene-rise" style={{ animationDelay: '0.4s' }} />
+      <rect x="258" y="64" width="16" height="88" rx="3" fill={BLUE} className="scene-rise" style={{ animationDelay: '0.6s' }} />
+      <path d="M186 116 L218 100 L250 80 L274 60" fill="none" stroke={INK} strokeWidth="2.5" strokeLinecap="round" style={{ ['--dash' as string]: 150 }} className="scene-draw" />
+    </g>
+  );
+}
+
 const SCENES: Record<CapabilityKind, () => JSX.Element> = {
   'development': WebsiteScene,
   'design': MobileScene,

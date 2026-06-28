@@ -87,19 +87,19 @@ describe('Navigation — accessibility (Req 1.3, 2.3, 2.4, 2.5, 38.4)', () => {
   it('reveals dropdown children on keyboard focus (Req 1.3)', async () => {
     setViewportWidth(1280);
     renderWithProviders(<Navigation />);
-    const workToggle = screen.getByRole('button', { name: /work/i });
+    const servicesToggle = screen.getByRole('button', { name: /services/i });
 
-    expect(workToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(servicesToggle).toHaveAttribute('aria-expanded', 'false');
     expect(
-      screen.queryByRole('menuitem', { name: /portfolio/i }),
+      screen.queryByRole('menuitem', { name: /mobile apps/i }),
     ).not.toBeInTheDocument();
 
-    workToggle.focus();
+    servicesToggle.focus();
     await waitFor(() => {
-      expect(workToggle).toHaveAttribute('aria-expanded', 'true');
+      expect(servicesToggle).toHaveAttribute('aria-expanded', 'true');
     });
     expect(
-      screen.getByRole('menuitem', { name: /portfolio/i }),
+      screen.getByRole('menuitem', { name: /mobile apps/i }),
     ).toBeInTheDocument();
   });
 

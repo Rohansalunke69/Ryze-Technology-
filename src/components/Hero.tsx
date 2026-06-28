@@ -183,26 +183,10 @@ export function Hero({ headline, eyebrow }: HeroProps): JSX.Element {
           className="max-w-[16ch] font-display text-[clamp(3rem,9.5vw,9.5rem)] font-semibold leading-[0.92] tracking-[-0.03em] text-mist-100"
         />
 
-        <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-10 flex flex-col gap-10">
           <p className="max-w-xl font-sans text-body-l leading-relaxed text-mist-300">
             {SUBHEADLINE}
           </p>
-
-          <div className="flex flex-shrink-0 items-center gap-8">
-            <a
-              href="/portfolio"
-              data-cursor="link"
-              className="group inline-flex items-center gap-2 font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-mist-100 transition-colors duration-200 ease-out hover:text-pulse-500 focus-visible:text-pulse-500"
-            >
-              See our work
-              <span
-                aria-hidden="true"
-                className="transition-transform duration-200 ease-out group-hover:translate-x-1"
-              >
-                →
-              </span>
-            </a>
-          </div>
         </div>
 
         {/* Hairline rule anchoring the hero to the grid. */}

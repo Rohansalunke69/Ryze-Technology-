@@ -106,7 +106,7 @@ export function ManifestoPage(): JSX.Element {
 
       <main>
         {/* Hero — oversized type (Req 12.1) */}
-        <section className="mx-auto w-full max-w-site px-6 pb-20 pt-[clamp(8.5rem,20vh,13rem)] sm:px-10">
+        <section className="mx-auto w-full max-w-site px-6 pb-12 pt-[clamp(7rem,16vh,10rem)] sm:px-10">
           <AnimationWrapper variant="rise">
             <SectionHeader
               as="h1"
@@ -123,12 +123,12 @@ export function ManifestoPage(): JSX.Element {
 
         {/* Core beliefs — pinned sequential reveal under motion; flowing,
             fully visible end-state under reduced motion (Req 12.2, 37.2). */}
-        <section aria-label="Our core beliefs" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
+        <section aria-label="Our core beliefs" className="mx-auto w-full max-w-site px-6 py-[clamp(3.5rem,8vh,6rem)] sm:px-10">
           <SectionHeader as="h2" eyebrow="What we believe" title="Core beliefs" />
           <AnimationWrapper variant="rise" stagger={0.12}>
             <ol
               aria-label="Our core beliefs"
-              className="mt-16 flex flex-col gap-16 md:gap-24"
+              className="mt-10 flex flex-col gap-10 md:gap-12"
             >
               {BELIEFS.map((belief, index) => (
                 <li
@@ -141,7 +141,7 @@ export function ManifestoPage(): JSX.Element {
                   >
                     {ordinal(index + 1)}
                   </span>
-                  <h3 className="max-w-4xl font-display text-display-l text-mist-100 transition-colors duration-300 group-hover:text-pulse-500">
+                  <h3 className="max-w-4xl font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.02em] text-mist-100 transition-colors duration-300 group-hover:text-pulse-500">
                     {belief.statement}
                   </h3>
                   <p className="max-w-2xl font-sans text-body-l text-mist-300">
@@ -158,7 +158,7 @@ export function ManifestoPage(): JSX.Element {
           aria-label="What we stand against"
           className="bg-mist-100 text-ink-900"
         >
-          <div className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
+          <div className="mx-auto w-full max-w-site px-6 py-[clamp(3.5rem,8vh,6rem)] sm:px-10">
             <AnimationWrapper variant="fade">
               <p className="font-mono text-mono-eyebrow uppercase tracking-widest text-pulse-500">
                 The other side
@@ -187,7 +187,7 @@ export function ManifestoPage(): JSX.Element {
         </section>
 
         {/* The Ryze promise (Req 12.1) */}
-        <section aria-label="The Ryze promise" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
+        <section aria-label="The Ryze promise" className="mx-auto w-full max-w-site px-6 py-[clamp(3.5rem,8vh,6rem)] sm:px-10">
           <AnimationWrapper variant="rise">
             <div className="mx-auto flex max-w-4xl flex-col gap-8 text-center">
               <SectionHeader

@@ -127,6 +127,14 @@ export function ContactPage(): JSX.Element {
                 >
                   {siteMetadata.contactEmail}
                 </a>
+                {siteMetadata.contactPhone !== undefined ? (
+                  <a
+                    href={`tel:${siteMetadata.contactPhone}`}
+                    className="font-mono text-body-l text-mist-100 underline-offset-4 transition-colors hover:text-pulse-500 hover:underline"
+                  >
+                    +91 {siteMetadata.contactPhone}
+                  </a>
+                ) : null}
                 <p className="max-w-2xl font-sans text-body text-mist-300">
                   We typically reply within one business day.
                 </p>

@@ -139,10 +139,6 @@ describe('Hero', () => {
     ).toBeInTheDocument();
     // Eyebrow text.
     expect(screen.getByText('Ryze Technology')).toBeInTheDocument();
-    // Primary CTA: "See our work" links to the portfolio.
-    expect(
-      screen.getByRole('link', { name: /see our work/i }),
-    ).toHaveAttribute('href', '/portfolio');
   });
 
   it('renders only the fallback under reduced motion and never mounts WebGL (Requirement 19.2)', () => {

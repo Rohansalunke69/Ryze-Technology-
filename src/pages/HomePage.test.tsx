@@ -26,7 +26,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { ReducedMotionProvider } from '@providers/ReducedMotionProvider';
 import { mockReducedMotion, resetMatchMedia } from '@/test/matchMedia';
 import { caseStudies } from '@data/caseStudies';
-import { services } from '@data/services';
 import { team } from '@data/team';
 import HomePage from './HomePage';
 
@@ -86,7 +85,6 @@ describe('HomePage', () => {
       'Problems',
       'Philosophy',
       'Featured work', // Portfolio preview
-      'Services',
       'Why Ryze', // Why Us
       'Team',
     ];
@@ -127,19 +125,6 @@ describe('HomePage', () => {
     const cards = within(preview).getAllByRole('link', { name: /.+/ });
     // One "View all work" link + one link per featured card.
     expect(cards.length).toBe(featured.length + 1);
-  });
-
-  it('renders all four service cards (Requirement 6.3 context)', () => {
-    renderHome();
-    const servicesRegion = screen.getByRole('region', { name: 'Services' });
-    for (const service of services) {
-      expect(
-        within(servicesRegion).getByRole('heading', {
-          level: 3,
-          name: service.name,
-        }),
-      ).toBeInTheDocument();
-    }
   });
 
   it('renders the Why-Us metric values via AnimatedCounter (Requirement 6.3)', () => {

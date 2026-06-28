@@ -17,19 +17,27 @@
  * SSR/jsdom safe: the GSAP setup only runs in a browser layout effect; under
  * the reduced-motion branch (used in tests) it renders static markup.
  */
-import type { Service } from '@app-types';
 import type { RefObject } from 'react';
 import { useReducedMotion } from '@hooks/useReducedMotion';
 import { useScrollAnimation } from '@hooks/useScrollAnimation';
 import { CapabilityScene, type CapabilityKind } from './CapabilityScene';
 
+/** A single capability shown in the showcase. */
+export interface Capability {
+  /** Scene + identity key. */
+  kind: CapabilityKind;
+  name: string;
+  tagline: string;
+  techStack: string[];
+}
+
 export interface CapabilitiesShowcaseProps {
-  /** The capabilities to walk through (typically the four services). */
-  services: Service[];
+  /** The capabilities to walk through. */
+  capabilities: Capability[];
 }
 
 /** A single capability panel — compact card with index, scene, name, chips. */
-function Panel({ service, index }: { service: Service; index: number }): JSX.Element {
+function Panel({ capability, index }: { capability: Capability; index: number }): JSX.Element {
   return (
     <article
       data-panel=""
@@ -49,18 +57,18 @@ function Panel({ service, index }: { service: Service; index: number }): JSX.Ele
 
       {/* Animated illustration — height-capped so the card fits the viewport. */}
       <div className="flex h-[clamp(104px,19vh,164px)] items-center justify-center rounded-xl border border-ink-600 bg-ink-900 p-3">
-        <CapabilityScene kind={service.slug as CapabilityKind} />
+        <CapabilityScene kind={capability.kind} />
       </div>
 
       <div className="flex flex-col gap-2.5">
         <h3 className="font-display text-[clamp(1.25rem,2vw,1.75rem)] font-bold leading-[1.05] tracking-[-0.01em] text-mist-100">
-          {service.name}
+          {capability.name}
         </h3>
         <p className="font-sans text-sm leading-snug text-mist-300">
-          {service.tagline}
+          {capability.tagline}
         </p>
         <ul className="mt-0.5 flex flex-wrap gap-1.5">
-          {service.techStack.slice(0, 4).map((tech) => (
+          {capability.techStack.slice(0, 4).map((tech) => (
             <li
               key={tech}
               className="rounded-full border border-ink-600 px-2.5 py-0.5 font-mono text-[0.625rem] text-mist-300"
@@ -75,7 +83,7 @@ function Panel({ service, index }: { service: Service; index: number }): JSX.Ele
 }
 
 export function CapabilitiesShowcase({
-  services,
+  capabilities,
 }: CapabilitiesShowcaseProps): JSX.Element {
   const reducedMotion = useReducedMotion();
 
@@ -116,11 +124,11 @@ export function CapabilitiesShowcase({
             What we build
           </p>
           <h2 className="mt-5 max-w-[16ch] font-display text-[clamp(2rem,5vw,4rem)] font-bold leading-[0.98] tracking-[-0.02em] text-mist-100">
-            Four disciplines, one standard.
+            Five disciplines, one standard.
           </h2>
-          <div className="mt-12 grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((service, index) => (
-              <Panel key={service.slug} service={service} index={index} />
+          <div className="mt-12 grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {capabilities.map((capability, index) => (
+              <Panel key={capability.kind} capability={capability} index={index} />
             ))}
           </div>
         </div>
@@ -134,7 +142,7 @@ export function CapabilitiesShowcase({
               What we build
             </p>
             <h2 className="mt-2 max-w-[18ch] font-display text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-[1] tracking-[-0.02em] text-mist-100">
-              Four disciplines, one standard.
+              Five disciplines, one standard.
             </h2>
           </div>
           <div className="flex min-h-0 flex-1 items-center pb-8">
@@ -142,8 +150,8 @@ export function CapabilitiesShowcase({
               data-track=""
               className="flex gap-6 px-6 will-change-transform sm:gap-8 sm:px-10"
             >
-              {services.map((service, index) => (
-                <Panel key={service.slug} service={service} index={index} />
+              {capabilities.map((capability, index) => (
+                <Panel key={capability.kind} capability={capability} index={index} />
               ))}
               {/* Trailing spacer so the last panel can rest fully in view. */}
               <div aria-hidden="true" className="w-[6vw] shrink-0" />
