@@ -183,14 +183,14 @@ export function HomePage(): JSX.Element {
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
       <main>
-        {/* ── Layer 1 — Hero (z:10) ─────────────────────────────────────────── */}
-        <StackSection zIndex={10} isFirst>
+        {/* ── Layer 1 — Hero (z:10) — overlap pin so Problems slides over it ── */}
+        <StackSection zIndex={10} isFirst overlap>
           <Hero headline="Design. Develop. Grow." />
           <PremiumMarquee />
         </StackSection>
 
-        {/* ── Layer 2 — Problems (z:20) ─────────────────────────────────────── */}
-        <StackSection zIndex={20}>
+        {/* ── Layer 2 — Problems (z:20) — overlap pin so Philosophy slides over */}
+        <StackSection zIndex={20} overlap>
           <section
             aria-label="Problems"
             className="w-full bg-ink-900"
