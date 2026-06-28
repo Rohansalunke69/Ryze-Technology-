@@ -63,11 +63,12 @@ describe('ServicesPage', () => {
     renderPage();
 
     expect(services).toHaveLength(5);
+    const servicesRegion = screen.getByRole('region', { name: 'Services' });
     for (const service of services) {
       expect(
-        screen.getAllByRole('heading', { level: 3, name: service.name })[0],
+        within(servicesRegion).getByRole('heading', { level: 3, name: service.name }),
       ).toBeInTheDocument();
-      const link = screen.getByRole('link', {
+      const link = within(servicesRegion).getByRole('link', {
         name: `Learn more about ${service.name}`,
       });
       expect(link).toHaveAttribute('href', `/services/${service.slug}`);

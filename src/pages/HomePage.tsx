@@ -50,7 +50,6 @@ import { ServiceCard } from '@components/ServiceCard';
 import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
-import { services } from '@data/services';
 import { team } from '@data/team';
 import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
@@ -126,22 +125,40 @@ const PROBLEMS: ReadonlyArray<{ title: string; detail: string }> = [
 const METRICS = studioMetrics.slice(0, 3);
 
 /**
- * The disciplines shown in the pinned "What we build" showcase: the four
- * software services plus the studio's social media marketing offering.
+ * The disciplines shown in the pinned "What we build" showcase. These are the
+ * technical capabilities (each with its own animated scene), authored
+ * independently of the service catalogue so the showcase scenes stay stable.
  */
 const CAPABILITIES: ReadonlyArray<Capability> = [
-  ...services.map((s) => ({
-    kind: s.slug as Capability['kind'],
-    name: s.name,
-    tagline: s.tagline,
-    techStack: s.techStack,
-  })),
+  {
+    kind: 'websites',
+    name: 'Web Platforms',
+    tagline: 'Fast, accessible websites, storefronts, and web apps that convert.',
+    techStack: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
+  },
+  {
+    kind: 'mobile-apps',
+    name: 'Mobile Apps',
+    tagline: 'Native-quality iOS and Android apps from one codebase.',
+    techStack: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
+  },
+  {
+    kind: 'desktop',
+    name: 'Dashboards & Systems',
+    tagline: 'Admin panels, dashboards, and the back-end systems that run a business.',
+    techStack: ['Node.js', 'PostgreSQL', 'Prisma', 'Redis'],
+  },
+  {
+    kind: 'business-systems',
+    name: 'Automation & APIs',
+    tagline: 'Workflow automation and integrations that remove manual busywork.',
+    techStack: ['APIs', 'Webhooks', 'Automation', 'Integrations'],
+  },
   {
     kind: 'social-media-marketing',
-    name: 'Social Media Marketing',
-    tagline:
-      'Content, campaigns, and community management that grow your brand and turn attention into customers.',
-    techStack: ['Strategy', 'Content', 'Campaigns', 'Analytics'],
+    name: 'Digital Marketing',
+    tagline: 'SEO, social, ads, and campaigns that turn attention into customers.',
+    techStack: ['SEO', 'Social', 'Ads', 'Analytics'],
   },
 ];
 

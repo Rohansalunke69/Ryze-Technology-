@@ -17,7 +17,8 @@ export type CapabilityKind =
   | 'design'
   | 'digital-marketing'
   | 'sales-strategy'
-  | 'maintenance-support';
+  | 'maintenance-support'
+  | 'social-media-marketing';
 
 export interface CapabilitySceneProps {
   kind: CapabilityKind;
@@ -156,6 +157,7 @@ const SCENES: Record<CapabilityKind, () => JSX.Element> = {
   'digital-marketing': DesktopScene,
   'sales-strategy': SystemsScene,
   'maintenance-support': SystemsScene,
+  'social-media-marketing': SocialScene,
 };
 
 export function CapabilityScene({ kind, className }: CapabilitySceneProps): JSX.Element {

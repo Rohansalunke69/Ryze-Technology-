@@ -187,26 +187,21 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.96 }}
               transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="flex w-[min(92vw,17.5rem)] flex-col rounded-xl border border-ink-600 bg-white p-2 shadow-[0_28px_70px_-18px_rgba(10,10,8,0.45)] ring-1 ring-black/5"
+              className="flex w-[min(92vw,21rem)] flex-col rounded-2xl border border-ink-600 bg-ink-800 p-2 shadow-[0_28px_70px_-18px_rgba(10,10,8,0.45)] ring-1 ring-black/5"
             >
               {item.children.map((child, index) => (
                 <li key={`${child.label}-${child.path}`} role="none">
                   {index > 0 ? (
-                    <div
-                      aria-hidden="true"
-                      className="mx-2 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent"
-                    />
+                    <div aria-hidden="true" className="mx-2 my-0.5 h-px bg-black/25" />
                   ) : null}
                   <Link
                     role="menuitem"
                     to={child.path}
                     data-cursor="link"
-                    className="flex h-full flex-col gap-1 rounded-lg border border-transparent px-3.5 py-2.5 transition-colors hover:border-ink-600 hover:bg-ink-700 focus-visible:border-ink-600 focus-visible:bg-ink-700"
+                    className="block rounded-lg px-4 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors duration-150 hover:bg-ink-700 hover:text-pulse-500 focus-visible:bg-ink-700 focus-visible:text-pulse-500"
                     onClick={() => setOpen(false)}
                   >
-                    <span className="font-mono text-sm font-medium tracking-wide text-mist-100">
-                      {child.label}
-                    </span>
+                    {child.label}
                   </Link>
                 </li>
               ))}

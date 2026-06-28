@@ -67,6 +67,44 @@ function ServiceIcon({ name }: { name: string }): JSX.Element {
           <path d="M10 6.5h4a3 3 0 0 1 3 3V14" />
         </svg>
       );
+    case 'code':
+      return (
+        <svg {...common}>
+          <path d="m8 6-6 6 6 6" />
+          <path d="m16 6 6 6-6 6" />
+        </svg>
+      );
+    case 'palette':
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="8.5" cy="9.5" r="1.2" />
+          <circle cx="15.5" cy="9.5" r="1.2" />
+          <circle cx="9.5" cy="15.5" r="1.2" />
+          <path d="M12 21a3 3 0 0 0 0-6" />
+        </svg>
+      );
+    case 'megaphone':
+      return (
+        <svg {...common}>
+          <path d="M3 11v2a1 1 0 0 0 1 1h2l9 5V5L6 10H4a1 1 0 0 0-1 1Z" />
+          <path d="M18 8a4 4 0 0 1 0 8" />
+        </svg>
+      );
+    case 'target':
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="5" />
+          <circle cx="12" cy="12" r="1.5" />
+        </svg>
+      );
+    case 'wrench':
+      return (
+        <svg {...common}>
+          <path d="M15 6a4 4 0 0 0-5.4 4.6L4 16.2 6.8 19l5.6-5.6A4 4 0 0 0 18 9l-2.5 2.5L13 9l2.5-2.5A4 4 0 0 0 15 6Z" />
+        </svg>
+      );
     default:
       return (
         <svg {...common}>

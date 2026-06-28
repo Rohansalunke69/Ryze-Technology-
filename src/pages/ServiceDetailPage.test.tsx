@@ -51,12 +51,12 @@ describe('ServiceDetailPage', () => {
     ).toBeInTheDocument();
 
     // A feature from the development service (Requirement 10.1).
-    expect(screen.getByText('Custom Web Applications')).toBeInTheDocument();
+    expect(screen.getByText('Custom Web Application Development')).toBeInTheDocument();
 
     // A FAQ question rendered as an accordion trigger (Requirements 10.1, 10.3).
     expect(
       screen.getByRole('button', {
-        name: /How long does a development project take/i,
+        name: /How long does a typical project take/i,
       }),
     ).toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe('ServiceDetailPage', () => {
     renderAt('/services/development');
 
     const trigger = screen.getByRole('button', {
-      name: /How long does a development project take/i,
+      name: /How long does a typical project take/i,
     });
 
     // Collapsed by default.

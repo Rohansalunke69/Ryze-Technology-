@@ -51,7 +51,7 @@ const caseStudy: CaseStudy = {
   title: 'Atlas Platform',
   client: 'Atlas Corp',
   category: 'systems',
-  services: ['business-systems'],
+  services: ['development'],
   year: 2024,
   role: 'Design & Engineering',
   featured: false,
@@ -71,7 +71,7 @@ const service: Service = {
   slug: 'development',
   name: 'Development',
   tagline: 'Fast, accessible sites.',
-  icon: 'globe',
+  icon: 'code',
   order: 1,
   summary: 'Summary text.',
   whatWeDo: 'w',
@@ -149,7 +149,7 @@ describe('ServiceCard', () => {
     renderCard(<ServiceCard service={service} />);
     expect(screen.getByRole('heading', { name: 'Development' })).toBeInTheDocument();
     expect(screen.getByText('Fast, accessible sites.')).toBeInTheDocument();
-    const link = screen.getByRole('link', { name: /learn more about Development/i });
+    const link = screen.getByRole('link', { name: /learn more about development/i });
     expect(link).toHaveAttribute('href', '/services/development');
     expect(link).toHaveAttribute('data-cursor', 'link');
   });

@@ -91,7 +91,7 @@ describe('Navigation — accessibility (Req 1.3, 2.3, 2.4, 2.5, 38.4)', () => {
 
     expect(servicesToggle).toHaveAttribute('aria-expanded', 'false');
     expect(
-      screen.queryByRole('menuitem', { name: /mobile apps/i }),
+      screen.queryByRole('menuitem', { name: /digital marketing/i }),
     ).not.toBeInTheDocument();
 
     servicesToggle.focus();
@@ -99,7 +99,7 @@ describe('Navigation — accessibility (Req 1.3, 2.3, 2.4, 2.5, 38.4)', () => {
       expect(servicesToggle).toHaveAttribute('aria-expanded', 'true');
     });
     expect(
-      screen.getByRole('menuitem', { name: /mobile apps/i }),
+      screen.getByRole('menuitem', { name: /digital marketing/i }),
     ).toBeInTheDocument();
   });
 

@@ -84,7 +84,7 @@ const APPROACH_STATS: ReadonlyArray<{
   decimals?: number;
   label: string;
 }> = [
-  { value: 4, label: 'Core disciplines' },
+  { value: 5, label: 'Service categories' },
   { value: 100, suffix: '%', label: 'In-house engineering' },
   { value: 2, suffix: ' wk', label: 'To first working slice' },
   { value: 99.9, suffix: '%', decimals: 1, label: 'Uptime we hold' },

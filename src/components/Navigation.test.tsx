@@ -69,14 +69,14 @@ describe('Navigation — desktop', () => {
 
     // Collapsed by default: children are not in the DOM.
     expect(servicesToggle).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('menuitem', { name: /mobile apps/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('menuitem', { name: /digital marketing/i })).not.toBeInTheDocument();
 
     // Focusing the parent opens the disclosure and reveals children.
     servicesToggle.focus();
     await waitFor(() => {
       expect(servicesToggle).toHaveAttribute('aria-expanded', 'true');
     });
-    expect(screen.getByRole('menuitem', { name: /mobile apps/i })).toBeInTheDocument();
+    expect(screen.getByRole('menuitem', { name: /digital marketing/i })).toBeInTheDocument();
   });
 
   it('renders the Contact item as a CTA linking to /contact (Req 1.4)', () => {
