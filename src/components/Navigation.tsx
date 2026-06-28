@@ -163,7 +163,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
         aria-expanded={open}
         aria-controls={menuId}
         data-cursor="link"
-        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-base tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
         onClick={() => setOpen((prev) => !prev)}
       >
         {item.label}
@@ -245,7 +245,7 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
             <NavLink
               to={item.path ?? '/'}
               data-cursor="link"
-              className="inline-flex items-center px-3 py-2 font-mono text-base tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+              className="inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
             >
               {item.label}
             </NavLink>
@@ -397,7 +397,7 @@ export function Navigation({
     >
       <nav
         aria-label="Primary"
-        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3"
+        className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2"
       >
         <Link
           to="/"
@@ -405,7 +405,7 @@ export function Navigation({
           aria-label="Ryze Technology home"
           className="transition-opacity hover:opacity-80 focus-visible:opacity-80"
         >
-          <Logo variant="full" height={42} />
+          <Logo variant="full" height={32} />
         </Link>
 
         {isMobile ? (
