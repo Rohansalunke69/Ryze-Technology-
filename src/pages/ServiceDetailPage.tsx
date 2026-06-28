@@ -124,68 +124,6 @@ function FAQAccordion({ service }: FAQAccordionProps): JSX.Element {
   );
 }
 
-function ServiceIcon({ name, className }: { name: string; className?: string }): JSX.Element {
-  const common = {
-    className: className ?? 'w-4 h-4',
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.5,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    'aria-hidden': true,
-  };
-
-  switch (name) {
-    case 'code':
-      return (
-        <svg {...common}>
-          <path d="m8 6-6 6 6 6" />
-          <path d="m16 6 6 6-6 6" />
-        </svg>
-      );
-    case 'palette':
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="8.5" cy="9.5" r="1.2" />
-          <circle cx="15.5" cy="9.5" r="1.2" />
-          <circle cx="9.5" cy="15.5" r="1.2" />
-          <path d="M12 21a3 3 0 0 0 0-6" />
-        </svg>
-      );
-    case 'megaphone':
-    case 'globe':
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M3 12h18" />
-          <path d="M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" />
-        </svg>
-      );
-    case 'target':
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="5" />
-          <circle cx="12" cy="12" r="1.5" />
-        </svg>
-      );
-    case 'wrench':
-      return (
-        <svg {...common}>
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-        </svg>
-      );
-    default:
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="12" r="10" />
-        </svg>
-      );
-  }
-}
-
 export function ServiceDetailPage(): JSX.Element {
   const { slug } = useParams<{ slug: ServiceKey }>();
   const service = slug ? resolveBySlug(services, slug) : undefined;
@@ -195,7 +133,6 @@ export function ServiceDetailPage(): JSX.Element {
   }
 
   const relatedCaseStudies = getCaseStudiesByService(caseStudies, service.slug);
-  const processSteps = [...service.process].sort((a, b) => a.index - b.index);
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-24 px-6 pb-24 pt-[clamp(7rem,16vh,10rem)]">
@@ -205,7 +142,7 @@ export function ServiceDetailPage(): JSX.Element {
         <Breadcrumb />
 
         {/* Hero */}
-        <AnimationWrapper variant="rise" speed="slow">
+        <AnimationWrapper variant="rise">
           <header className="relative flex flex-col gap-6 items-center text-center mt-4 py-8">
             {/* Attractive Background Glow to fill empty space */}
             <div className="absolute inset-0 -z-10 flex items-center justify-center">
@@ -223,7 +160,7 @@ export function ServiceDetailPage(): JSX.Element {
       </div>
 
       {/* What we do */}
-      <AnimationWrapper variant="fade" speed="slow">
+      <AnimationWrapper variant="fade">
         <section className="flex flex-col gap-6 lg:gap-10">
           <SectionHeader eyebrow="What we do" title={`How we approach ${service.name}`} />
           <div className="relative border-l-4 border-pulse-500 pl-6 lg:pl-8 py-2 max-w-5xl">
@@ -258,7 +195,7 @@ export function ServiceDetailPage(): JSX.Element {
 
       {/* Related case studies */}
       {service.slug === 'development' ? (
-        <AnimationWrapper variant="rise" speed="slow">
+        <AnimationWrapper variant="rise">
           <section className="flex flex-col gap-10 items-center text-center">
             <SectionHeader eyebrow="Proof" title="Our Work Speaks for Itself" align="center" />
             <div className="flex flex-col items-center gap-10 w-full max-w-5xl rounded-[40px] border border-pulse-500/20 bg-gradient-to-b from-pulse-500/10 to-transparent p-12 lg:p-20 shadow-xl shadow-pulse-500/5">
@@ -308,7 +245,7 @@ export function ServiceDetailPage(): JSX.Element {
       </AnimationWrapper>
 
       {/* CTA */}
-      <AnimationWrapper variant="fade" speed="slow">
+      <AnimationWrapper variant="fade">
         {service.slug === 'development' ? (
           <CTA
             eyebrow="START A PROJECT"
