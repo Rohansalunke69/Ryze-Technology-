@@ -124,17 +124,23 @@ export function HomePage(): JSX.Element {
                 {PROBLEMS.map((problem, index) => (
                   <li
                     key={problem.title}
-                    className="glow-card grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8 transition-all duration-300 hover:border-pulse-500/30"
+                    className="group grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8 transition-all duration-300"
                   >
                     <span
                       aria-hidden="true"
-                      className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)]"
+                      className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)] transition-colors duration-300 group-hover:text-pulse-500"
                     >
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <div className="flex flex-col gap-3 pt-1">
                       <h3 className="font-display text-h3 font-semibold text-mist-100">
-                        {problem.title}
+                        <span className="relative inline-block">
+                          {problem.title}
+                          <span
+                            className="absolute left-0 top-1/2 h-[2px] w-0 bg-pulse-500 transition-all duration-300 ease-out group-hover:w-full"
+                            aria-hidden="true"
+                          />
+                        </span>
                       </h3>
                       <p className="max-w-md font-sans text-body text-mist-300 leading-relaxed">
                         {problem.detail}
