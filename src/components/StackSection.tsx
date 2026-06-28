@@ -140,7 +140,7 @@ export const StackSection = forwardRef<HTMLDivElement, StackSectionProps>(
             ...(isFirst
               ? {}
               : {
-                  background:   'var(--ink-900)',
+                  background:   cardBackground ?? 'var(--ink-900)',
                   borderRadius: '24px 24px 0 0',
                   overflow:     'hidden',
                   boxShadow:    '0 -20px 60px rgba(0,0,0,0.12)',
