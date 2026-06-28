@@ -76,11 +76,11 @@ const MID_SPECS: CardSpec[] = [
     height: 220,
     initPos: (W, _H) => ({ x: W * 0.42, y: -240, rotation: 0, scale: 1 }),
     buildTl: (el, W, H) =>
-      gsap.timeline({ repeat: -1, delay: 18 })
+      gsap.timeline({ repeat: -1, delay: 8 })
         .set(el,  { x: W * 0.42,  y: -240,     rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.55,  y: H * 0.20, rotation:  7, scale: 1.00, duration: 15, ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.28,  y: H * 0.52, rotation: -9, scale: 1.05, duration: 18, ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.46,  y: H + 240,  rotation:  4, scale: 0.98, duration: 16, ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.55,  y: H * 0.20, rotation:  7, scale: 1.00, duration: 6,  ease: 'sine.inOut' })
+        .to(el,   { x: W * 0.28,  y: H * 0.52, rotation: -9, scale: 1.05, duration: 7,  ease: 'sine.inOut' })
+        .to(el,   { x: W * 0.46,  y: H + 240,  rotation:  4, scale: 0.98, duration: 6,  ease: 'sine.inOut' }),
   },
 ];
 
