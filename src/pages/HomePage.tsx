@@ -185,19 +185,8 @@ export function HomePage(): JSX.Element {
         {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
         <Hero headline="Design. Develop. Grow." />
 
-        {/* Kinetic marquee band — full-bleed brand statement strip. */}
-        <div className="overflow-hidden border-y border-ink-600 bg-ink-800 py-5">
-          <div className="font-display text-[clamp(1.75rem,5vw,4rem)] font-bold uppercase tracking-tight text-mist-100">
-            <MarqueeText
-              items={[
-                'Built to last',
-                'Engineered permanence',
-                'Web — Mobile — Systems',
-                'Ryze Technology',
-              ]}
-            />
-          </div>
-        </div>
+        {/* Premium marquee strip */}
+        <PremiumMarquee />
 
       {/* 2 — Problems: "software that rots". */}
       <section
