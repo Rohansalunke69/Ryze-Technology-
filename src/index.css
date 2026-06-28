@@ -462,3 +462,24 @@ body::before {
   50% { transform: translateY(-6px); }
 }
 .scene-float { animation: scene-float 6s ease-in-out infinite; }
+
+/* Custom Glassmorphism Card Effect from User Request */
+.glass-card {
+  box-sizing: border-box;
+  background: rgba(244, 243, 237, 0.7); /* Warm cream color from user image */
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+}
+
+.glass-card:hover {
+  border: 1px solid var(--pulse-500);
+  transform: scale(1.03);
+}
+
+.glass-card:active {
+  transform: scale(0.95) rotateZ(1.7deg);
+}

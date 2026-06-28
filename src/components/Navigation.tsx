@@ -49,6 +49,20 @@ export interface NavigationProps {
    * switches to a solid background once the visitor scrolls (Requirement 1.5).
    */
   transparentUntilScroll?: boolean;
+  /**
+   * When enabled the header is HIDDEN over the full-screen hero and only
+   * reveals (sliding down from the top) once the visitor scrolls past the hero,
+   * re-hiding when they scroll back up into it. Used on the homepage so the
+   * immersive hero owns the first viewport. No-op on pages without a hero.
+   */
+  hideUntilScrolled?: boolean;
+  /**
+   * Signals that the page's top region (behind a transparent header) is a dark
+   * surface — e.g. the homepage hero. When true, the brand logo flips to its
+   * white monochrome variant while the header is transparent, then back to the
+   * default lockup once the header turns solid (light). No-op on light pages.
+   */
+  heroIsDark?: boolean;
 }
 
 /** Path the Contact CTA links to (Requirement 1.4). */
@@ -92,6 +106,81 @@ function useScrolledPastTop(enabled: boolean): boolean {
 }
 
 /**
+ * Tracks whether the visitor has scrolled past the full-screen hero. Returns
+ * `true` once `scrollY` crosses ~one viewport (minus the header height), which
+ * is the cue to reveal the header. When `enabled` is false the header is always
+ * considered "revealed" (normal pages). SSR/jsdom-safe.
+ */
+function useScrolledPastHero(enabled: boolean): boolean {
+  const computeThreshold = (): number =>
+    typeof window === 'undefined' ? 0 : Math.max(0, window.innerHeight - 72);
+
+  const [past, setPast] = useState<boolean>(() => {
+    if (!enabled || typeof window === 'undefined') return true;
+    return window.scrollY >= computeThreshold();
+  });
+
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') {
+      setPast(true);
+      return undefined;
+    }
+    const update = (): void => {
+      setPast(window.scrollY >= computeThreshold());
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [enabled]);
+
+  return enabled ? past : true;
+}
+
+/**
+ * Tracks whether a dark section (any element tagged `data-nav-dark`, e.g. the
+ * footer) currently sits under the top header band — the cue to flip the header
+ * to its light-on-dark treatment. Recomputes on scroll/resize. SSR/jsdom-safe.
+ */
+function useOverDarkSection(): boolean {
+  const [overDark, setOverDark] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const update = (): void => {
+      const vh = window.innerHeight || 0;
+      let dark = false;
+      const els = document.querySelectorAll<HTMLElement>('[data-nav-dark]');
+      for (const el of Array.from(els)) {
+        const r = el.getBoundingClientRect();
+        // Adopt the dark treatment once a dark section is prominently in view —
+        // i.e. its top has scrolled above ~60% of the viewport while it is
+        // still on screen. This fires as the footer rises into view near the
+        // bottom of the page (the header itself sits over it only if it were
+        // full-height, so we key off visibility instead of the top band).
+        if (r.bottom > 0 && r.top < vh * 0.6) {
+          dark = true;
+          break;
+        }
+      }
+      setOverDark(dark);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  return overDark;
+}
+
+/**
  * Scroll progress in [0,1] across the first `max` pixels of the page. Drives the
  * header underline color morph (black → brand blue) as the visitor scrolls.
  */
@@ -129,7 +218,7 @@ function underlineColor(progress: number): string {
  * keyboard focus, exposing a disclosure button with `aria-haspopup` /
  * `aria-expanded` so the menu is reachable and announced (Requirement 1.3).
  */
-function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } }): JSX.Element {
+function DesktopDropdown({ item, dark }: { item: NavItem & { children: NavChild[] }; dark: boolean }): JSX.Element {
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const containerRef = useRef<HTMLLIElement>(null);
@@ -164,7 +253,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
         aria-expanded={open}
         aria-controls={menuId}
         data-cursor="link"
-        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+        className={`inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 ${dark ? 'text-white' : 'text-mist-100'}`}
         onClick={() => setOpen((prev) => !prev)}
       >
         {item.label}
@@ -214,7 +303,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
 }
 
 /** Desktop / tablet inline navigation row. */
-function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
+function DesktopNav({ items, dark }: { items: NavItem[]; dark: boolean }): JSX.Element {
   return (
     <ul className="hidden items-center gap-2 md:flex">
       {items.map((item) => {
@@ -234,7 +323,7 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
         }
 
         if (isDropdownParent(item)) {
-          return <DesktopDropdown key={item.label} item={item} />;
+          return <DesktopDropdown key={item.label} item={item} dark={dark} />;
         }
 
         return (
@@ -242,7 +331,7 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
             <NavLink
               to={item.path ?? '/'}
               data-cursor="link"
-              className="inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+              className={`inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 ${dark ? 'text-white' : 'text-mist-100'}`}
             >
               {item.label}
             </NavLink>
@@ -357,6 +446,8 @@ function MobileMenu({
 export function Navigation({
   items = defaultNavItems,
   transparentUntilScroll = false,
+  hideUntilScrolled = false,
+  heroIsDark = false,
 }: NavigationProps): JSX.Element {
   const category = useViewportCategory();
   const isMobile = category === 'mobile';
@@ -384,13 +475,41 @@ export function Navigation({
   const solid = !transparentUntilScroll || scrolled || menuOpen;
   const scrollProgress = useScrollProgress();
 
+  // Homepage: hide the header over the hero, reveal it (slide down) once the
+  // visitor scrolls past the first viewport, re-hide on scroll back up.
+  const pastHero = useScrolledPastHero(hideUntilScrolled);
+  const hidden = hideUntilScrolled && !pastHero;
+  const overDark = useOverDarkSection();
+  // When the hero-reveal mode is on, the header is solid the moment it appears
+  // (it now sits over page content, never over the hero).
+  const isSolid = hideUntilScrolled ? pastHero : solid;
+
+  // The header adopts a dark treatment whenever it sits over a dark surface — a
+  // dark section under the header band (e.g. the footer) or while transparent
+  // over the dark hero — flipping the logo, links, and bar to light-on-dark.
+  const darkTheme = overDark || (!isSolid && heroIsDark);
+  const logoTone: 'default' | 'light' = darkTheme ? 'light' : 'default';
+
+  const surfaceClass = darkTheme
+    ? 'bg-mist-100/80 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(0,0,0,0.6)]'
+    : isSolid
+      ? 'bg-ink-700/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]'
+      : 'bg-transparent';
+
   return (
     <header
-      style={{ borderBottomColor: underlineColor(scrollProgress) }}
+      data-nav-theme={darkTheme ? 'dark' : 'light'}
+      style={{
+        borderBottomColor: underlineColor(scrollProgress),
+        transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
+        opacity: hidden ? 0 : 1,
+      }}
       className={[
-        'fixed inset-x-0 top-0 z-50 w-full border-b transition-colors duration-300',
-        solid ? 'bg-ink-700/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]' : 'bg-transparent',
-      ].join(' ')}
+        'fixed inset-x-0 top-0 z-50 w-full border-b',
+        'transition-[transform,opacity,background-color,border-color] duration-300 ease-out motion-reduce:transition-none',
+        hidden ? 'pointer-events-none' : '',
+        surfaceClass,
+      ].filter(Boolean).join(' ')}
     >
       <nav
         aria-label="Primary"
@@ -402,7 +521,7 @@ export function Navigation({
           aria-label="Ryze Technology home"
           className="transition-opacity hover:opacity-80 focus-visible:opacity-80"
         >
-          <Logo variant="full" height={32} />
+          <Logo variant="full" height={32} tone={logoTone} />
         </Link>
 
         {isMobile ? (
@@ -413,7 +532,7 @@ export function Navigation({
             aria-expanded={menuOpen}
             aria-controls={menuId}
             data-cursor="link"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 md:hidden"
+            className={`inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 md:hidden ${darkTheme ? 'text-white' : 'text-mist-100'}`}
             onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
           >
             <svg
@@ -441,7 +560,7 @@ export function Navigation({
             </svg>
           </button>
         ) : (
-          <DesktopNav items={items} />
+          <DesktopNav items={items} dark={darkTheme} />
         )}
       </nav>
 

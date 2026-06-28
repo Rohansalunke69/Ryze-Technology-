@@ -133,6 +133,22 @@ export function Hero({ headline }: HeroProps): JSX.Element {
         />
       </div>
 
+      {/* Top meta row — studio identity · location · coordinates. Styled for
+          the dark hero (brand-blue marker, muted-white mono text, hairline
+          connectors). Collapses gracefully on small screens. */}
+      <div className="absolute inset-x-0 top-0 z-10 mx-auto w-full max-w-site px-6 pt-20 sm:px-10">
+        <div className="flex items-center gap-4 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-white/55">
+          <span className="flex items-center gap-2 whitespace-nowrap text-white/75">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-pulse-500" />
+            Ryze Technology
+          </span>
+          <span aria-hidden="true" className="hidden h-px flex-1 bg-white/15 sm:block" />
+          <span className="hidden whitespace-nowrap md:inline">Software Studio · Nagpur, IN</span>
+          <span aria-hidden="true" className="hidden h-px flex-1 bg-white/15 sm:block" />
+          <span className="hidden whitespace-nowrap sm:inline">21.15°N 79.09°E</span>
+        </div>
+      </div>
+
       {/* Hero content — always DOM, always sharp, always on top of canvas. */}
       <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-28 pt-32 text-center sm:px-10">
         {/*

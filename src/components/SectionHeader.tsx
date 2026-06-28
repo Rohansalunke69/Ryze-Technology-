@@ -49,15 +49,17 @@ export function SectionHeader({
   const headingClasses = [
     'font-display text-mist-100',
     HEADING_SIZE[as],
-    centered ? 'max-w-3xl' : 'max-w-2xl',
+    centered ? 'max-w-5xl' : 'max-w-4xl',
   ].join(' ');
 
   return (
     <div className={containerClasses}>
       {eyebrow !== undefined && eyebrow.length > 0 ? (
-        <p className="font-mono text-mono-eyebrow uppercase tracking-widest text-pulse-500">
-          {eyebrow}
-        </p>
+        <div className="inline-flex items-center justify-center rounded-full border border-pulse-500/20 bg-pulse-500/10 px-5 py-2 mb-3 shadow-sm">
+          <span className="font-mono text-base font-extrabold uppercase tracking-[0.2em] text-pulse-500">
+            {eyebrow}
+          </span>
+        </div>
       ) : null}
       <SplitText as={as} text={title} by="word" className={headingClasses} />
     </div>

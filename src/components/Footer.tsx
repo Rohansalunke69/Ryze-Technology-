@@ -95,6 +95,7 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
   return (
     <footer
       role="contentinfo"
+      data-nav-dark=""
       className="bg-mist-100 text-mist-300"
     >
       {/* Main: brand + contact block, then the link columns. */}
