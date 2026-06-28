@@ -59,10 +59,10 @@ describe('ServicesPage', () => {
     expect(h1.tagName).toBe('H1');
   });
 
-  it('renders all four service entities as cards with Learn More links (Req 9.1)', () => {
+  it('renders all five service entities as cards with Learn More links (Req 9.1)', () => {
     renderPage();
 
-    expect(services).toHaveLength(4);
+    expect(services).toHaveLength(5);
     for (const service of services) {
       expect(
         screen.getByRole('heading', { level: 3, name: service.name }),

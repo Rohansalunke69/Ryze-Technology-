@@ -8,7 +8,7 @@ export type Slug = string;
 export type ISODate = string;
 
 /** Canonical service identifiers (also used as service detail route slugs). */
-export type ServiceKey = 'websites' | 'mobile-apps' | 'desktop' | 'business-systems';
+export type ServiceKey = 'development' | 'design' | 'digital-marketing' | 'sales-strategy' | 'maintenance-support';
 
 /** Portfolio filter categories. */
 export type PortfolioCategory = 'websites' | 'mobile' | 'systems';

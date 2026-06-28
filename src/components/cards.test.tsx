@@ -68,8 +68,8 @@ const caseStudy: CaseStudy = {
 };
 
 const service: Service = {
-  slug: 'websites',
-  name: 'Websites',
+  slug: 'development',
+  name: 'Development',
   tagline: 'Fast, accessible sites.',
   icon: 'globe',
   order: 1,
@@ -79,7 +79,7 @@ const service: Service = {
   techStack: [],
   process: [],
   faqs: [],
-  seo: { title: 't', description: 'd', canonical: 'https://ryze.test/services/websites' },
+  seo: { title: 't', description: 'd', canonical: 'https://ryze.test/services/development' },
 };
 
 const member: TeamMember = {
@@ -147,10 +147,10 @@ describe('CaseStudyCard', () => {
 describe('ServiceCard', () => {
   it('renders name, tagline, and a Learn More link to the service', () => {
     renderCard(<ServiceCard service={service} />);
-    expect(screen.getByRole('heading', { name: 'Websites' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Development' })).toBeInTheDocument();
     expect(screen.getByText('Fast, accessible sites.')).toBeInTheDocument();
-    const link = screen.getByRole('link', { name: /learn more about websites/i });
-    expect(link).toHaveAttribute('href', '/services/websites');
+    const link = screen.getByRole('link', { name: /learn more about Development/i });
+    expect(link).toHaveAttribute('href', '/services/development');
     expect(link).toHaveAttribute('data-cursor', 'link');
   });
 });

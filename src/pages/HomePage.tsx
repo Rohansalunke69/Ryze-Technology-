@@ -268,14 +268,14 @@ export function HomePage(): JSX.Element {
       {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
       <FeaturedWork caseStudies={featuredCaseStudies} />
 
-      {/* 5 — Services: the four service cards. */}
+      {/* 5 — Services: the five service cards. */}
       <section
         aria-label="Services"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+        className="section-glow mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
       >
-        <SectionHeader eyebrow="What we do" title="Four ways we build" />
+        <SectionHeader eyebrow="What we do" title="Five ways we build" />
         <AnimationWrapper variant="rise" stagger={0.08}>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {services.map((service, index) => (
               <ServiceCard key={service.slug} service={service} index={index} />
             ))}

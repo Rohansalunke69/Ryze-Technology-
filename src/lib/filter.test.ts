@@ -36,10 +36,11 @@ const BLOG_CATEGORIES: readonly BlogCategory[] = [
 ];
 
 const SERVICE_KEYS: readonly ServiceKey[] = [
-  'websites',
-  'mobile-apps',
-  'desktop',
-  'business-systems',
+  'development',
+  'design',
+  'digital-marketing',
+  'sales-strategy',
+  'maintenance-support',
 ];
 
 // ---------- Minimal arbitraries ----------

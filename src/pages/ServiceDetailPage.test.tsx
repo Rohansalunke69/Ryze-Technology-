@@ -43,29 +43,29 @@ beforeEach(() => {
 
 describe('ServiceDetailPage', () => {
   it('renders the resolved service name, features, and FAQ for a known slug', () => {
-    renderAt('/services/websites');
+    renderAt('/services/development');
 
     // Hero heading is the service name (Requirement 10.1).
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Websites' }),
+      screen.getByRole('heading', { level: 1, name: 'Development' }),
     ).toBeInTheDocument();
 
-    // A feature from the websites service (Requirement 10.1).
-    expect(screen.getByText('Performance-first builds')).toBeInTheDocument();
+    // A feature from the development service (Requirement 10.1).
+    expect(screen.getByText('Custom Web Applications')).toBeInTheDocument();
 
     // A FAQ question rendered as an accordion trigger (Requirements 10.1, 10.3).
     expect(
       screen.getByRole('button', {
-        name: /How long does a website project take/i,
+        name: /How long does a development project take/i,
       }),
     ).toBeInTheDocument();
   });
 
   it('toggles aria-expanded on the FAQ accordion trigger', () => {
-    renderAt('/services/websites');
+    renderAt('/services/development');
 
     const trigger = screen.getByRole('button', {
-      name: /How long does a website project take/i,
+      name: /How long does a development project take/i,
     });
 
     // Collapsed by default.
@@ -83,9 +83,9 @@ describe('ServiceDetailPage', () => {
   });
 
   it('renders related-by-service case study cards (getCaseStudiesByService)', () => {
-    renderAt('/services/websites');
+    renderAt('/services/development');
 
-    // orange-city-grocers lists 'websites' in its services[] (Requirement 10.2).
+    // orange-city-grocers lists 'development' in its services[] (Requirement 10.2).
     const card = screen.getByRole('link', {
       name: /aisle browsers into loyal subscribers/i,
     });
@@ -105,7 +105,7 @@ describe('ServiceDetailPage', () => {
 
     // The resolved-service content must not be present.
     expect(
-      screen.queryByRole('heading', { level: 1, name: 'Websites' }),
+      screen.queryByRole('heading', { level: 1, name: 'Development' }),
     ).not.toBeInTheDocument();
   });
 });
