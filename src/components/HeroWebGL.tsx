@@ -45,7 +45,7 @@ export interface HeroWebGLProps {
 // ---------------------------------------------------------------------------
 
 /** Angular velocity of the card cloud in radians per second. */
-const ORBIT_SPEED = 0.38;
+const ORBIT_SPEED = 0.20;
 
 /**
  * Depth-of-field toggle. When `false` (default) postprocessing is not imported
