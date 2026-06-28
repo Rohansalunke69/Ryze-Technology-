@@ -1,25 +1,17 @@
 /**
- * HeroFallback — high-craft STATIC hero treatment (task 11.2).
+ * HeroFallback — dark static hero background (task 11.2).
  *
- * This is the always-painted hero background layer. It is rendered first by
- * {@link Hero} (Requirement 19.1) and remains the entire visual when the WebGL
- * scene is gated off — under reduced motion (Requirement 19.2), without a
- * WebGL2 context (Requirement 19.3), or when the capability gate fails
- * (Requirement 19.4). When WebGL is allowed it doubles as the pre-WebGL poster
- * that the animated scene cross-fades in over (Requirement 19.6).
+ * The always-painted hero background layer. Rendered first by {@link Hero}
+ * (Requirement 19.1) and remains the sole visual when the WebGL scene is gated
+ * off: under reduced motion (19.2), without WebGL2 (19.3), or when the
+ * capability gate fails (19.4). When WebGL is allowed it doubles as the
+ * pre-WebGL poster that the animated scene cross-fades in over (19.6).
  *
- * The treatment is intentionally lightweight: pure CSS gradient-mesh glows, a
- * subtle SVG grain texture, and faint "blueprint" grid accents. There is NO
- * `<canvas>`, no Three.js, and no heavy/looping motion here, so this module
- * stays in the entry chunk and never pulls in `three`/`@react-three/fiber`
- * (those live only in the lazily-imported {@link HeroWebGL} chunk — task 11.3).
+ * The background treatment is near-black (#060607) with subtle radial glows and
+ * a soft vignette. Under reduced motion, a few static card thumbnails are
+ * rendered as `<img>` elements to preserve the visual concept without motion.
  *
- * If a `poster` ImageAsset is supplied it is painted as a covering background
- * image (with its intrinsic dimensions reserving aspect ratio) beneath the
- * decorative layers; otherwise the CSS mesh alone carries the treatment.
- *
- * The fallback paints only the background canvas area — the headline, eyebrow,
- * subheadline, and CTA are composed on top by {@link Hero}.
+ * No `<canvas>`, no Three.js — this module stays in the entry chunk.
  *
  * _Requirements: 19.1, 19.2, 19.3, 19.4, 19.6_
  */
@@ -29,84 +21,83 @@ import type { ImageAsset } from '@app-types';
 export interface HeroFallbackProps {
   /** Optional poster image painted beneath the CSS treatment. */
   poster?: ImageAsset;
+  /** When true, renders static card thumbnails for reduced-motion users. */
+  reducedMotion?: boolean;
 }
 
-/**
- * Inline data-URI SVG fractal-noise grain. Kept as a data URI so it adds no
- * network request and lives entirely in the entry CSS-in-JS.
- */
-const GRAIN_DATA_URI =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E\")";
+/** Static card images shown for reduced-motion users (4 picks, no animation). */
+const STATIC_CARDS = [
+  { src: '/images/hero/search-ai.jpg',       alt: 'AI-powered search interface',          style: { top: '12%',    left: '6%',   width: '18%', transform: 'rotate(-4deg)' } },
+  { src: '/images/hero/brand-glowup.jpg',    alt: 'Brand glow-up poster',                 style: { top: '28%',    right: '8%',  width: '14%', transform: 'rotate(3deg)'  } },
+  { src: '/images/hero/dev-design.jpg',      alt: 'Development and design work',          style: { bottom: '18%', left: '10%',  width: '15%', transform: 'rotate(2deg)'  } },
+  { src: '/images/hero/team-collab.webp',    alt: 'Team collaboration session',           style: { top: '8%',     right: '14%', width: '13%', transform: 'rotate(-3deg)' } },
+] as const;
 
-export function HeroFallback({ poster }: HeroFallbackProps): JSX.Element {
-  // Optional poster layer — covers the area, reserving aspect ratio via the
-  // intrinsic dimensions carried on the ImageAsset.
+export function HeroFallback({ poster, reducedMotion = false }: HeroFallbackProps): JSX.Element {
   const posterStyle: CSSProperties | undefined =
     poster === undefined
       ? undefined
       : {
-          backgroundImage: `url(${poster.src})`,
-          backgroundSize: 'cover',
+          backgroundImage:    `url(${poster.src})`,
+          backgroundSize:     'cover',
           backgroundPosition: 'center',
-          // Reserve the intrinsic aspect ratio to avoid layout shift (no CLS).
-          aspectRatio: `${poster.width} / ${poster.height}`,
+          aspectRatio:        `${poster.width} / ${poster.height}`,
         };
 
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden bg-ink-900"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{ backgroundColor: '#060607' }}
       data-testid="hero-fallback"
     >
-      {/* Optional poster image beneath the decorative layers. */}
       {posterStyle !== undefined ? (
-        <div
-          className="absolute inset-0 h-full w-full"
-          style={posterStyle}
-        />
+        <div className="absolute inset-0 h-full w-full" style={posterStyle} />
       ) : null}
 
-      {/* Gradient-mesh glows — soft electric-indigo blooms on the paper base. */}
+      {/* Subtle brand-blue radial glow — top-left bloom. */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage: [
-            'radial-gradient(60% 50% at 18% 22%, rgba(33, 86, 201, 0.14), transparent 70%)',
-            'radial-gradient(55% 45% at 82% 30%, rgba(58, 111, 224, 0.12), transparent 72%)',
-            'radial-gradient(70% 60% at 50% 96%, rgba(33, 86, 201, 0.08), transparent 75%)',
+            'radial-gradient(55% 45% at 15% 20%, rgba(33, 86, 201, 0.18), transparent 70%)',
+            'radial-gradient(45% 40% at 85% 28%, rgba(41, 184, 229, 0.10), transparent 72%)',
+            'radial-gradient(60% 50% at 50% 100%, rgba(21, 37, 97, 0.20), transparent 75%)',
           ].join(', '),
         }}
       />
 
-      {/* Blueprint grid accents — faint fine + coarse line grid (ink hairlines). */}
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage: [
-            'linear-gradient(to right, var(--mist-100) 1px, transparent 1px)',
-            'linear-gradient(to bottom, var(--mist-100) 1px, transparent 1px)',
-          ].join(', '),
-          backgroundSize: '64px 64px, 64px 64px',
-          // Fade the grid toward the edges so it reads as an accent, not a wall.
-          maskImage:
-            'radial-gradient(80% 80% at 50% 45%, #000 40%, transparent 100%)',
-          WebkitMaskImage:
-            'radial-gradient(80% 80% at 50% 45%, #000 40%, transparent 100%)',
-        }}
-      />
-
-      {/* Grain texture for tactile depth over the flat gradients. */}
-      <div
-        className="absolute inset-0 opacity-[0.08] mix-blend-multiply"
-        style={{ backgroundImage: GRAIN_DATA_URI }}
-      />
-
-      {/* Bottom fade to paper so composed text settles into the page below. */}
+      {/* Soft vignette behind the center text for headline legibility. */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage:
-            'linear-gradient(to bottom, transparent 45%, rgba(243, 241, 234, 0.85) 100%)',
+            'radial-gradient(ellipse 70% 60% at 50% 48%, transparent 40%, rgba(0,0,0,0.55) 100%)',
+        }}
+      />
+
+      {/* Static card thumbnails for reduced-motion users. */}
+      {reducedMotion
+        ? STATIC_CARDS.map(({ src, alt, style }) => (
+            <img
+              key={src}
+              src={src}
+              alt={alt}
+              className="absolute rounded-lg object-cover shadow-xl"
+              style={{
+                ...style,
+                border: '1px solid rgba(255,255,255,0.15)',
+                aspectRatio: '4/3',
+              }}
+            />
+          ))
+        : null}
+
+      {/* Bottom gradient to blend into the page below the hero. */}
+      <div
+        className="absolute inset-x-0 bottom-0 z-[1] h-32"
+        style={{
+          backgroundImage: 'linear-gradient(to bottom, transparent, #060607)',
         }}
       />
     </div>

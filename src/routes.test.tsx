@@ -56,9 +56,9 @@ describe('appRoutes', () => {
   it('resolves the HomePage at "/"', async () => {
     renderAt('/');
     expect(
-      await screen.findByLabelText(
-        'We build products that work forever',
-        {},
+      await screen.findByRole(
+        'heading',
+        { level: 1, name: 'Design. Develop. Grow.' },
         { timeout: 5000 },
       ),
     ).toBeInTheDocument();

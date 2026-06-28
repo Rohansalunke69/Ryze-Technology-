@@ -182,10 +182,7 @@ export function HomePage(): JSX.Element {
 
       <main>
         {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
-        <Hero
-          headline="We build products that work forever"
-          eyebrow="Ryze Technology"
-        />
+        <Hero headline="Design. Develop. Grow." />
 
         {/* Kinetic marquee band — full-bleed brand statement strip. */}
         <div className="overflow-hidden border-y border-ink-600 bg-ink-800 py-5">

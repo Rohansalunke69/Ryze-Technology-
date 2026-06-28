@@ -73,7 +73,7 @@ describe('AppLayout', () => {
     // Generous timeout keeps this stable under heavy parallel-suite load.
     const heading = await screen.findByRole(
       'heading',
-      { level: 1, name: 'We build products that work forever' },
+      { level: 1, name: 'Design. Develop. Grow.' },
       { timeout: 5000 },
     );
     expect(heading).toBeInTheDocument();
