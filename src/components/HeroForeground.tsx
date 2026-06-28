@@ -50,9 +50,9 @@ const MID_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 0 })
         .set(el,  { x: -220,      y: H * 0.30, rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.22,  y: H * 0.23, rotation:  8, scale: 1.02, duration: 7,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.58,  y: H * 0.46, rotation: -6, scale: 0.96, duration: 8,  ease: 'sine.inOut' })
-        .to(el,   { x: W + 220,   y: H * 0.36, rotation: 10, scale: 1.00, duration: 7,  ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.22,  y: H * 0.23, rotation:  8, scale: 1.02, duration: 7,  ease: 'none' })
+        .to(el,   { x: W * 0.58,  y: H * 0.46, rotation: -6, scale: 0.96, duration: 8,  ease: 'none' })
+        .to(el,   { x: W + 220,   y: H * 0.36, rotation: 10, scale: 1.00, duration: 7,  ease: 'none' }),
   },
   {
     // developers (landscape) — enters right, exits left diagonally
@@ -64,9 +64,9 @@ const MID_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 4 })
         .set(el,  { x: W + 280,  y: H * 0.12, rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.72, y: H * 0.20, rotation: -8, scale: 1.03, duration: 8,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.36, y: H * 0.44, rotation:  6, scale: 0.97, duration: 9,  ease: 'sine.inOut' })
-        .to(el,   { x: -280,     y: H * 0.60, rotation: -4, scale: 1.00, duration: 8,  ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.72, y: H * 0.20, rotation: -8, scale: 1.03, duration: 8,  ease: 'none' })
+        .to(el,   { x: W * 0.36, y: H * 0.44, rotation:  6, scale: 0.97, duration: 9,  ease: 'none' })
+        .to(el,   { x: -280,     y: H * 0.60, rotation: -4, scale: 1.00, duration: 8,  ease: 'none' }),
   },
   {
     // social-marketing (portrait) — enters top, exits bottom
@@ -78,9 +78,9 @@ const MID_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 8 })
         .set(el,  { x: W * 0.42,  y: -240,     rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.55,  y: H * 0.20, rotation:  7, scale: 1.00, duration: 6,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.28,  y: H * 0.52, rotation: -9, scale: 1.05, duration: 7,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.46,  y: H + 240,  rotation:  4, scale: 0.98, duration: 6,  ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.55,  y: H * 0.20, rotation:  7, scale: 1.00, duration: 6,  ease: 'none' })
+        .to(el,   { x: W * 0.28,  y: H * 0.52, rotation: -9, scale: 1.05, duration: 7,  ease: 'none' })
+        .to(el,   { x: W * 0.46,  y: H + 240,  rotation:  4, scale: 0.98, duration: 6,  ease: 'none' }),
   },
 ];
 
@@ -99,9 +99,9 @@ const FRONT_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 2 })
         .set(el,  { x: W + 250,  y: H * 0.08, rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.66, y: H * 0.14, rotation: -7, scale: 1.04, duration: 7,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.26, y: H * 0.40, rotation:  9, scale: 0.96, duration: 9,  ease: 'sine.inOut' })
-        .to(el,   { x: -250,     y: H * 0.58, rotation: -5, scale: 1.00, duration: 7,  ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.66, y: H * 0.14, rotation: -7, scale: 1.04, duration: 7,  ease: 'none' })
+        .to(el,   { x: W * 0.26, y: H * 0.40, rotation:  9, scale: 0.96, duration: 9,  ease: 'none' })
+        .to(el,   { x: -250,     y: H * 0.58, rotation: -5, scale: 1.00, duration: 7,  ease: 'none' }),
   },
   {
     // brand-glowup (portrait) — enters left-bottom, rises to right-top
@@ -113,9 +113,9 @@ const FRONT_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 6 })
         .set(el,  { x: -200,     y: H * 0.74, rotation:   0, scale: 1.00 })
-        .to(el,   { x: W * 0.18, y: H * 0.50, rotation: -11, scale: 1.02, duration: 9,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.50, y: H * 0.26, rotation:   7, scale: 0.95, duration: 10, ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.80, y: -240,     rotation:  -5, scale: 1.08, duration: 8,  ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.18, y: H * 0.50, rotation: -11, scale: 1.02, duration: 9,  ease: 'none' })
+        .to(el,   { x: W * 0.50, y: H * 0.26, rotation:   7, scale: 0.95, duration: 10, ease: 'none' })
+        .to(el,   { x: W * 0.80, y: -240,     rotation:  -5, scale: 1.08, duration: 8,  ease: 'none' }),
   },
   {
     // stopwatch (square) — enters bottom-center, exits top-left
@@ -127,9 +127,9 @@ const FRONT_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 10 })
         .set(el,  { x: W * 0.60,  y: H + 230,  rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.46,  y: H * 0.64, rotation: -6, scale: 1.00, duration: 6,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.33,  y: H * 0.34, rotation: 11, scale: 1.04, duration: 8,  ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.14,  y: -230,     rotation: -4, scale: 0.98, duration: 6,  ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.46,  y: H * 0.64, rotation: -6, scale: 1.00, duration: 6,  ease: 'none' })
+        .to(el,   { x: W * 0.33,  y: H * 0.34, rotation: 11, scale: 1.04, duration: 8,  ease: 'none' })
+        .to(el,   { x: W * 0.14,  y: -230,     rotation: -4, scale: 0.98, duration: 6,  ease: 'none' }),
   },
 ];
 
