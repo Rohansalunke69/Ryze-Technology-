@@ -21,12 +21,12 @@ export const navItems: NavItem[] = [
   {
     label: 'Services',
     children: [
-      { label: 'Development', path: '/services/development', description: 'Web & mobile apps, websites, e-commerce, dashboards, APIs' },
-      { label: 'Design', path: '/services/design', description: 'UI/UX, branding, prototyping, redesigns, design systems' },
-      { label: 'Digital Marketing', path: '/services/digital-marketing', description: 'SEO, social, paid ads, content, email & WhatsApp' },
-      { label: 'Sales & Strategy', path: '/services/sales-strategy', description: 'Lead gen, funnels, CRM setup, business consulting' },
-      { label: 'Maintenance & Support', path: '/services/maintenance-support', description: 'Maintenance plans, support, hosting, optimization, AMC' },
-      { label: 'All Services', path: '/services', description: 'Overview of how we work and everything we offer' },
+      { label: 'Development', path: '/services/development', description: 'Custom web apps, native mobile apps, and databases' },
+      { label: 'Design', path: '/services/design', description: 'Tactile user interfaces, wireframes, and brand books' },
+      { label: 'Digital Marketing', path: '/services/digital-marketing', description: 'SEO growth, paid search, and WhatsApp notification funnels' },
+      { label: 'Sales & Strategy', path: '/services/sales-strategy', description: 'Sales funnel setups and custom CRM consulting' },
+      { label: 'Maintenance & Support', path: '/services/maintenance-support', description: '24/7 uptime care, patching, and AMC retainers' },
+      { label: 'All Services', path: '/services', description: 'Overview of how we work and what we offer' },
     ],
   },
   {

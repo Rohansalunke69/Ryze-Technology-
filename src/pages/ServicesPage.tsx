@@ -18,9 +18,10 @@
  *
  * _Requirements: 9.1, 9.2, 9.3_
  */
-import type { SEOMeta } from '@app-types';
+import { Link } from 'react-router-dom';
+import type { SEOMeta, ServiceKey } from '@app-types';
 import { SectionHeader } from '@components/SectionHeader';
-import { ServiceCard } from '@components/ServiceCard';
+import { CapabilityScene, type CapabilityKind } from '@components/CapabilityScene';
 import { CTA } from '@components/CTA';
 import { SEOHead } from '@components/SEOHead';
 import { AnimationWrapper } from '@components/AnimationWrapper';
@@ -94,6 +95,19 @@ function ordinal(n: number): string {
   return String(n).padStart(2, '0');
 }
 
+/**
+ * Maps each service category to one of the studio's animated capability scenes.
+ * Service slugs are taxonomy keys; CapabilityScene speaks in visual scene names,
+ * so we translate here to keep both layers independent.
+ */
+const SERVICE_SCENE: Record<ServiceKey, CapabilityKind> = {
+  development: 'websites',
+  design: 'mobile-apps',
+  'digital-marketing': 'social-media-marketing',
+  'sales-strategy': 'business-systems',
+  'maintenance-support': 'desktop',
+};
+
 export function ServicesPage(): JSX.Element {
   return (
     <>
@@ -127,23 +141,94 @@ export function ServicesPage(): JSX.Element {
           </div>
         </section>
 
-        {/* Service cards (Req 9.1) */}
+        {/* Service Alternating Layout (Req 9.1) */}
         <section
           aria-labelledby="services-heading"
-          className="mx-auto w-full max-w-site px-6 py-[clamp(4rem,10vh,7rem)] sm:px-10"
+          className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10"
         >
           <h2 id="services-heading" className="sr-only">
             Services
           </h2>
-          <AnimationWrapper variant="rise" stagger={0.08}>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((service, index) => (
-                <ServiceCard
-                  key={service.slug}
-                  service={service}
-                  index={index}
-                />
-              ))}
+          <AnimationWrapper variant="rise" stagger={0.12}>
+            <div className="flex flex-col gap-24">
+              {services.map((service, index) => {
+                const isEven = index % 2 === 0;
+                return (
+                  <article
+                    key={service.slug}
+                    className="grid grid-cols-1 gap-12 border-t border-ink-600 pt-16 md:grid-cols-2 md:items-center"
+                  >
+                    {/* Visual Section */}
+                    <div
+                      className={`flex aspect-[4/3] w-full items-center justify-center rounded-2xl border border-ink-600 bg-ink-900 p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] ring-1 ring-ink-600/30 ${
+                        isEven ? 'order-1 md:order-2' : 'order-1'
+                      }`}
+                    >
+                      <div className="h-full w-full max-w-xs transition-transform duration-500 hover:scale-105">
+                        <CapabilityScene kind={SERVICE_SCENE[service.slug]} />
+                      </div>
+                    </div>
+
+                    {/* Text Section */}
+                    <div
+                      className={`flex flex-col gap-6 ${
+                        isEven ? 'order-2 md:order-1' : 'order-2'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span
+                          aria-hidden="true"
+                          className="ghost-numeral text-[clamp(2rem,4vw,3.5rem)]"
+                        >
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-[0.2em] text-pulse-500 font-semibold">
+                          Capability
+                        </span>
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        <h3 className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-[1.05] tracking-[-0.02em] text-mist-100">
+                          {service.name}
+                        </h3>
+                        <p className="font-sans text-body-l text-pulse-500 font-medium">
+                          {service.tagline}
+                        </p>
+                      </div>
+
+                      <p className="font-sans text-body text-mist-300 leading-relaxed">
+                        {service.summary}
+                      </p>
+
+                      <div className="flex flex-col gap-4">
+                        <h4 className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-mist-300 font-semibold">
+                          Core Technologies
+                        </h4>
+                        <ul className="flex flex-wrap gap-2">
+                          {service.techStack.map((tech) => (
+                            <li
+                              key={tech}
+                              className="rounded-full border border-ink-600 bg-ink-800 px-3.5 py-1 font-mono text-[0.75rem] text-mist-300 transition-colors hover:border-pulse-500/30 hover:text-mist-100"
+                            >
+                              {tech}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <Link
+                        to={`/services/${service.slug}`}
+                        data-cursor="link"
+                        aria-label={`Learn more about ${service.name}`}
+                        className="group mt-2 inline-flex min-h-[44px] items-center gap-2 self-start font-mono text-sm font-semibold tracking-wide text-pulse-500 transition-colors hover:text-pulse-700"
+                      >
+                        Explore Service
+                        <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1.5">→</span>
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </AnimationWrapper>
         </section>

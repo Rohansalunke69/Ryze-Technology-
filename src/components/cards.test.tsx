@@ -71,7 +71,7 @@ const service: Service = {
   slug: 'development',
   name: 'Development',
   tagline: 'Fast, accessible sites.',
-  icon: 'code',
+  icon: 'globe',
   order: 1,
   summary: 'Summary text.',
   whatWeDo: 'w',
@@ -149,7 +149,7 @@ describe('ServiceCard', () => {
     renderCard(<ServiceCard service={service} />);
     expect(screen.getByRole('heading', { name: 'Development' })).toBeInTheDocument();
     expect(screen.getByText('Fast, accessible sites.')).toBeInTheDocument();
-    const link = screen.getByRole('link', { name: /learn more about development/i });
+    const link = screen.getByRole('link', { name: /learn more about Development/i });
     expect(link).toHaveAttribute('href', '/services/development');
     expect(link).toHaveAttribute('data-cursor', 'link');
   });
