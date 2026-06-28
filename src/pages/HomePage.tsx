@@ -33,7 +33,10 @@
  *
  * _Requirements: 6.1, 6.2, 6.3, 6.4, 20.5, 40.1_
  */
+import { useEffect, useRef } from 'react';
 import type { SEOMeta } from '@app-types';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { AnimatedCounter } from '@components/AnimatedCounter';
 import { AnimationWrapper } from '@components/AnimationWrapper';
@@ -49,6 +52,7 @@ import { SectionHeader } from '@components/SectionHeader';
 import { SplitText } from '@components/SplitText';
 import { TeamCard } from '@components/TeamCard';
 import { SEOHead } from '@components/SEOHead';
+import { useReducedMotion } from '@hooks/useReducedMotion';
 
 import { caseStudies } from '@data/caseStudies';
 import { team } from '@data/team';
