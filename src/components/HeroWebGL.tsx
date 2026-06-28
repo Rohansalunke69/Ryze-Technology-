@@ -30,7 +30,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-import { heroCards, type HeroCard } from '@data/heroCards';
+import { heroBackCards as heroCards, type HeroCard } from '@data/heroCards';
 import { useViewportCategory } from '@hooks/useViewportCategory';
 
 export interface HeroWebGLProps {
