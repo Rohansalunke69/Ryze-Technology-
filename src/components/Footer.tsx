@@ -38,7 +38,7 @@ const SOCIAL_LABELS: Record<SocialLink['platform'], string> = {
 
 /** Brand glyphs per social platform, drawn with `currentColor`. */
 function SocialGlyph({ platform }: { platform: SocialLink['platform'] }): JSX.Element {
-  const box = { width: 16, height: 16, viewBox: '0 0 24 24', 'aria-hidden': true } as const;
+  const box = { width: 18, height: 18, viewBox: '0 0 24 24', 'aria-hidden': true } as const;
   switch (platform) {
     case 'instagram':
       return (
@@ -145,7 +145,7 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
                     rel="noopener noreferrer"
                     aria-label={SOCIAL_LABELS[link.platform]}
                     title={SOCIAL_LABELS[link.platform]}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-ink-600/40 text-ink-700 transition-colors duration-200 hover:border-pulse-500 hover:bg-pulse-500 hover:text-ink-900 focus-visible:border-pulse-500 focus-visible:bg-pulse-500 focus-visible:text-ink-900"
+                    className="flex h-7 w-7 items-center justify-center rounded-full border border-ink-600/40 text-ink-700 transition-colors duration-200 hover:border-pulse-500 hover:bg-pulse-500 hover:text-ink-900 focus-visible:border-pulse-500 focus-visible:bg-pulse-500 focus-visible:text-ink-900"
                   >
                     <SocialGlyph platform={link.platform} />
                   </a>
