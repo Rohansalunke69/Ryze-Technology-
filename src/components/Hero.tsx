@@ -42,7 +42,6 @@ import { useInView } from '@hooks/useInView';
 import { canRenderWebGL } from '@lib/canRenderWebGL';
 
 import { HeroFallback } from './HeroFallback';
-import { MagneticButton } from './MagneticButton';
 import { ScrollIndicator } from './ScrollIndicator';
 import { SplitText } from './SplitText';
 
@@ -190,9 +189,6 @@ export function Hero({ headline, eyebrow }: HeroProps): JSX.Element {
           </p>
 
           <div className="flex flex-shrink-0 items-center gap-8">
-            <MagneticButton as="a" href="/contact" ariaLabel="Start a project">
-              Start a project
-            </MagneticButton>
             <a
               href="/portfolio"
               data-cursor="link"
