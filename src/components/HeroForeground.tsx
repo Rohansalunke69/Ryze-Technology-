@@ -111,11 +111,11 @@ const FRONT_SPECS: CardSpec[] = [
     height: 227,
     initPos: (_W, H) => ({ x: -200, y: H * 0.74, rotation: 0, scale: 1 }),
     buildTl: (el, W, H) =>
-      gsap.timeline({ repeat: -1, delay: 13 })
+      gsap.timeline({ repeat: -1, delay: 6 })
         .set(el,  { x: -200,     y: H * 0.74, rotation:   0, scale: 1.00 })
-        .to(el,   { x: W * 0.18, y: H * 0.50, rotation: -11, scale: 1.02, duration: 22, ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.50, y: H * 0.26, rotation:   7, scale: 0.95, duration: 24, ease: 'sine.inOut' })
-        .to(el,   { x: W * 0.80, y: -240,     rotation:  -5, scale: 1.08, duration: 18, ease: 'sine.inOut' }),
+        .to(el,   { x: W * 0.18, y: H * 0.50, rotation: -11, scale: 1.02, duration: 9,  ease: 'sine.inOut' })
+        .to(el,   { x: W * 0.50, y: H * 0.26, rotation:   7, scale: 0.95, duration: 10, ease: 'sine.inOut' })
+        .to(el,   { x: W * 0.80, y: -240,     rotation:  -5, scale: 1.08, duration: 8,  ease: 'sine.inOut' }),
   },
   {
     // stopwatch (square) — enters bottom-center, exits top-left
