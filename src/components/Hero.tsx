@@ -2,30 +2,25 @@
  * Hero — capability-gated homepage hero (task 11.2).
  *
  * The Hero is the single decision point that chooses between the heavy animated
- * WebGL scene and the static fallback, following the "WebGL Capability Gating"
- * flow in design.md:
+ * WebGL floating-cards scene and the static fallback, following the "WebGL
+ * Capability Gating" flow in design.md:
  *
  *   1. ALWAYS render {@link HeroFallback} first, before any WebGL is ready
  *      (Requirement 19.1). It is the persistent background layer and the poster
  *      the animated scene cross-fades in over.
  *   2. IF reduced motion is active → render ONLY the fallback and NEVER mount a
  *      WebGL canvas (Requirement 19.2).
- *   3. IF a WebGL2 context is unavailable or the capability gate fails (too few
- *      cores, too little memory, save-data) → render ONLY the fallback
- *      (Requirements 19.3, 19.4). Both are decided by `canRenderWebGL()`.
+ *   3. IF a WebGL2 context is unavailable or the capability gate fails →
+ *      render ONLY the fallback (Requirements 19.3, 19.4).
  *   4. WHEN motion is allowed, WebGL2 is available, the gate passes, AND the
  *      hero is scrolled into view → lazily import {@link HeroWebGL} via
- *      `React.lazy` + `<Suspense>` behind an IntersectionObserver and mount it
- *      behind the fallback (Requirement 19.5).
+ *      `React.lazy` + `<Suspense>` behind an IntersectionObserver (Req 19.5).
  *   5. WHEN the scene becomes ready → cross-fade from the fallback to the
  *      animated scene (Requirement 19.6).
  *
  * Chunking discipline: `three` / `@react-three/fiber` MUST NOT be imported by
  * this module or {@link HeroFallback}; they live only in the lazily-imported
- * {@link HeroWebGL} chunk (task 11.3) so the entry bundle stays clean.
- *
- * The headline/eyebrow/subheadline/CTA content is composed on top of whichever
- * background layer is active.
+ * {@link HeroWebGL} chunk (task 11.3).
  *
  * _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6_
  */
@@ -43,25 +38,23 @@ import { canRenderWebGL } from '@lib/canRenderWebGL';
 
 import { HeroFallback } from './HeroFallback';
 import { ScrollIndicator } from './ScrollIndicator';
-import { SplitText } from './SplitText';
 
 /**
  * Lazily-imported animated scene. Declared at module scope so the chunk is only
  * fetched the first time the component is actually rendered — never in the
- * entry bundle (Requirement 19.5). Task 11.3 fills in the real R3F scene.
+ * entry bundle (Requirement 19.5).
  */
 const HeroWebGL = lazy(() => import('./HeroWebGL'));
 
 export interface HeroProps {
-  /** Oversized hero headline (revealed via SplitText). */
+  /** Primary display headline rendered as the page `<h1>`. */
   headline: string;
-  /** Optional mono eyebrow line above the headline. */
+  /** Optional mono eyebrow line (kept for API compatibility; not displayed). */
   eyebrow?: string;
 }
 
-const SUBHEADLINE =
-  'We design and build durable digital products — websites, mobile apps, ' +
-  'and business systems engineered to work forever.';
+/** Subtitle line beneath the headline. */
+const SUBTITLE = 'Ryze Technology — software that means business.';
 
 /**
  * Notifies the parent once the lazily-loaded scene has actually mounted, which
@@ -83,55 +76,41 @@ function HeroWebGLLayer({
   return <HeroWebGL paused={paused} />;
 }
 
-export function Hero({ headline, eyebrow }: HeroProps): JSX.Element {
+export function Hero({ headline }: HeroProps): JSX.Element {
   const reducedMotion = useReducedMotion();
 
-  // Watch the hero so the WebGL chunk is only requested once it scrolls in.
-  const { ref, inView } = useInView<HTMLDivElement>({
-    threshold: 0.1,
-    once: true,
-  });
+  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1, once: true });
 
-  // The capability gate touches the DOM (probes a WebGL2 context), so decide it
-  // once on the client after mount rather than during render. Starts `false`
-  // so the server/first paint always shows the fallback (Requirement 19.1).
   const [capable, setCapable] = useState(false);
   useEffect(() => {
-    // Reduced motion never probes WebGL at all (Requirement 19.2).
-    if (reducedMotion) {
-      setCapable(false);
-      return;
-    }
+    if (reducedMotion) { setCapable(false); return; }
     setCapable(canRenderWebGL());
   }, [reducedMotion]);
 
-  // Tracks when the animated scene has mounted, to drive the cross-fade.
   const [webglReady, setWebglReady] = useState(false);
 
-  // Final gate: motion allowed + capable + in view (Requirements 19.2–19.5).
   const shouldMountWebGL = !reducedMotion && capable && inView;
 
-  // Cross-fade: the fallback fades out only once the scene is ready; the scene
-  // fades in as it becomes ready (Requirement 19.6).
   const fallbackLayerStyle: CSSProperties = {
     transition: reducedMotion ? undefined : 'opacity 800ms ease',
-    opacity: webglReady ? 0 : 1,
+    opacity:    webglReady ? 0 : 1,
   };
   const webglLayerStyle: CSSProperties = {
     transition: 'opacity 800ms ease',
-    opacity: webglReady ? 1 : 0,
+    opacity:    webglReady ? 1 : 0,
   };
 
   return (
     <section
-      className="relative flex min-h-[100dvh] w-full items-center overflow-hidden bg-ink-900 [min-height:100vh]"
+      className="relative flex min-h-[100dvh] w-full items-center overflow-hidden [min-height:100vh]"
+      style={{ backgroundColor: '#060607' }}
       aria-label="Intro"
     >
-      {/* Background layers live inside the observed ref. */}
+      {/* Background layers inside the observed ref. */}
       <div ref={ref} className="absolute inset-0">
         {/* (1) Always-present static fallback (Requirement 19.1). */}
         <div className="absolute inset-0" style={fallbackLayerStyle}>
-          <HeroFallback />
+          <HeroFallback reducedMotion={reducedMotion} />
         </div>
 
         {/* (4/5) Animated scene — only mounted when fully gated on. */}
@@ -146,54 +125,57 @@ export function Hero({ headline, eyebrow }: HeroProps): JSX.Element {
           </div>
         ) : null}
 
-        {/* Living aurora energy field — atmosphere over the base layers. */}
-        <div className="aurora" aria-hidden="true" />
-        {/* Exposed blueprint grid hairlines for the "engineered" motif. */}
-        <div className="grid-overlay absolute inset-0" aria-hidden="true" />
-        {/* Bottom fade so the hero settles into the page below. */}
+        {/* Bottom fade into the page below. */}
         <div
-          className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-b from-transparent to-ink-900"
+          className="absolute inset-x-0 bottom-0 z-[1] h-40"
           aria-hidden="true"
+          style={{ backgroundImage: 'linear-gradient(to bottom, transparent, #060607)' }}
         />
       </div>
 
-      {/* Composed hero content on top of whichever background is active. */}
-      <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-28 pt-32 sm:px-10">
-        {/* Kinetic eyebrow row: live status dot + label + coordinate. */}
-        <div className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-mist-300">
-          <span className="inline-flex items-center gap-2 text-pulse-500">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-pulse-500 opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-pulse-500" />
-            </span>
-            {eyebrow !== undefined && eyebrow.length > 0 ? eyebrow : 'Ryze Technology'}
-          </span>
-          <span aria-hidden="true" className="hidden h-px w-12 bg-ink-600 sm:block" />
-          <span className="hidden sm:inline">Software studio · Nagpur, IN</span>
-          <span aria-hidden="true" className="hidden h-px w-12 bg-ink-600 lg:block" />
-          <span className="hidden lg:inline">21.15°N&nbsp;79.09°E</span>
-        </div>
-
-        {/* Oversized, constructed display headline. */}
-        <SplitText
-          as="h1"
-          by="word"
-          text={headline}
-          trigger="mount"
-          className="max-w-[16ch] font-display text-[clamp(3rem,9.5vw,9.5rem)] font-semibold leading-[0.92] tracking-[-0.03em] text-mist-100"
+      {/* Hero content — always DOM, always sharp, always on top of canvas. */}
+      <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-28 pt-32 text-center sm:px-10">
+        {/*
+         * Center vignette behind the text block — a subtle dark oval so the
+         * headline reads over any card that drifts behind it.
+         */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse 55% 42% at 50% 45%, rgba(0,0,0,0.55) 0%, transparent 100%)',
+          }}
         />
 
-        <div className="mt-10 flex flex-col gap-10">
-          <p className="max-w-xl font-sans text-body-l leading-relaxed text-mist-300">
-            {SUBHEADLINE}
-          </p>
-        </div>
+        {/* Page h1 — oversized, white, tight tracking. Contrast vs #060607: ≥ 15:1 (WCAG AAA). */}
+        <h1
+          className="relative font-display font-bold leading-[0.92] tracking-[-0.03em] text-white"
+          style={{ fontSize: 'clamp(3rem, 9.5vw, 9.5rem)' }}
+        >
+          {headline}
+        </h1>
 
-        {/* Hairline rule anchoring the hero to the grid. */}
-        <div className="rule-pulse mt-16 w-full" aria-hidden="true" />
+        {/* Subtitle — muted gray. Contrast vs #060607: ≥ 4.5:1 (WCAG AA). */}
+        <p
+          className="relative mx-auto mt-6 max-w-lg font-sans leading-relaxed text-white/60"
+          style={{ fontSize: 'clamp(1rem, 1.4vw, 1.25rem)' }}
+        >
+          {SUBTITLE}
+        </p>
+
+        {/* CTA — rounded pill button. Uses real <a> for crawlability + a11y. */}
+        <div className="relative mt-10">
+          <a
+            href="/contact"
+            className="inline-block rounded-full border border-white/20 bg-white/10 px-8 py-3 font-sans text-sm font-semibold tracking-wide text-white backdrop-blur-sm transition-colors duration-200 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+          >
+            Get in touch
+          </a>
+        </div>
       </div>
 
-      {/* Scroll affordance pinned to the bottom of the hero. */}
+      {/* Scroll affordance pinned to the bottom. */}
       <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
         <ScrollIndicator />
       </div>

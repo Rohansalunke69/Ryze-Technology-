@@ -69,7 +69,7 @@ describe('HomePage', () => {
     const h1s = screen.getAllByRole('heading', { level: 1 });
     expect(h1s).toHaveLength(1);
     expect(
-      screen.getByLabelText('We build products that work forever'),
+      screen.getByRole('heading', { level: 1, name: 'Design. Develop. Grow.' }),
     ).toBeInTheDocument();
   });
 

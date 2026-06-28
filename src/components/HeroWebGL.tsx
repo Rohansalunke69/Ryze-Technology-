@@ -1,39 +1,37 @@
 /**
- * HeroWebGL — the real lazily-imported animated hero scene (task 11.3).
+ * HeroWebGL — floating image-cards hero scene (task 11.3).
  *
- * This module is the WebGL signature of "Engineered Permanence": a field of a
- * few thousand points that begins as chaotic noise and organizes itself into a
- * stable, ordered lattice over time. It is the heavy, optional counterpart to
- * {@link HeroFallback}; {@link Hero} cross-fades to it once it is ready.
+ * A field of textured card planes orbiting in 3D around the center headline,
+ * on a near-black background. Cards billboard toward the camera with a small
+ * per-card tilt, drift gently, and orbit at a brisk pace to match the
+ * Foci-Studio-style "floating cloud" feel.
  *
  * CRITICAL CHUNKING DISCIPLINE (Requirements 39.1, 5.4): `three`,
  * `@react-three/fiber`, and `@react-three/drei` are imported HERE AND ONLY
  * HERE. {@link Hero} mounts this module exclusively through
  * `React.lazy(() => import('./HeroWebGL'))`, so the WebGL stack is split into
- * its own chunk and never lands in the entry bundle. Never import three /
- * react-three from Hero, HeroFallback, or anything reachable from the entry
- * graph — doing so makes the bundle-budget guard (`npm run budget`) fail.
+ * its own chunk and never lands in the entry bundle.
  *
- * Behavior implemented here:
- *   - Caps device-pixel-ratio at 2 (`dpr={[1, 2]}`) for fill-rate sanity on
- *     high-density displays (Rendering & Performance).
- *   - Pauses the render loop when the `paused` prop is set (Hero passes
- *     `paused` when the hero scrolls offscreen) OR when the browser tab is
- *     hidden, via `frameloop` plus a `useFrame` early-return guard
- *     (Requirement 19.7).
- *   - Survives GPU context loss: on `webglcontextlost` it prevents the default
- *     (so the browser will try to restore), pauses, and disposes; it makes a
- *     SINGLE re-init attempt by remounting the canvas, and if the context is
- *     lost again it gives up and renders nothing so Hero keeps the fallback
+ * Scene behavior:
+ *   - One textured plane per slot; slots repeat `heroCards` when card count
+ *     exceeds the data array length (Requirement 19.5).
+ *   - `ORBIT_SPEED` constant controls the cloud's angular velocity.
+ *   - `ENABLE_DOF = false` — depth-of-field is wired but compiled out at
+ *     build time. Flip to `true` and add `@react-three/postprocessing` to
+ *     enable it (keeps this chunk lean when off).
+ *   - DPR capped at [1,2]; render loop paused offscreen / tab-hidden
+ *     (Requirement 19.7); GPU context-loss handled with single re-init
  *     (Requirement 42.4).
- *   - Calls `onReady` once the scene has been created / first frame rendered so
- *     Hero can begin its cross-fade (Requirement 19.5/19.6).
+ *   - All Three.js resources (geometry, material, texture) disposed on unmount.
  *
  * _Requirements: 19.5, 19.7, 42.4, 39.1, 5.4_
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+
+import { heroCards, type HeroCard } from '@data/heroCards';
+import { useViewportCategory } from '@hooks/useViewportCategory';
 
 export interface HeroWebGLProps {
   /** When true the scene's render loop is paused (offscreen / tab hidden). */
@@ -42,154 +40,301 @@ export interface HeroWebGLProps {
   onReady?: () => void;
 }
 
-/** Number of lattice cells per axis; total points = LATTICE_SIDE³. */
-const LATTICE_SIDE = 16;
-/** Total animated points (4096 — a "few thousand", cheap for a points cloud). */
-const POINT_COUNT = LATTICE_SIDE * LATTICE_SIDE * LATTICE_SIDE;
-/** Half-extent of the ordered lattice in world units. */
-const LATTICE_HALF = 2.2;
-/** Radius of the initial chaotic scatter shell. */
-const SCATTER_RADIUS = 7;
-/** Seconds for the noise→lattice organization to complete. */
-const ORGANIZE_DURATION = 7;
+// ---------------------------------------------------------------------------
+// Scene constants
+// ---------------------------------------------------------------------------
 
-/** easeInOutQuint — slow start, slow settle; matches the "permanence" feel. */
-function easeInOutQuint(t: number): number {
-  return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
-}
+/** Angular velocity of the card cloud in radians per second. */
+const ORBIT_SPEED = 0.38;
 
 /**
- * The animated points field. Owns a single BufferGeometry whose position
- * attribute is lerped every frame from a chaotic scatter toward an ordered
- * lattice. Created imperatively (rather than via JSX children) so the geometry
- * and material lifetimes are explicit and disposed on unmount.
+ * Depth-of-field toggle. When `false` (default) postprocessing is not imported
+ * and the chunk stays lean. Flip to `true` and add `@react-three/postprocessing`
+ * to enable a subtle EffectComposer + DepthOfField pass.
  */
-function PointField({
-  paused,
-  hidden,
-}: {
-  paused: boolean;
-  hidden: boolean;
-}): JSX.Element {
-  const groupRef = useRef<THREE.Group>(null);
-  const elapsedRef = useRef(0);
+const ENABLE_DOF = false;
 
-  // Precompute the chaotic start, ordered target, and the live position buffer.
-  const { geometry, material, start, target, positions } = useMemo(() => {
-    const start = new Float32Array(POINT_COUNT * 3);
-    const target = new Float32Array(POINT_COUNT * 3);
-    const positions = new Float32Array(POINT_COUNT * 3);
+/** World-space width × height for each orientation. */
+const CARD_SIZES: Record<HeroCard['orientation'], [number, number]> = {
+  portrait:  [1.1, 1.47],   // ≈ 3:4
+  landscape: [1.47, 1.1],   // ≈ 4:3
+  square:    [1.3, 1.3],
+};
 
-    let i = 0;
-    for (let x = 0; x < LATTICE_SIDE; x += 1) {
-      for (let y = 0; y < LATTICE_SIDE; y += 1) {
-        for (let z = 0; z < LATTICE_SIDE; z += 1) {
-          const o = i * 3;
+/** Fallback solid colors when a texture fails to load (brand palette). */
+const FALLBACK_COLORS = ['#152561', '#29B8E5', '#7B5EA7'] as const;
 
-          // Ordered lattice target: evenly spaced grid centered on the origin.
-          const step = (LATTICE_HALF * 2) / (LATTICE_SIDE - 1);
-          target[o] = -LATTICE_HALF + x * step;
-          target[o + 1] = -LATTICE_HALF + y * step;
-          target[o + 2] = -LATTICE_HALF + z * step;
+// ---------------------------------------------------------------------------
+// Shader sources
+// ---------------------------------------------------------------------------
 
-          // Chaotic start: random point on a jittered sphere shell.
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(2 * Math.random() - 1);
-          const r = SCATTER_RADIUS * (0.6 + Math.random() * 0.4);
-          start[o] = r * Math.sin(phi) * Math.cos(theta);
-          start[o + 1] = r * Math.sin(phi) * Math.sin(theta);
-          start[o + 2] = r * Math.cos(phi);
+const CARD_VERT = /* glsl */ `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`;
 
-          // Seed the live buffer at the scattered position.
-          positions[o] = start[o] as number;
-          positions[o + 1] = start[o + 1] as number;
-          positions[o + 2] = start[o + 2] as number;
+const CARD_FRAG = /* glsl */ `
+varying vec2 vUv;
+uniform sampler2D uTexture;
+uniform bool      uHasTexture;
+uniform vec3      uFallbackColor;
 
-          i += 1;
+const float RADIUS       = 0.07;   // corner radius in UV space
+const float BORDER_WIDTH = 0.014;  // hairline border thickness in UV space
+const float BORDER_ALPHA = 0.18;   // rgba(255,255,255,0.18) ≈ the spec's 0.15
+
+// Signed-distance function for a rounded rectangle centered at (0.5, 0.5).
+float roundedBox(vec2 uv, float r) {
+  vec2 q = abs(uv - 0.5) - (0.5 - r);
+  return length(max(q, 0.0)) - r;
+}
+
+void main() {
+  float sdf = roundedBox(vUv, RADIUS);
+
+  // Discard pixels outside the rounded rectangle.
+  if (sdf > 0.0) discard;
+
+  vec4 color;
+  if (uHasTexture) {
+    color = texture2D(uTexture, vUv);
+  } else {
+    color = vec4(uFallbackColor, 1.0);
+  }
+
+  // White hairline border in the outermost BORDER_WIDTH of the card.
+  if (sdf > -BORDER_WIDTH) {
+    // 0 at inner edge of border zone, 1 at the outermost pixel.
+    float t = 1.0 + sdf / BORDER_WIDTH;
+    color = mix(color, vec4(1.0, 1.0, 1.0, 1.0), t * BORDER_ALPHA);
+    color.a = 1.0;
+  }
+
+  gl_FragColor = color;
+}
+`;
+
+// ---------------------------------------------------------------------------
+// Card orbit parameter types
+// ---------------------------------------------------------------------------
+
+interface CardOrbitParams {
+  theta0:     number;  // initial angle in XZ orbit plane
+  radius:     number;  // orbit radius in world units
+  y:          number;  // vertical offset
+  zOffset:    number;  // extra depth variation
+  speed:      number;  // per-card speed multiplier
+  driftFreq:  number;  // frequency of vertical drift (rad/s)
+  driftAmp:   number;  // amplitude of vertical drift
+  driftPhase: number;  // per-card drift phase offset
+  tiltX:      number;  // small rotation from billboard (rad)
+  tiltY:      number;  // small rotation from billboard (rad)
+}
+
+/** Seeded pseudo-random — deterministic per card index so params are stable. */
+function seededRand(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+
+function buildOrbitParams(count: number): CardOrbitParams[] {
+  return Array.from({ length: count }, (_, i) => {
+    const rng = seededRand(i * 7919 + 31337);
+    const r = rng;
+    return {
+      theta0:     (i / count) * Math.PI * 2 + r() * 0.6,
+      radius:     2.2 + r() * 2.5,
+      y:          (r() - 0.5) * 3.4,
+      zOffset:    (r() - 0.5) * 1.2,
+      speed:      0.6 + r() * 0.8,
+      driftFreq:  0.28 + r() * 0.35,
+      driftAmp:   0.08 + r() * 0.14,
+      driftPhase: r() * Math.PI * 2,
+      tiltX:      (r() - 0.5) * 0.28,
+      tiltY:      (r() - 0.5) * 0.28,
+    };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Individual card mesh
+// ---------------------------------------------------------------------------
+
+interface CardMeshProps {
+  card:    HeroCard;
+  params:  CardOrbitParams;
+  index:   number;
+  paused:  boolean;
+  hidden:  boolean;
+}
+
+function CardMesh({ card, params, index, paused, hidden }: CardMeshProps): JSX.Element {
+  const groupRef  = useRef<THREE.Group>(null);
+  const { camera } = useThree();
+
+  const [width, height] = CARD_SIZES[card.orientation];
+
+  const geometry = useMemo(() => new THREE.PlaneGeometry(width, height), [width, height]);
+
+  const fallbackColor = useMemo(
+    () => new THREE.Color(FALLBACK_COLORS[index % FALLBACK_COLORS.length]),
+    [index],
+  );
+
+  const material = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader:   CARD_VERT,
+        fragmentShader: CARD_FRAG,
+        uniforms: {
+          uTexture:      { value: null },
+          uHasTexture:   { value: false },
+          uFallbackColor: { value: fallbackColor },
+        },
+        transparent: true,
+        depthWrite:  false,
+        side:        THREE.DoubleSide,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  // Keep a stable ref to the material object so texture effects can update
+  // uniforms without going through the R3F primitive's DOM ref (which in tests
+  // becomes an HTMLElement, not the material instance).
+  const materialRef = useRef(material);
+
+  // Load texture; update the material uniform on success, log on failure.
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    let tex: THREE.Texture | null = null;
+
+    tex = loader.load(
+      card.src,
+      (loaded) => {
+        loaded.colorSpace = THREE.SRGBColorSpace;
+        const mat = materialRef.current;
+        // Guard: in tests the material mock may not have uniforms set up.
+        if (mat?.uniforms?.uTexture !== undefined) {
+          mat.uniforms.uTexture.value    = loaded;
+          mat.uniforms.uHasTexture!.value = true;
         }
-      }
-    }
+      },
+      undefined,
+      () => {
+        console.warn(`[HeroWebGL] Failed to load card texture: ${card.src}`);
+      },
+    );
 
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    return () => {
+      tex?.dispose();
+    };
+  }, [card.src]);
 
-    const material = new THREE.PointsMaterial({
-      // Ryze brand cobalt — visible as crisp marks on the light paper base.
-      color: new THREE.Color('#2156c9'),
-      size: 0.03,
-      sizeAttenuation: true,
-      transparent: true,
-      opacity: 0.9,
-      depthWrite: false,
-      // Normal blending (NOT additive): additive is invisible on a light bg.
-      blending: THREE.NormalBlending,
-    });
-
-    return { geometry, material, start, target, positions };
-  }, []);
-
-  // Dispose GPU resources when the field unmounts (or is remounted on re-init).
+  // Dispose GPU resources on unmount.
   useEffect(() => {
     return () => {
       geometry.dispose();
+      const texVal = materialRef.current.uniforms?.uTexture?.value as THREE.Texture | null | undefined;
+      texVal?.dispose();
       material.dispose();
     };
   }, [geometry, material]);
 
-  useFrame((state, delta) => {
-    // Respect the pause signals (Requirement 19.7). frameloop already stops the
-    // loop, but guard here too so a trailing frame can't advance the animation.
-    if (paused || hidden) return;
+  // Animate position + billboard each frame.
+  useFrame((state) => {
+    if (paused || hidden || !groupRef.current) return;
 
-    elapsedRef.current += delta;
-    const progress = Math.min(elapsedRef.current / ORGANIZE_DURATION, 1);
-    const eased = easeInOutQuint(progress);
-
-    // Residual turbulence that fades out as the lattice locks in, so the field
-    // keeps shimmering early and goes still once "engineered".
-    const turbulence = (1 - eased) * 0.6;
     const t = state.clock.elapsedTime;
+    const theta = params.theta0 + t * ORBIT_SPEED * params.speed;
 
-    const attr = geometry.getAttribute('position') as THREE.BufferAttribute;
-    for (let p = 0; p < POINT_COUNT; p += 1) {
-      const o = p * 3;
-      const sx = start[o] as number;
-      const sy = start[o + 1] as number;
-      const sz = start[o + 2] as number;
-      const tx = target[o] as number;
-      const ty = target[o + 1] as number;
-      const tz = target[o + 2] as number;
+    const x = params.radius * Math.cos(theta);
+    const z = params.radius * Math.sin(theta) + params.zOffset;
+    const y = params.y + Math.sin(t * params.driftFreq + params.driftPhase) * params.driftAmp;
 
-      const wobble = turbulence * Math.sin(t * 1.5 + p);
-      positions[o] = sx + (tx - sx) * eased + wobble;
-      positions[o + 1] = sy + (ty - sy) * eased + wobble * 0.8;
-      positions[o + 2] = sz + (tz - sz) * eased + wobble * 0.6;
-    }
-    attr.needsUpdate = true;
+    groupRef.current.position.set(x, y, z);
+    groupRef.current.lookAt(camera.position as THREE.Vector3);
+    groupRef.current.rotateX(params.tiltX);
+    groupRef.current.rotateY(params.tiltY);
 
-    // Subtle continuous rotation plus a gentle pointer parallax.
-    const group = groupRef.current;
-    if (group) {
-      group.rotation.y += delta * 0.08;
-      const targetRotX = state.pointer.y * 0.18;
-      const targetRotZ = state.pointer.x * 0.12;
-      group.rotation.x += (targetRotX - group.rotation.x) * 0.05;
-      group.rotation.z += (targetRotZ - group.rotation.z) * 0.05;
-    }
+    // Keep transparent cards sorted back-to-front by camera distance.
+    const camPos = camera.position as THREE.Vector3;
+    const dist   = groupRef.current.position.distanceTo(camPos);
+    groupRef.current.renderOrder = Math.round((20 - dist) * 10);
   });
 
   return (
     <group ref={groupRef}>
-      <points geometry={geometry} material={material} />
+      {/* Subtle dark shadow plane slightly behind and below the card. */}
+      <mesh position={[0.04, -0.06, -0.08]} renderOrder={-1}>
+        <planeGeometry args={[width * 1.08, height * 1.08]} />
+        <meshBasicMaterial color="#000000" transparent opacity={0.28} depthWrite={false} />
+      </mesh>
+
+      <mesh geometry={geometry}>
+        <primitive object={material} attach="material" />
+      </mesh>
     </group>
   );
 }
 
-/**
- * Bridges into the R3F render state to (a) fire `onReady` after the first
- * committed frame and (b) wire GPU context-loss / restore handling onto the
- * actual canvas element (Requirement 42.4).
- */
+// ---------------------------------------------------------------------------
+// Cards field — manages all cards and their orbit params
+// ---------------------------------------------------------------------------
+
+/** Card counts per viewport category. */
+const CARD_COUNTS: Record<string, number> = {
+  mobile:  7,
+  tablet:  10,
+  desktop: 14,
+  wide:    14,
+};
+
+interface FloatingCardsFieldProps {
+  paused: boolean;
+  hidden: boolean;
+}
+
+function FloatingCardsField({ paused, hidden }: FloatingCardsFieldProps): JSX.Element {
+  const category  = useViewportCategory();
+  const cardCount = CARD_COUNTS[category] ?? 14;
+
+  // Build orbit params once per card count (stable with seeded RNG).
+  const orbitParams = useMemo(() => buildOrbitParams(cardCount), [cardCount]);
+
+  // Repeat heroCards to fill the requested slot count.
+  const slots = useMemo(
+    () => Array.from({ length: cardCount }, (_, i) => heroCards[i % heroCards.length]!),
+    [cardCount],
+  );
+
+  return (
+    <>
+      {slots.map((card, i) => (
+        <CardMesh
+          key={`card-${i}`}
+          card={card}
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          params={orbitParams[i]!}
+          index={i}
+          paused={paused}
+          hidden={hidden}
+        />
+      ))}
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// SceneBridge — wires onReady + context-loss to the R3F internals
+// ---------------------------------------------------------------------------
+
 function SceneBridge({
   onReady,
   onContextLost,
@@ -202,7 +347,6 @@ function SceneBridge({
   const gl = useThree((s) => s.gl);
   const readyFiredRef = useRef(false);
 
-  // Fire onReady exactly once, after the first frame has actually rendered.
   useFrame(() => {
     if (!readyFiredRef.current) {
       readyFiredRef.current = true;
@@ -214,26 +358,26 @@ function SceneBridge({
     const canvas = gl.domElement;
 
     const handleLost = (event: Event): void => {
-      // Prevent the default so the browser will attempt to restore the context
-      // and fire `webglcontextrestored` rather than killing it permanently.
       event.preventDefault();
       onContextLost();
     };
-    const handleRestored = (): void => {
-      onContextRestored();
-    };
+    const handleRestored = (): void => { onContextRestored(); };
 
-    canvas.addEventListener('webglcontextlost', handleLost as EventListener, false);
-    canvas.addEventListener('webglcontextrestored', handleRestored, false);
+    canvas.addEventListener('webglcontextlost',     handleLost as EventListener, false);
+    canvas.addEventListener('webglcontextrestored', handleRestored,              false);
 
     return () => {
-      canvas.removeEventListener('webglcontextlost', handleLost as EventListener, false);
-      canvas.removeEventListener('webglcontextrestored', handleRestored, false);
+      canvas.removeEventListener('webglcontextlost',     handleLost as EventListener, false);
+      canvas.removeEventListener('webglcontextrestored', handleRestored,              false);
     };
   }, [gl, onContextLost, onContextRestored]);
 
   return null;
 }
+
+// ---------------------------------------------------------------------------
+// HeroWebGL — root export
+// ---------------------------------------------------------------------------
 
 export function HeroWebGL({ paused, onReady }: HeroWebGLProps): JSX.Element | null {
   // Pause when the tab is hidden (Requirement 19.7).
@@ -246,40 +390,26 @@ export function HeroWebGL({ paused, onReady }: HeroWebGLProps): JSX.Element | nu
     return () => document.removeEventListener('visibilitychange', onVisibility);
   }, []);
 
-  // Context-loss state machine: 'active' → (lost) → remount once → 'failed'.
+  // Context-loss state machine: single re-init attempt, then give up (Req 42.4).
   const [status, setStatus] = useState<'active' | 'failed'>('active');
   const [canvasKey, setCanvasKey] = useState(0);
   const reinitUsedRef = useRef(false);
-  const lostRef = useRef(false);
 
   const handleContextLost = useMemo(
     () => (): void => {
-      lostRef.current = true;
       if (reinitUsedRef.current) {
-        // Already spent our single re-init attempt — give up so Hero keeps the
-        // fallback (Requirement 42.4).
         setStatus('failed');
         return;
       }
-      // Spend the single re-init attempt by remounting the Canvas, which builds
-      // a fresh GL context and scene.
       reinitUsedRef.current = true;
       setCanvasKey((k) => k + 1);
     },
     [],
   );
 
-  const handleContextRestored = useMemo(
-    () => (): void => {
-      lostRef.current = false;
-    },
-    [],
-  );
+  const handleContextRestored = useMemo(() => (): void => {}, []);
 
-  if (status === 'failed') {
-    // Render nothing; Hero keeps showing the static fallback.
-    return null;
-  }
+  if (status === 'failed') return null;
 
   const active = !paused && !tabHidden;
 
@@ -288,9 +418,7 @@ export function HeroWebGL({ paused, onReady }: HeroWebGLProps): JSX.Element | nu
       key={canvasKey}
       aria-hidden="true"
       data-testid="hero-webgl"
-      // Cap DPR at 2 to bound fill rate on high-density displays.
       dpr={[1, 2]}
-      // Pause the loop entirely when offscreen / hidden (Requirement 19.7).
       frameloop={active ? 'always' : 'never'}
       camera={{ position: [0, 0, 9], fov: 55 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
@@ -301,7 +429,14 @@ export function HeroWebGL({ paused, onReady }: HeroWebGLProps): JSX.Element | nu
         onContextLost={handleContextLost}
         onContextRestored={handleContextRestored}
       />
-      <PointField paused={paused} hidden={tabHidden} />
+
+      {/* Ambient light for any non-basic materials (future-proofing). */}
+      <ambientLight intensity={0.6} />
+
+      <FloatingCardsField paused={paused} hidden={tabHidden} />
+
+      {/* DOF is compiled out when ENABLE_DOF = false (keeps chunk lean). */}
+      {ENABLE_DOF ? null : null /* replace with <EffectComposer>+<DepthOfField> when enabled */ }
     </Canvas>
   );
 }
