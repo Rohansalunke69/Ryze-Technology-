@@ -5,12 +5,23 @@ import { useReducedMotion } from '@hooks/useReducedMotion';
 
 export interface StackSectionProps {
   zIndex: number;
-  /** First section (Hero) — no card chrome, no entrance animation. */
+  /** First section (Hero) — no card chrome, no pull-up entrance. */
   isFirst?: boolean;
   /**
-   * Add a GSAP pin to this section so it holds while the user reads it,
-   * then releases with pinSpacing:true so all following sections remain
-   * fully reachable. Use ONLY for storytelling panels (e.g. Philosophy).
+   * Brief overlap pin (pinSpacing: false).
+   *
+   * Pins THIS section at the top while the NEXT one slides over it, then
+   * releases immediately — no extra scroll space added.  Use for Hero and
+   * Problems so they behave like "lingering panels" during the incoming
+   * transition, then scroll away naturally once the next panel is in place.
+   */
+  overlap?: boolean;
+  /**
+   * Storytelling pin (pinSpacing: true).
+   *
+   * Pins this section at the top for its own height worth of scroll, then
+   * releases with a correctly-sized spacer so every section that follows
+   * (Team, Testimonials, CTA) is fully reachable.  Use only for Philosophy.
    */
   pinned?: boolean;
   children: ReactNode;
@@ -19,8 +30,9 @@ export interface StackSectionProps {
 
 export function StackSection({
   zIndex,
-  isFirst = false,
-  pinned = false,
+  isFirst   = false,
+  overlap   = false,
+  pinned    = false,
   children,
   id,
 }: StackSectionProps) {
@@ -37,9 +49,8 @@ export function StackSection({
     gsap.registerPlugin(ScrollTrigger);
     const owned: ScrollTrigger[] = [];
 
-    /* ── Entrance animations (all sections except first) ────────────── */
+    /* ── Entrance animation (every section except the first) ──────────── */
     if (!isFirst) {
-      // Small pull-up so the card feels like it lifts into place.
       gsap.set(inner, { y: 40 });
 
       const lift = ScrollTrigger.create({
@@ -50,14 +61,14 @@ export function StackSection({
         onUpdate(self) {
           gsap.set(inner, { y: (1 - self.progress) * 40 });
         },
-        // Clear transform after slide-in so position:fixed children
-        // (e.g. an internal GSAP pin) are never trapped in a stacking context.
+        // Clear after slide-in so that any internal GSAP pin's position:fixed
+        // children are never trapped inside a transform stacking context.
         onLeave()     { gsap.set(inner, { clearProps: 'transform' }); },
         onEnterBack() { gsap.set(inner, { y: 40 }); },
       });
       owned.push(lift);
 
-      // While this section rises, dim the layer directly beneath it.
+      // Dim the previous panel while this one rises over it.
       const prev      = wrapper.previousElementSibling as HTMLElement | null;
       const prevInner = prev?.querySelector<HTMLElement>('[data-stack-inner]');
       if (prevInner) {
@@ -73,22 +84,48 @@ export function StackSection({
             });
           },
           onLeave()     { gsap.set(prevInner, { scale: 0.98, opacity: 0.95 }); },
-          onEnterBack() { gsap.set(prevInner, { scale: 1,    opacity: 1    }); },
+          onEnterBack() { gsap.set(prevInner, { scale: 1, opacity: 1 }); },
         });
         owned.push(dim);
       }
     }
 
-    /* ── Optional GSAP pin (storytelling sections only) ─────────────── */
-    if (pinned) {
-      // Pin the section while the user reads it; release with pinSpacing:true
-      // so every section that follows is reachable by normal scrolling.
+    /* ── Overlap pin — Hero / Problems ─────────────────────────────────── */
+    //
+    //  pinSpacing: false → no extra scroll space.  The pin holds this section
+    //  at the top for exactly its own natural height of scroll.  During that
+    //  window the NEXT section scrolls up from below (it's already in the DOM
+    //  below this one), creating the stacked-panel overlap.  When the pin
+    //  releases this section is at the viewport top and the next is also at the
+    //  top — both at the same y — then normal scroll takes over and this
+    //  section scrolls off the top as the next one continues down.
+    //
+    if (overlap) {
       const pin = ScrollTrigger.create({
-        trigger: wrapper,
-        start: 'top top',
-        end: 'bottom top',   // holds for exactly the section's own height
-        pin: true,
-        pinSpacing: true,    // adds spacer → following sections stay visible
+        trigger:      wrapper,
+        start:        'top top',
+        end:          'bottom top',
+        pin:          true,
+        pinSpacing:   false,
+        anticipatePin: 1,
+      });
+      owned.push(pin);
+    }
+
+    /* ── Storytelling pin — Philosophy ─────────────────────────────────── */
+    //
+    //  pinSpacing: true → GSAP inserts a correctly-sized spacer after this
+    //  section so Team / Testimonials / CTA remain reachable.  Pin holds for
+    //  the section's own height, then releases completely.  The blue panel
+    //  then scrolls away and the next section becomes visible.
+    //
+    if (pinned) {
+      const pin = ScrollTrigger.create({
+        trigger:      wrapper,
+        start:        'top top',
+        end:          'bottom top',
+        pin:          true,
+        pinSpacing:   true,
         anticipatePin: 1,
       });
       owned.push(pin);
@@ -98,23 +135,17 @@ export function StackSection({
       owned.forEach((t) => t.kill());
       gsap.set(inner, { clearProps: 'all' });
     };
-  }, [reducedMotion, isFirst, pinned]);
+  }, [reducedMotion, isFirst, overlap, pinned]);
 
   return (
-    /*
-     * position:relative (NOT sticky) — sticky on all sections is what caused
-     * Philosophy to permanently cover Team / Testimonials / CTA. Relative +
-     * z-index is enough: when two panels overlap during a scroll transition,
-     * the higher-z one is visually on top; once the transition ends, each
-     * section scrolls past naturally.
-     */
     <div
       ref={wrapperRef}
       id={id}
       style={{
         position: 'relative',
         zIndex,
-        // Opaque fill so the wrapper corners never expose layers beneath.
+        // Matches the page background so wrapper corners never expose
+        // lower-z layers through the inner's border-radius transparency.
         background: isFirst ? 'transparent' : 'var(--ink-900)',
       }}
     >
