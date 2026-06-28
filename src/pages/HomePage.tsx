@@ -50,6 +50,7 @@ import { ServiceCard } from '@components/ServiceCard';
 import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
+import { services } from '@data/services';
 import { team } from '@data/team';
 import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
@@ -131,25 +132,25 @@ const METRICS = studioMetrics.slice(0, 3);
  */
 const CAPABILITIES: ReadonlyArray<Capability> = [
   {
-    kind: 'websites',
+    kind: 'development',
     name: 'Web Platforms',
     tagline: 'Fast, accessible websites, storefronts, and web apps that convert.',
     techStack: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
   },
   {
-    kind: 'mobile-apps',
+    kind: 'design',
     name: 'Mobile Apps',
     tagline: 'Native-quality iOS and Android apps from one codebase.',
     techStack: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
   },
   {
-    kind: 'desktop',
+    kind: 'digital-marketing',
     name: 'Dashboards & Systems',
     tagline: 'Admin panels, dashboards, and the back-end systems that run a business.',
     techStack: ['Node.js', 'PostgreSQL', 'Prisma', 'Redis'],
   },
   {
-    kind: 'business-systems',
+    kind: 'sales-strategy',
     name: 'Automation & APIs',
     tagline: 'Workflow automation and integrations that remove manual busywork.',
     techStack: ['APIs', 'Webhooks', 'Automation', 'Integrations'],
