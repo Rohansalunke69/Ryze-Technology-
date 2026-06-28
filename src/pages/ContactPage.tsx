@@ -95,9 +95,9 @@ export function ContactPage(): JSX.Element {
                         {String(index + 1).padStart(2, '0')}
                       </span>
                       <div className="flex flex-col gap-1.5">
-                        <h2 className="font-display text-h4 text-mist-100">
+                        <h3 className="font-display text-h4 text-mist-100">
                           {step.title}
-                        </h2>
+                        </h3>
                         <p className="font-sans text-body text-mist-300">
                           {step.description}
                         </p>

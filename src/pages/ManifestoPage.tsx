@@ -133,15 +133,15 @@ export function ManifestoPage(): JSX.Element {
               {BELIEFS.map((belief, index) => (
                 <li
                   key={belief.statement}
-                  className="flex flex-col gap-4 border-t border-ink-600 pt-8"
+                  className="group flex flex-col gap-4 border-t border-ink-600 pt-8 transition-colors duration-300 hover:border-pulse-500/30"
                 >
                   <span
                     aria-hidden="true"
-                    className="font-mono text-mono-eyebrow tracking-widest text-pulse-500"
+                    className="inline-block font-mono text-mono-eyebrow tracking-widest text-pulse-500 transition-transform duration-300 group-hover:translate-x-1"
                   >
                     {ordinal(index + 1)}
                   </span>
-                  <h3 className="max-w-4xl font-display text-display-l text-mist-100">
+                  <h3 className="max-w-4xl font-display text-display-l text-mist-100 transition-colors duration-300 group-hover:text-pulse-500">
                     {belief.statement}
                   </h3>
                   <p className="max-w-2xl font-sans text-body-l text-mist-300">
@@ -170,9 +170,15 @@ export function ManifestoPage(): JSX.Element {
                 {STAND_AGAINST.map((item) => (
                   <li
                     key={item}
-                    className="border-t border-ink-900/15 pt-6 font-display text-h3 text-ink-900"
+                    className="group relative border-t border-ink-900/15 pt-6 font-display text-h3 text-ink-900"
                   >
-                    {item}
+                    <span className="relative inline-block">
+                      {item}
+                      <span
+                        className="absolute left-0 top-1/2 h-[2px] w-0 bg-ember-500 transition-all duration-300 ease-out group-hover:w-full"
+                        aria-hidden="true"
+                      />
+                    </span>
                   </li>
                 ))}
               </ul>
