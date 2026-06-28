@@ -193,8 +193,9 @@ export function HomePage(): JSX.Element {
         <StackSection zIndex={20}>
           <section
             aria-label="Problems"
-            className="bg-ink-900 mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+            className="w-full bg-ink-900"
           >
+          <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10">
             <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
               <div className="lg:sticky lg:top-28 lg:self-start">
                 <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
