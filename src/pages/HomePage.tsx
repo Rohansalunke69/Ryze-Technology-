@@ -175,12 +175,68 @@ const DIFFERENTIATORS: ReadonlyArray<string> = [
   'We stay after launch, because durable means supported.',
 ];
 
-export function HomePage(): JSX.Element {
-  // Portfolio-preview shows only featured case studies (Requirement 6.2).
-  const featuredCaseStudies = caseStudies.filter((c) => c.featured);
+// How many px of the Problems section to leave visible above the Philosophy panel.
+const PHILOSOPHY_PEEK = 160;
 
-  // Marquee of team names + roles for the Team section.
+export function HomePage(): JSX.Element {
+  const featuredCaseStudies = caseStudies.filter((c) => c.featured);
   const marqueeItems = team.map((member) => `${member.name} — ${member.role}`);
+
+  // Refs forwarded from the StackSection wrappers so we can set up cross-section pins.
+  const problemsRef   = useRef<HTMLDivElement>(null);
+  const philosophyRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const problems   = problemsRef.current;
+    const philosophy = philosophyRef.current;
+    if (!problems || !philosophy) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    /*
+     * Co-pin: Problems stays visible at the top of the viewport during the
+     * entire Philosophy storytelling sequence.  pinSpacing:false means no
+     * extra scroll space is added — Problems just holds in place while
+     * Philosophy (at PHILOSOPHY_PEEK px below the top) is readable.
+     *
+     * endTrigger: philosophy / end: 'bottom PEEK' — the pin releases at
+     * exactly the same moment the Philosophy pin releases, so both panels
+     * scroll away together and Team becomes visible cleanly.
+     */
+    const problemsPin = ScrollTrigger.create({
+      trigger:            problems,
+      endTrigger:         philosophy,
+      start:              'top top',
+      end:                `bottom ${PHILOSOPHY_PEEK}px`,
+      pin:                true,
+      pinSpacing:         false,
+      anticipatePin:      1,
+      invalidateOnRefresh: true,
+    });
+
+    /*
+     * Philosophy storytelling pin: panel parks at PHILOSOPHY_PEEK px from
+     * the viewport top so Problems content remains visible in the gap above.
+     * pinSpacing:true adds a correctly-sized spacer so every section after
+     * Philosophy (Team, Testimonials, CTA) is fully reachable.
+     */
+    const philosophyPin = ScrollTrigger.create({
+      trigger:            philosophy,
+      start:              `top ${PHILOSOPHY_PEEK}px`,
+      end:                `bottom ${PHILOSOPHY_PEEK}px`,
+      pin:                true,
+      pinSpacing:         true,
+      anticipatePin:      1,
+      invalidateOnRefresh: true,
+    });
+
+    return () => {
+      problemsPin.kill();
+      philosophyPin.kill();
+    };
+  }, [reducedMotion]);
 
   return (
     <>
