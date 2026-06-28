@@ -183,193 +183,195 @@ export function HomePage(): JSX.Element {
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
       <main>
-        {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
-        <Hero headline="Design. Develop. Grow." />
+        {/* ── Layer 1 — Hero (z:10) ─────────────────────────────────────────── */}
+        <StackSection zIndex={10} isFirst>
+          <Hero headline="Design. Develop. Grow." />
+          <PremiumMarquee />
+        </StackSection>
 
-        {/* Premium marquee strip */}
-        <PremiumMarquee />
+        {/* ── Layer 2 — Problems (z:20) ─────────────────────────────────────── */}
+        <StackSection zIndex={20}>
+          <section
+            aria-label="Problems"
+            className="bg-ink-900 mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+          >
+            <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
+              <div className="lg:sticky lg:top-28 lg:self-start">
+                <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
+                  The problem
+                </p>
+                <SplitText
+                  as="h2"
+                  by="word"
+                  text="Software that rots"
+                  className="mt-6 max-w-[12ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100"
+                />
+              </div>
 
-      {/* 2 — Problems: "software that rots". */}
-      <section
-        aria-label="Problems"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
-              The problem
-            </p>
-            <SplitText
-              as="h2"
-              by="word"
-              text="Software that rots"
-              className="mt-6 max-w-[12ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100"
-            />
-          </div>
+              <AnimationWrapper variant="rise" stagger={0.12}>
+                <ul className="flex flex-col">
+                  {PROBLEMS.map((problem, index) => (
+                    <li
+                      key={problem.title}
+                      className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)]"
+                      >
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <div className="flex flex-col gap-3 pt-1">
+                        <h3 className="font-display text-h3 font-semibold text-mist-100">
+                          {problem.title}
+                        </h3>
+                        <p className="max-w-md font-sans text-body text-mist-300">
+                          {problem.detail}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </AnimationWrapper>
+            </div>
+          </section>
+        </StackSection>
 
-          <AnimationWrapper variant="rise" stagger={0.12}>
-            <ul className="flex flex-col">
-              {PROBLEMS.map((problem, index) => (
-                <li
-                  key={problem.title}
-                  className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8"
+        {/* ── Layer 3 — Philosophy (z:30) ───────────────────────────────────── */}
+        <StackSection zIndex={30}>
+          <section aria-label="Philosophy" className="bg-pulse-500 text-ink-900">
+            <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
+              <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
+                Our philosophy
+              </p>
+              <AnimationWrapper variant="rise">
+                <SplitText
+                  as="h2"
+                  by="word"
+                  text="Most software is built to ship. We build it to last."
+                  className="mt-8 max-w-[18ch] font-display text-[clamp(2.5rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-ink-900"
+                />
+              </AnimationWrapper>
+              <AnimationWrapper variant="fade" delay={0.1}>
+                <p className="mt-10 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
+                  Anything worth building is worth building to last. We make order
+                  that holds — structured, tested, and maintainable — so the
+                  products we ship keep working long after launch day.
+                </p>
+              </AnimationWrapper>
+            </div>
+          </section>
+        </StackSection>
+
+        {/* ── Layer 4 — Services / CapabilitiesShowcase (z:40) ─────────────── */}
+        {/*   sticky:false — this component owns its own GSAP pin internally.  */}
+        <StackSection zIndex={40} sticky={false}>
+          <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
+        </StackSection>
+
+        {/* ── Layer 5 — Work / FeaturedWork (z:50) ─────────────────────────── */}
+        <StackSection zIndex={50} sticky={false}>
+          <FeaturedWork caseStudies={featuredCaseStudies} />
+        </StackSection>
+
+        {/* ── Remaining sections — normal scroll, no stacking ───────────────── */}
+        <ProcessTimeline steps={PROCESS_STEPS} />
+
+        <section
+          aria-label="Why Ryze"
+          className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+        >
+          <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
+          <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
+            {METRICS.map((metric) => (
+              <div key={metric.label} className="flex flex-col gap-3 border-t border-ink-600 pt-6">
+                <dt className="sr-only">{metric.label}</dt>
+                <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
+                  <AnimatedCounter
+                    value={metric.value}
+                    decimals={metric.decimals ?? 0}
+                    suffix={metric.suffix}
+                  />
+                </dd>
+                <p
+                  aria-hidden="true"
+                  className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)]"
-                  >
-                    {String(index + 1).padStart(2, '0')}
+                  {metric.label}
+                </p>
+              </div>
+            ))}
+          </dl>
+          <AnimationWrapper variant="rise" stagger={0.08}>
+            <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
+              {DIFFERENTIATORS.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300"
+                >
+                  <span aria-hidden="true" className="font-mono text-pulse-500">
+                    ↗
                   </span>
-                  <div className="flex flex-col gap-3 pt-1">
-                    <h3 className="font-display text-h3 font-semibold text-mist-100">
-                      {problem.title}
-                    </h3>
-                    <p className="max-w-md font-sans text-body text-mist-300">
-                      {problem.detail}
-                    </p>
-                  </div>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
           </AnimationWrapper>
-        </div>
-      </section>
+        </section>
 
-      {/* 3 — Philosophy: full-bleed inverted brand-blue statement. */}
-      <section
-        aria-label="Philosophy"
-        className="bg-pulse-500 text-ink-900"
-      >
-        <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
-          <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
-            Our philosophy
-          </p>
-          <AnimationWrapper variant="rise">
-            <SplitText
-              as="h2"
-              by="word"
-              text="Most software is built to ship. We build it to last."
-              className="mt-8 max-w-[18ch] font-display text-[clamp(2.5rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-ink-900"
-            />
-          </AnimationWrapper>
-          <AnimationWrapper variant="fade" delay={0.1}>
-            <p className="mt-10 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
-              Anything worth building is worth building to last. We make order
-              that holds — structured, tested, and maintainable — so the
-              products we ship keep working long after launch day.
-            </p>
-          </AnimationWrapper>
-        </div>
-      </section>
-
-      {/* What we build — pinned horizontal-scroll capabilities showcase. */}
-      <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
-
-      {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
-      <FeaturedWork caseStudies={featuredCaseStudies} />
-
-      {/* How we work — process band with a scroll-drawn progress line. */}
-      <ProcessTimeline steps={PROCESS_STEPS} />
-
-      {/* 6 — Why Us: AnimatedCounter metric row + differentiators (Req 6.3). */}
-      <section
-        aria-label="Why Ryze"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
-        <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
-          {METRICS.map((metric) => (
-            <div key={metric.label} className="flex flex-col gap-3 border-t border-ink-600 pt-6">
-              <dt className="sr-only">{metric.label}</dt>
-              <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
-                <AnimatedCounter
-                  value={metric.value}
-                  decimals={metric.decimals ?? 0}
-                  suffix={metric.suffix}
-                />
-              </dd>
-              <p
-                aria-hidden="true"
-                className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
-              >
-                {metric.label}
-              </p>
-            </div>
-          ))}
-        </dl>
-        <AnimationWrapper variant="rise" stagger={0.08}>
-          <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
-            {DIFFERENTIATORS.map((item) => (
-              <li
-                key={item}
-                className="flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300"
-              >
-                <span aria-hidden="true" className="font-mono text-pulse-500">
-                  ↗
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </AnimationWrapper>
-      </section>
-
-      {/* 7 — Team: the team cards + a marquee of names/roles. */}
-      <section
-        aria-label="Team"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <SectionHeader eyebrow="The studio" title="The people who build it" />
-        <AnimationWrapper variant="rise" stagger={0.1}>
-          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((member, index) => (
-              <TeamCard key={member.id} member={member} index={index} />
-            ))}
-          </div>
-        </AnimationWrapper>
-        <div className="mt-16 font-display text-h3 text-mist-100">
-          <MarqueeText items={marqueeItems} />
-        </div>
-      </section>
-
-      {/* Testimonial pull-quote (added content). */}
-      {testimonials[0] !== undefined ? (
         <section
-          aria-label="Client testimonial"
+          aria-label="Team"
           className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
         >
-          <AnimationWrapper variant="rise">
-            <figure className="mx-auto max-w-5xl">
-              <p
-                aria-hidden="true"
-                className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none text-pulse-500"
-              >
-                &ldquo;
-              </p>
-              <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
-                {testimonials[0].quote}
-              </blockquote>
-              <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
-                <span className="text-mist-100">{testimonials[0].author}</span>
-                <span aria-hidden="true" className="text-pulse-500">
-                  /
-                </span>
-                <span>
-                  {testimonials[0].authorRole}, {testimonials[0].company}
-                </span>
-              </figcaption>
-            </figure>
+          <SectionHeader eyebrow="The studio" title="The people who build it" />
+          <AnimationWrapper variant="rise" stagger={0.1}>
+            <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+              {team.map((member, index) => (
+                <TeamCard key={member.id} member={member} index={index} />
+              ))}
+            </div>
           </AnimationWrapper>
+          <div className="mt-16 font-display text-h3 text-mist-100">
+            <MarqueeText items={marqueeItems} />
+          </div>
         </section>
-      ) : null}
 
-      {/* 8 — CTA: MagneticButton → /contact (Requirement 6.4). */}
-      <CTA
-        heading="Let's build something permanent"
-        sub="Tell us what you're building. We'll help you make it last."
-        href="/contact"
-        label="Start a project"
-      />
+        {testimonials[0] !== undefined ? (
+          <section
+            aria-label="Client testimonial"
+            className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
+          >
+            <AnimationWrapper variant="rise">
+              <figure className="mx-auto max-w-5xl">
+                <p
+                  aria-hidden="true"
+                  className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none text-pulse-500"
+                >
+                  &ldquo;
+                </p>
+                <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
+                  {testimonials[0].quote}
+                </blockquote>
+                <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
+                  <span className="text-mist-100">{testimonials[0].author}</span>
+                  <span aria-hidden="true" className="text-pulse-500">
+                    /
+                  </span>
+                  <span>
+                    {testimonials[0].authorRole}, {testimonials[0].company}
+                  </span>
+                </figcaption>
+              </figure>
+            </AnimationWrapper>
+          </section>
+        ) : null}
+
+        <CTA
+          heading="Let's build something permanent"
+          sub="Tell us what you're building. We'll help you make it last."
+          href="/contact"
+          label="Start a project"
+        />
       </main>
     </>
   );
