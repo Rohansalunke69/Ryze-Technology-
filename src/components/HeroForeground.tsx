@@ -127,9 +127,9 @@ const FRONT_SPECS: CardSpec[] = [
     buildTl: (el, W, H) =>
       gsap.timeline({ repeat: -1, delay: 10 })
         .set(el,  { x: W * 0.60,  y: H + 230,  rotation:  0, scale: 1.00 })
-        .to(el,   { x: W * 0.46,  y: H * 0.64, rotation: -6, scale: 1.00, duration: 6,  ease: 'none' })
-        .to(el,   { x: W * 0.33,  y: H * 0.34, rotation: 11, scale: 1.04, duration: 8,  ease: 'none' })
-        .to(el,   { x: W * 0.14,  y: -230,     rotation: -4, scale: 0.98, duration: 6,  ease: 'none' }),
+        .to(el,   { x: W * 0.46,  y: H * 0.64, rotation: -6, scale: 1.00, duration: 4,  ease: 'none' })
+        .to(el,   { x: W * 0.33,  y: H * 0.34, rotation: 11, scale: 1.04, duration: 4,  ease: 'none' })
+        .to(el,   { x: W * 0.14,  y: -230,     rotation: -4, scale: 0.98, duration: 4,  ease: 'none' }),
   },
 ];
 
