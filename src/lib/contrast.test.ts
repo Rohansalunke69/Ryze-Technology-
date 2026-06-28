@@ -91,10 +91,10 @@ describe('design token contrast pairings (Requirement 36.2)', () => {
   it('reads the documented token hexes from the source of truth', () => {
     // Drift guard: these are the values authored in src/index.css. If a token
     // changes, this assertion flags it so the contrast bar is re-verified.
-    expect(ink900).toBe('#f3f1ea');
-    expect(mist100).toBe('#0a0a08');
-    expect(mist300).toBe('#54524a');
-    expect(pulse500).toBe('#2156c9');
+    expect(ink900).toBe('#F9FAFB');
+    expect(mist100).toBe('#111827');
+    expect(mist300).toBe('#6B7280');
+    expect(pulse500).toBe('#1E40AF');
   });
 
   it('mirrors the same tokens in tailwind.config.ts via var() references', () => {

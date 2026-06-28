@@ -130,7 +130,7 @@ export function Hero({ headline }: HeroProps): JSX.Element {
 
         {/* Stats row */}
         <div className="mt-16 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-ink-600 pt-8">
-          {HERO_STATS.map((stat, i) => (
+          {HERO_STATS.map((stat) => (
             <div key={stat.label} className="flex flex-col gap-0.5">
               <span className="font-display text-2xl font-bold text-mist-100 stat-glow">
                 {stat.value}

@@ -5,6 +5,7 @@
  * _Requirements: 6.4, 9.3, 38.1_
  */
 import { MagneticButton } from './MagneticButton';
+import { siteMetadata } from '@data/siteMetadata';
 
 export interface CTAProps {
   heading: string;
@@ -87,7 +88,7 @@ export function CTA({
             {label}
           </MagneticButton>
           <a
-            href="mailto:hello@ryzetechnology.in"
+            href={`mailto:${siteMetadata.contactEmail}`}
             data-cursor="link"
             className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-mist-300 transition-colors hover:text-mist-100"
           >

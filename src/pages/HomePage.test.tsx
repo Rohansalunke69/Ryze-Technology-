@@ -173,8 +173,10 @@ describe('HomePage', () => {
     // The CTA band is the heading's section ancestor.
     const section = cta.closest('section');
     expect(section).not.toBeNull();
-    const link = within(section as HTMLElement).getByRole('link');
-    expect(link).toHaveAttribute('href', '/contact');
+    const links = within(section as HTMLElement).getAllByRole('link');
+    expect(links.some((link) => link.getAttribute('href') === '/contact')).toBe(
+      true,
+    );
   });
 
   it('sets the homepage document title (Requirement 40.1)', async () => {

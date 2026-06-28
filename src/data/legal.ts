@@ -86,7 +86,7 @@ const privacy: LegalDoc = {
       id: 'contact-us',
       heading: 'Contact Us',
       body: [
-        'Questions about this policy or your data can be sent to hello@ryze.technology. We read every message and will help you sort out whatever you need.',
+        'Questions about this policy or your data can be sent to ryzetechonologyy@gmail.com. We read every message and will help you sort out whatever you need.',
       ],
     },
   ],
