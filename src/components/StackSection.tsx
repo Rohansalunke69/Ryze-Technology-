@@ -39,7 +39,7 @@ export interface StackSectionProps {
  */
 export const StackSection = forwardRef<HTMLDivElement, StackSectionProps>(
   function StackSection(
-    { zIndex, isFirst = false, overlap = false, children, id },
+    { zIndex, isFirst = false, overlap = false, cardBackground, children, id },
     ref,
   ) {
     const wrapperRef = useRef<HTMLDivElement>(null);
