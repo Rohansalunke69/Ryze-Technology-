@@ -37,6 +37,7 @@ import { useInView } from '@hooks/useInView';
 import { canRenderWebGL } from '@lib/canRenderWebGL';
 
 import { HeroFallback } from './HeroFallback';
+import { HeroForeground } from './HeroForeground';
 import { ScrollIndicator } from './ScrollIndicator';
 
 /**
