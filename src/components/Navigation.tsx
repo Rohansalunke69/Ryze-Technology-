@@ -186,7 +186,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
             {item.children.map((child, index) => (
               <li key={`${child.label}-${child.path}`} role="none">
                 {index > 0 ? (
-                  <div aria-hidden="true" className="mx-3 h-px bg-mist-100/20" />
+                  <div aria-hidden="true" className="mx-2 my-0.5 h-px bg-mist-100/50" />
                 ) : null}
                 <Link
                   role="menuitem"
