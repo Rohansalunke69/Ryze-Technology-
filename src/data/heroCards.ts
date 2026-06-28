@@ -25,15 +25,27 @@ export interface HeroCard {
   orientation: HeroCardOrientation;
 }
 
-/**
- * Back cards — ambient WebGL 3D orbit scene (deep background, always behind).
- * Three cards kept minimal so the orbit reads as atmosphere, not clutter.
- */
-export const heroBackCards: HeroCard[] = [
+/** The nine showcase images for the floating-cards hero. */
+export const heroCards: HeroCard[] = [
   {
     src: '/images/hero/search-ai.jpg',
     alt: 'AI-powered search interface with hands on laptop',
     orientation: 'landscape',
+  },
+  {
+    src: '/images/hero/strategic-ads.webp',
+    alt: 'Strategic ad campaigns — chess pieces symbolising targeted marketing',
+    orientation: 'square',
+  },
+  {
+    src: '/images/hero/social-marketing.jpg',
+    alt: 'Social media marketing — phone with megaphone and platform icons',
+    orientation: 'portrait',
+  },
+  {
+    src: '/images/hero/dev-design.jpg',
+    alt: 'Development and design — coding tools on a purple background',
+    orientation: 'square',
   },
   {
     src: '/images/hero/editorial-tech.jpg',
@@ -41,21 +53,9 @@ export const heroBackCards: HeroCard[] = [
     orientation: 'landscape',
   },
   {
-    src: '/images/hero/social-collage.jpg',
-    alt: 'Social media collage — dark-toned hands across multiple devices',
+    src: '/images/hero/brand-glowup.jpg',
+    alt: 'Brand glow-up — "Your Brand Called. It wants a Glow up" poster',
     orientation: 'portrait',
-  },
-];
-
-/**
- * Mid cards — GSAP DOM layer at z-5, rendered BEHIND the headline.
- * Each card travels a unique cross-screen path with GSAP.
- */
-export const heroMidCards: HeroCard[] = [
-  {
-    src: '/images/hero/dev-design.jpg',
-    alt: 'Development and design — coding tools on a purple background',
-    orientation: 'square',
   },
   {
     src: '/images/hero/developers.jpg',
@@ -63,33 +63,13 @@ export const heroMidCards: HeroCard[] = [
     orientation: 'landscape',
   },
   {
-    src: '/images/hero/social-marketing.jpg',
-    alt: 'Social media marketing — phone with megaphone and platform icons',
-    orientation: 'portrait',
-  },
-];
-
-/**
- * Front cards — GSAP DOM layer at z-20, rendered IN FRONT of the headline.
- * Each card travels a unique cross-screen path with GSAP.
- */
-export const heroFrontCards: HeroCard[] = [
-  {
-    src: '/images/hero/strategic-ads.webp',
-    alt: 'Strategic ad campaigns — chess pieces symbolising targeted marketing',
-    orientation: 'square',
-  },
-  {
-    src: '/images/hero/brand-glowup.jpg',
-    alt: 'Brand glow-up — "Your Brand Called. It wants a Glow up" poster',
+    src: '/images/hero/social-collage.jpg',
+    alt: 'Social media collage — dark-toned hands across multiple devices',
     orientation: 'portrait',
   },
   {
-    src: '/images/hero/stopwatch-collab.png',
-    alt: 'Time management collaboration — team around a pink stopwatch from above',
+    src: '/images/hero/team-collab.webp',
+    alt: 'Team collaboration — birds-eye view of a meeting around a table',
     orientation: 'square',
   },
 ];
-
-/** Full array kept for backward compatibility with any other consumers. */
-export const heroCards: HeroCard[] = [...heroBackCards, ...heroMidCards, ...heroFrontCards];

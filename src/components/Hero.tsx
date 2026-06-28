@@ -37,7 +37,6 @@ import { useInView } from '@hooks/useInView';
 import { canRenderWebGL } from '@lib/canRenderWebGL';
 
 import { HeroFallback } from './HeroFallback';
-import { HeroForeground } from './HeroForeground';
 import { ScrollIndicator } from './ScrollIndicator';
 
 /**
@@ -135,7 +134,7 @@ export function Hero({ headline }: HeroProps): JSX.Element {
       </div>
 
       {/* Hero content — always DOM, always sharp, always on top of canvas. */}
-      <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-16 pt-32 text-center sm:px-10">
+      <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-28 pt-32 text-center sm:px-10">
         {/*
          * Center vignette behind the text block — a subtle dark oval so the
          * headline reads over any card that drifts behind it.
@@ -149,8 +148,6 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           }}
         />
 
-        {/* Page h1 — single horizontal line on sm+. Font clamped so the full
-            "Design. Develop. Grow." string fits without wrapping at desktop. */}
         <h1
           className="relative font-display font-bold leading-none tracking-[-0.03em] text-white sm:whitespace-nowrap"
           style={{ fontSize: 'clamp(1.8rem, 5.2vw, 6.2rem)' }}
@@ -166,10 +163,16 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           {SUBTITLE}
         </p>
 
+        {/* CTA — rounded pill button. Uses real <a> for crawlability + a11y. */}
+        <div className="relative mt-10">
+          <a
+            href="/contact"
+            className="inline-block rounded-full border border-white/20 bg-white/10 px-8 py-3 font-sans text-sm font-semibold tracking-wide text-white backdrop-blur-sm transition-colors duration-200 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+          >
+            Get in touch
+          </a>
+        </div>
       </div>
-
-      {/* Three foreground cards that float IN FRONT of the headline. */}
-      <HeroForeground />
 
       {/* Scroll affordance pinned to the bottom. */}
       <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">

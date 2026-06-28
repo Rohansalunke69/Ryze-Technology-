@@ -30,7 +30,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-import { heroBackCards as heroCards, type HeroCard } from '@data/heroCards';
+import { heroCards, type HeroCard } from '@data/heroCards';
 import { useViewportCategory } from '@hooks/useViewportCategory';
 
 export interface HeroWebGLProps {
@@ -45,7 +45,7 @@ export interface HeroWebGLProps {
 // ---------------------------------------------------------------------------
 
 /** Angular velocity of the card cloud in radians per second. */
-const ORBIT_SPEED = 0.20;
+const ORBIT_SPEED = 0.38;
 
 /**
  * Depth-of-field toggle. When `false` (default) postprocessing is not imported
@@ -148,24 +148,16 @@ function buildOrbitParams(count: number): CardOrbitParams[] {
     const rng = seededRand(i * 7919 + 31337);
     const r = rng;
     return {
-      // Cards start evenly spaced around the full circle with a small per-card jitter
-      // so no two cards cluster and the scene reads as intentionally composed.
-      theta0:     (i / count) * Math.PI * 2 + r() * 0.45,
-      // Wider radius range creates convincing depth layers — near to far.
-      radius:     2.8 + r() * 2.4,
-      // Generous vertical spread so cards occupy top, mid, and bottom of frame.
-      y:          (r() - 0.5) * 4.2,
-      // Z-offset adds parallax depth without fighting the orbit.
-      zOffset:    (r() - 0.5) * 1.6,
-      // Speed multipliers kept close together so no card laps another.
-      speed:      0.55 + r() * 0.60,
-      // Slow, gentle drift frequencies produce the "breathing" premium float.
-      driftFreq:  0.12 + r() * 0.22,
-      driftAmp:   0.05 + r() * 0.10,
+      theta0:     (i / count) * Math.PI * 2 + r() * 0.6,
+      radius:     2.2 + r() * 2.5,
+      y:          (r() - 0.5) * 3.4,
+      zOffset:    (r() - 0.5) * 1.2,
+      speed:      0.6 + r() * 0.8,
+      driftFreq:  0.28 + r() * 0.35,
+      driftAmp:   0.08 + r() * 0.14,
       driftPhase: r() * Math.PI * 2,
-      // Slightly wider tilt gives each card its own personality on screen.
-      tiltX:      (r() - 0.5) * 0.34,
-      tiltY:      (r() - 0.5) * 0.34,
+      tiltX:      (r() - 0.5) * 0.28,
+      tiltY:      (r() - 0.5) * 0.28,
     };
   });
 }
@@ -296,12 +288,12 @@ function CardMesh({ card, params, index, paused, hidden }: CardMeshProps): JSX.E
 // Cards field — manages all cards and their orbit params
 // ---------------------------------------------------------------------------
 
-/** Card counts per viewport category — capped at heroBackCards.length (3), ambient only. */
+/** Card counts per viewport category. */
 const CARD_COUNTS: Record<string, number> = {
-  mobile:  3,
-  tablet:  3,
-  desktop: 3,
-  wide:    3,
+  mobile:  7,
+  tablet:  10,
+  desktop: 14,
+  wide:    14,
 };
 
 interface FloatingCardsFieldProps {
