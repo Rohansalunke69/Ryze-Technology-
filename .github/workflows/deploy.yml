@@ -1,0 +1,56 @@
+name: Deploy to Cloudflare Pages
+
+# Auto-deploys the site to the production Cloudflare Pages environment on every
+# push to `main`. The Pages project is a Direct Upload project whose PRODUCTION
+# branch is `master`, so we deploy the built `dist/` with `--branch=master`
+# (that is what makes it a Production deployment, served at
+# https://ryze-technology.pages.dev).
+#
+# Required GitHub repo secrets (Settings → Secrets and variables → Actions):
+#   - CLOUDFLARE_API_TOKEN  : a Cloudflare API token with "Cloudflare Pages: Edit"
+#   - CLOUDFLARE_ACCOUNT_ID : fced09691687186231c0fe748ba17fdf
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Avoid overlapping production deploys; cancel an in-progress run if a newer
+# commit lands.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Bundle budget check
+        run: npm run budget
+
+      - name: Deploy to Cloudflare Pages (production)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=ryze-technology --branch=master
