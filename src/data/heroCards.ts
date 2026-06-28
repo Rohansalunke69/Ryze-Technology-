@@ -26,8 +26,8 @@ export interface HeroCard {
 }
 
 /**
- * Back cards — rendered in the WebGL 3D orbit scene behind the headline.
- * Six unique images; the scene never repeats any of them.
+ * Back cards — ambient WebGL 3D orbit scene (deep background, always behind).
+ * Three cards kept minimal so the orbit reads as atmosphere, not clutter.
  */
 export const heroBackCards: HeroCard[] = [
   {
@@ -36,23 +36,8 @@ export const heroBackCards: HeroCard[] = [
     orientation: 'landscape',
   },
   {
-    src: '/images/hero/social-marketing.jpg',
-    alt: 'Social media marketing — phone with megaphone and platform icons',
-    orientation: 'portrait',
-  },
-  {
-    src: '/images/hero/dev-design.jpg',
-    alt: 'Development and design — coding tools on a purple background',
-    orientation: 'square',
-  },
-  {
     src: '/images/hero/editorial-tech.jpg',
     alt: 'Editorial technology — dark abstract hands and devices collage',
-    orientation: 'landscape',
-  },
-  {
-    src: '/images/hero/developers.jpg',
-    alt: 'Developers — bold typographic poster with retro computer scene',
     orientation: 'landscape',
   },
   {
@@ -63,8 +48,30 @@ export const heroBackCards: HeroCard[] = [
 ];
 
 /**
- * Front cards — rendered as DOM elements in front of the headline (z-20).
- * Three unique images; each floats with its own Framer Motion animation.
+ * Mid cards — GSAP DOM layer at z-5, rendered BEHIND the headline.
+ * Each card travels a unique cross-screen path with GSAP.
+ */
+export const heroMidCards: HeroCard[] = [
+  {
+    src: '/images/hero/dev-design.jpg',
+    alt: 'Development and design — coding tools on a purple background',
+    orientation: 'square',
+  },
+  {
+    src: '/images/hero/developers.jpg',
+    alt: 'Developers — bold typographic poster with retro computer scene',
+    orientation: 'landscape',
+  },
+  {
+    src: '/images/hero/social-marketing.jpg',
+    alt: 'Social media marketing — phone with megaphone and platform icons',
+    orientation: 'portrait',
+  },
+];
+
+/**
+ * Front cards — GSAP DOM layer at z-20, rendered IN FRONT of the headline.
+ * Each card travels a unique cross-screen path with GSAP.
  */
 export const heroFrontCards: HeroCard[] = [
   {
@@ -85,4 +92,4 @@ export const heroFrontCards: HeroCard[] = [
 ];
 
 /** Full array kept for backward compatibility with any other consumers. */
-export const heroCards: HeroCard[] = [...heroBackCards, ...heroFrontCards];
+export const heroCards: HeroCard[] = [...heroBackCards, ...heroMidCards, ...heroFrontCards];
