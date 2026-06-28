@@ -4,14 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@hooks/useReducedMotion';
 
 export interface StackSectionProps {
-  /** Z-index for layering — higher = on top of previous sections. */
   zIndex: number;
-  /** First layer (Hero) — no card chrome, no entrance animation. */
   isFirst?: boolean;
   /**
-   * false → position:relative instead of sticky.
-   * Use this for sections that have their own GSAP pin internally
-   * (e.g. CapabilitiesShowcase) to avoid containing-block conflicts.
+   * false = position:relative instead of sticky.
+   * Use for sections that own a GSAP pin internally (e.g. CapabilitiesShowcase)
+   * so the inner never carries a CSS transform that would trap position:fixed children.
    */
   sticky?: boolean;
   children: ReactNode;
@@ -26,86 +24,108 @@ export function StackSection({
   id,
 }: StackSectionProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
+  const innerRef  = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (reducedMotion) return;
     const wrapper = wrapperRef.current;
-    const inner = innerRef.current;
+    const inner   = innerRef.current;
     if (!wrapper || !inner) return;
 
     gsap.registerPlugin(ScrollTrigger);
-
     const owned: ScrollTrigger[] = [];
 
     if (!isFirst) {
-      // Start this section 60 px below its natural position.
-      gsap.set(inner, { y: 60 });
+      // Subtle pull-up: inner starts 40 px below natural position and rises to 0.
+      // The *wrapper* already rises naturally due to scroll — this small offset
+      // adds a premium "lift" without creating a dark gap above the card.
+      gsap.set(inner, { y: 40 });
 
-      // Slide it up to y:0 as it enters the viewport (scrubbed).
-      const slideIn = ScrollTrigger.create({
+      const lift = ScrollTrigger.create({
         trigger: wrapper,
-        start: 'top 92%',
+        start: 'top bottom',
         end: 'top top',
         scrub: 1.5,
         onUpdate(self) {
-          gsap.set(inner, { y: (1 - self.progress) * 60 });
+          gsap.set(inner, { y: (1 - self.progress) * 40 });
+        },
+        // Clear transform once fully in so internal GSAP pins (e.g. Capabilities)
+        // are never trapped inside a stacking context created by translateY.
+        onLeave() {
+          gsap.set(inner, { clearProps: 'transform' });
+        },
+        onEnterBack() {
+          gsap.set(inner, { y: 40 });
         },
       });
-      owned.push(slideIn);
+      owned.push(lift);
 
-      // While this section enters, scale + fade the previous layer.
-      const prev = wrapper.previousElementSibling as HTMLElement | null;
+      // Dim the previous layer as this one rises over it.
+      const prev      = wrapper.previousElementSibling as HTMLElement | null;
       const prevInner = prev?.querySelector<HTMLElement>('[data-stack-inner]');
       if (prevInner) {
-        const dimPrev = ScrollTrigger.create({
+        const dim = ScrollTrigger.create({
           trigger: wrapper,
-          start: 'top 92%',
+          start: 'top bottom',
           end: 'top top',
           scrub: 1.5,
           onUpdate(self) {
             gsap.set(prevInner, {
-              scale: 1 - self.progress * 0.03,
-              opacity: 1 - self.progress * 0.1,
+              scale:   1 - self.progress * 0.02,   // 1 → 0.98
+              opacity: 1 - self.progress * 0.05,   // 1 → 0.95
             });
           },
+          onLeave() {
+            gsap.set(prevInner, { scale: 0.98, opacity: 0.95 });
+          },
+          onEnterBack() {
+            gsap.set(prevInner, { scale: 1, opacity: 1 });
+          },
         });
-        owned.push(dimPrev);
+        owned.push(dim);
       }
     }
 
     return () => {
       owned.forEach((t) => t.kill());
-      gsap.set(inner, { clearProps: 'y,scale,opacity' });
+      gsap.set(inner, { clearProps: 'all' });
     };
   }, [reducedMotion, isFirst]);
 
-  const wrapperStyle: React.CSSProperties = {
-    position: sticky ? 'sticky' : 'relative',
-    top: sticky ? 0 : undefined,
-    zIndex,
-  };
-
-  const innerStyle: React.CSSProperties = {
-    transformOrigin: 'top center',
-    ...(isFirst
-      ? {}
-      : {
-          borderRadius: '20px 20px 0 0',
-          // Depth shadow — visible between the card edge and the layer beneath.
-          boxShadow:
-            '0 -16px 60px rgba(0,0,0,0.65), 0 -1px 0 rgba(255,255,255,0.05)',
-          overflow: 'hidden',
-        }),
-  };
-
   return (
-    <div ref={wrapperRef} id={id} style={wrapperStyle}>
+    <div
+      ref={wrapperRef}
+      id={id}
+      style={{
+        position: sticky ? 'sticky' : 'relative',
+        top: sticky ? 0 : undefined,
+        zIndex,
+        // Opaque wrapper background is essential: it fills the gap between the
+        // wrapper edge and the rounded inner corners, preventing lower-z sections
+        // from bleeding through the transparent corner areas.
+        background: '#060607',
+      }}
+    >
       <div
         ref={innerRef}
         data-stack-inner=""
-        style={innerStyle}
+        style={{
+          transformOrigin: 'top center',
+          // Every panel must be fully opaque — the incoming section must completely
+          // hide everything beneath it once it has covered the viewport.
+          background: '#060607',
+          ...(isFirst
+            ? {}
+            : {
+                borderRadius: '20px 20px 0 0',
+                // overflow:hidden clips section content to the rounded card shape.
+                // Safe here because inner is NOT sticky (only wrapper is).
+                overflow: 'hidden',
+                boxShadow:
+                  '0 -20px 80px rgba(0,0,0,0.95), 0 -1px 0 rgba(255,255,255,0.07)',
+              }),
+        }}
       >
         {children}
       </div>
