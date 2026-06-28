@@ -57,10 +57,14 @@ describe('Navigation — desktop', () => {
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument();
   });
 
-  it('renders the brand link to home', () => {
+  it('renders a Home nav link to the homepage (logo is not a link)', () => {
     renderNav();
-    const home = screen.getByRole('link', { name: 'Ryze Technology home' });
+    const home = screen.getByRole('link', { name: 'Home' });
     expect(home).toHaveAttribute('href', '/');
+    // The brand logo no longer acts as a link to home.
+    expect(
+      screen.queryByRole('link', { name: 'Ryze Technology home' }),
+    ).not.toBeInTheDocument();
   });
 
   it('reveals dropdown children when the parent is focused (Req 1.3)', async () => {

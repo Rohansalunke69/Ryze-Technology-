@@ -26,18 +26,20 @@
  */
 import {
   useCallback,
+  useContext,
   useEffect,
   useId,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { navItems as defaultNavItems } from '@data/navigation';
 import type { NavChild, NavItem } from '@app-types';
 import { useViewportCategory } from '@hooks/useViewportCategory';
+import { SmoothScrollContext } from '@providers/SmoothScrollProvider';
 import { MagneticButton } from './MagneticButton';
 import { Logo } from './Logo';
 
@@ -309,7 +311,13 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
 }
 
 /** Desktop / tablet inline navigation row. */
-function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
+function DesktopNav({
+  items,
+  onNavClick,
+}: {
+  items: NavItem[];
+  onNavClick: (path: string) => void;
+}): JSX.Element {
   return (
     <ul className="hidden items-center gap-2 md:flex">
       {items.map((item) => {
@@ -337,6 +345,7 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
             <NavLink
               to={item.path ?? '/'}
               data-cursor="link"
+              onClick={() => onNavClick(item.path ?? '/')}
               className="inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
             >
               {item.label}
@@ -356,10 +365,12 @@ function MobileMenu({
   id,
   items,
   onClose,
+  onNavClick,
 }: {
   id: string;
   items: NavItem[];
   onClose: () => void;
+  onNavClick: (path: string) => void;
 }): JSX.Element {
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -439,7 +450,10 @@ function MobileMenu({
             to={link.path}
             data-cursor="link"
             className="block border-b border-ink-700 py-4 font-display text-2xl text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
-            onClick={onClose}
+            onClick={() => {
+              onNavClick(link.path);
+              onClose();
+            }}
           >
             {link.label}
           </Link>
@@ -458,6 +472,23 @@ export function Navigation({
   const category = useViewportCategory();
   const isMobile = category === 'mobile';
   const scrolled = useScrolledPastTop(transparentUntilScroll);
+  const location = useLocation();
+  const smooth = useContext(SmoothScrollContext);
+
+  // Clicking a nav link that points to the page you're already on should bring
+  // you back to the top (e.g. Home → hero) rather than do nothing. Smooth-scroll
+  // via Lenis when available, otherwise the native smooth scroll.
+  const handleNavClick = useCallback(
+    (path: string) => {
+      if (path !== location.pathname) return;
+      if (smooth?.lenis) {
+        smooth.scrollTo(0);
+      } else if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    },
+    [location.pathname, smooth],
+  );
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
@@ -524,14 +555,12 @@ export function Navigation({
         aria-label="Primary"
         className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2"
       >
-        <Link
-          to="/"
-          data-cursor="link"
-          aria-label="Ryze Technology home"
-          className="transition-opacity hover:opacity-80 focus-visible:opacity-80"
+        <span
+          aria-hidden="true"
+          className="inline-flex select-none items-center"
         >
           <Logo variant="full" height={32} tone={logoTone} />
-        </Link>
+        </span>
 
         {isMobile ? (
           <button
@@ -569,12 +598,12 @@ export function Navigation({
             </svg>
           </button>
         ) : (
-          <DesktopNav items={items} />
+          <DesktopNav items={items} onNavClick={handleNavClick} />
         )}
       </nav>
 
       {isMobile && menuOpen ? (
-        <MobileMenu id={menuId} items={items} onClose={closeMenu} />
+        <MobileMenu id={menuId} items={items} onClose={closeMenu} onNavClick={handleNavClick} />
       ) : null}
     </header>
   );

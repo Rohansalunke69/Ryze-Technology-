@@ -48,7 +48,6 @@ import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
 import { team } from '@data/team';
-import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
 
 /** Homepage document metadata (Requirement 40.1). */
@@ -256,37 +255,6 @@ export function HomePage(): JSX.Element {
           <MarqueeText items={marqueeItems} />
         </div>
       </section>
-
-      {/* Testimonial pull-quote (added content). */}
-      {testimonials[0] !== undefined ? (
-        <section
-          aria-label="Client testimonial"
-          className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-        >
-          <AnimationWrapper variant="rise">
-            <figure className="mx-auto max-w-5xl">
-              <p
-                aria-hidden="true"
-                className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none text-pulse-500"
-              >
-                &ldquo;
-              </p>
-              <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
-                {testimonials[0].quote}
-              </blockquote>
-              <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
-                <span className="text-mist-100">{testimonials[0].author}</span>
-                <span aria-hidden="true" className="text-pulse-500">
-                  /
-                </span>
-                <span>
-                  {testimonials[0].authorRole}, {testimonials[0].company}
-                </span>
-              </figcaption>
-            </figure>
-          </AnimationWrapper>
-        </section>
-      ) : null}
 
       {/* 8 — CTA: MagneticButton → /contact (Requirement 6.4). */}
       <CTA
