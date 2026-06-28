@@ -148,32 +148,29 @@ function useOverDarkSection(): boolean {
   const [overDark, setOverDark] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    const update = (): void => {
-      const vh = window.innerHeight || 0;
-      let dark = false;
-      const els = document.querySelectorAll<HTMLElement>('[data-nav-dark]');
-      for (const el of Array.from(els)) {
-        const r = el.getBoundingClientRect();
-        // Adopt the dark treatment once a dark section is prominently in view —
-        // i.e. its top has scrolled above ~60% of the viewport while it is
-        // still on screen. This fires as the footer rises into view near the
-        // bottom of the page (the header itself sits over it only if it were
-        // full-height, so we key off visibility instead of the top band).
-        if (r.bottom > 0 && r.top < vh * 0.6) {
-          dark = true;
-          break;
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
+      return undefined;
+    }
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-dark]'));
+    if (els.length === 0) return undefined;
+
+    const visible = new Set<Element>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target);
+          else visible.delete(e.target);
         }
-      }
-      setOverDark(dark);
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-    };
+        setOverDark(visible.size > 0);
+      },
+      // Shrink the root's bottom by 40% so a dark section only counts once it
+      // has risen into the top ~60% of the viewport (the footer entering view
+      // near the page bottom). IntersectionObserver toggles cleanly in BOTH
+      // scroll directions, so the header reverts to light on the way back up.
+      { root: null, rootMargin: '0px 0px -40% 0px', threshold: 0 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   return overDark;
