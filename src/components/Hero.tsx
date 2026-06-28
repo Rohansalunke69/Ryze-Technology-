@@ -1,207 +1,126 @@
-/**
- * Hero — capability-gated homepage hero (task 11.2).
- *
- * The Hero is the single decision point that chooses between the heavy animated
- * WebGL scene and the static fallback, following the "WebGL Capability Gating"
- * flow in design.md:
- *
- *   1. ALWAYS render {@link HeroFallback} first, before any WebGL is ready
- *      (Requirement 19.1). It is the persistent background layer and the poster
- *      the animated scene cross-fades in over.
- *   2. IF reduced motion is active → render ONLY the fallback and NEVER mount a
- *      WebGL canvas (Requirement 19.2).
- *   3. IF a WebGL2 context is unavailable or the capability gate fails (too few
- *      cores, too little memory, save-data) → render ONLY the fallback
- *      (Requirements 19.3, 19.4). Both are decided by `canRenderWebGL()`.
- *   4. WHEN motion is allowed, WebGL2 is available, the gate passes, AND the
- *      hero is scrolled into view → lazily import {@link HeroWebGL} via
- *      `React.lazy` + `<Suspense>` behind an IntersectionObserver and mount it
- *      behind the fallback (Requirement 19.5).
- *   5. WHEN the scene becomes ready → cross-fade from the fallback to the
- *      animated scene (Requirement 19.6).
- *
- * Chunking discipline: `three` / `@react-three/fiber` MUST NOT be imported by
- * this module or {@link HeroFallback}; they live only in the lazily-imported
- * {@link HeroWebGL} chunk (task 11.3) so the entry bundle stays clean.
- *
- * The headline/eyebrow/subheadline/CTA content is composed on top of whichever
- * background layer is active.
- *
- * _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6_
- */
-import {
-  lazy,
-  Suspense,
-  useEffect,
-  useState,
-  type CSSProperties,
-} from 'react';
-
-import { useReducedMotion } from '@hooks/useReducedMotion';
-import { useInView } from '@hooks/useInView';
-import { canRenderWebGL } from '@lib/canRenderWebGL';
-
 import { HeroFallback } from './HeroFallback';
 import { MagneticButton } from './MagneticButton';
 import { ScrollIndicator } from './ScrollIndicator';
 import { SplitText } from './SplitText';
 
-/**
- * Lazily-imported animated scene. Declared at module scope so the chunk is only
- * fetched the first time the component is actually rendered — never in the
- * entry bundle (Requirement 19.5). Task 11.3 fills in the real R3F scene.
- */
-const HeroWebGL = lazy(() => import('./HeroWebGL'));
-
 export interface HeroProps {
   /** Oversized hero headline (revealed via SplitText). */
   headline: string;
-  /** Optional mono eyebrow line above the headline. */
-  eyebrow?: string;
 }
 
 const SUBHEADLINE =
   'We design and build durable digital products — websites, mobile apps, ' +
   'and business systems engineered to work forever.';
 
-/**
- * Notifies the parent once the lazily-loaded scene has actually mounted, which
- * is the signal to begin the cross-fade (Requirement 19.6). Rendering this as a
- * child of `<Suspense>` means its mount effect only runs after the lazy chunk
- * resolved and committed.
- */
-function HeroWebGLLayer({
-  paused,
-  onReady,
-}: {
-  paused: boolean;
-  onReady: () => void;
-}): JSX.Element {
-  useEffect(() => {
-    onReady();
-  }, [onReady]);
+const HERO_STATS = [
+  { value: '50+', label: 'Projects shipped' },
+  { value: '99.9%', label: 'Uptime we hold' },
+  { value: '5★', label: 'Client rating' },
+];
 
-  return <HeroWebGL paused={paused} />;
-}
-
-export function Hero({ headline, eyebrow }: HeroProps): JSX.Element {
-  const reducedMotion = useReducedMotion();
-
-  // Watch the hero so the WebGL chunk is only requested once it scrolls in.
-  const { ref, inView } = useInView<HTMLDivElement>({
-    threshold: 0.1,
-    once: true,
-  });
-
-  // The capability gate touches the DOM (probes a WebGL2 context), so decide it
-  // once on the client after mount rather than during render. Starts `false`
-  // so the server/first paint always shows the fallback (Requirement 19.1).
-  const [capable, setCapable] = useState(false);
-  useEffect(() => {
-    // Reduced motion never probes WebGL at all (Requirement 19.2).
-    if (reducedMotion) {
-      setCapable(false);
-      return;
-    }
-    setCapable(canRenderWebGL());
-  }, [reducedMotion]);
-
-  // Tracks when the animated scene has mounted, to drive the cross-fade.
-  const [webglReady, setWebglReady] = useState(false);
-
-  // Final gate: motion allowed + capable + in view (Requirements 19.2–19.5).
-  const shouldMountWebGL = !reducedMotion && capable && inView;
-
-  // Cross-fade: the fallback fades out only once the scene is ready; the scene
-  // fades in as it becomes ready (Requirement 19.6).
-  const fallbackLayerStyle: CSSProperties = {
-    transition: reducedMotion ? undefined : 'opacity 800ms ease',
-    opacity: webglReady ? 0 : 1,
-  };
-  const webglLayerStyle: CSSProperties = {
-    transition: 'opacity 800ms ease',
-    opacity: webglReady ? 1 : 0,
-  };
-
+export function Hero({ headline }: HeroProps): JSX.Element {
   return (
     <section
       className="relative flex min-h-[100dvh] w-full items-center overflow-hidden bg-ink-900 [min-height:100vh]"
       aria-label="Intro"
     >
-      {/* Background layers live inside the observed ref. */}
-      <div ref={ref} className="absolute inset-0">
-        {/* (1) Always-present static fallback (Requirement 19.1). */}
-        <div className="absolute inset-0" style={fallbackLayerStyle}>
+      {/* ── Background layers ── */}
+      <div className="absolute inset-0">
+        {/* Static fallback texture */}
+        <div className="absolute inset-0">
           <HeroFallback />
         </div>
 
-        {/* (4/5) Animated scene — only mounted when fully gated on. */}
-        {shouldMountWebGL ? (
-          <div className="absolute inset-0" style={webglLayerStyle}>
-            <Suspense fallback={null}>
-              <HeroWebGLLayer
-                paused={!inView}
-                onReady={() => setWebglReady(true)}
-              />
-            </Suspense>
-          </div>
-        ) : null}
-
-        {/* Living aurora energy field — atmosphere over the base layers. */}
+        {/* Living aurora energy field */}
         <div className="aurora" aria-hidden="true" />
-        {/* Exposed blueprint grid hairlines for the "engineered" motif. */}
+
+        {/* Blueprint grid hairlines */}
         <div className="grid-overlay absolute inset-0" aria-hidden="true" />
-        {/* Bottom fade so the hero settles into the page below. */}
+
+        {/* Bottom fade into page */}
         <div
-          className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-b from-transparent to-ink-900"
+          className="absolute inset-x-0 bottom-0 z-[1] h-48 bg-gradient-to-b from-transparent to-ink-900"
           aria-hidden="true"
         />
       </div>
 
-      {/* Composed hero content on top of whichever background is active. */}
-      <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-28 pt-32 sm:px-10">
-        {/* Kinetic eyebrow row: live status dot + label + coordinate. */}
-        <div className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-mist-300">
-          <span className="inline-flex items-center gap-2 text-pulse-500">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-pulse-500 opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-pulse-500" />
-            </span>
-            {eyebrow !== undefined && eyebrow.length > 0 ? eyebrow : 'Ryze Technology'}
+      {/* ── Floating geometric decoration ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        {/* Large outer ring */}
+        <div
+          className="hero-ring absolute right-[-5%] top-[10%] h-[clamp(320px,45vw,680px)] w-[clamp(320px,45vw,680px)] animate-float-slow"
+          style={{ animationDelay: '0s' }}
+        />
+        {/* Medium inner ring */}
+        <div
+          className="hero-ring absolute right-[5%] top-[18%] h-[clamp(180px,25vw,380px)] w-[clamp(180px,25vw,380px)] animate-float"
+          style={{ animationDelay: '1.5s', borderColor: 'rgba(87, 197, 247, 0.14)' }}
+        />
+        {/* Small accent ring */}
+        <div
+          className="hero-ring absolute right-[20%] top-[30%] h-[clamp(80px,10vw,160px)] w-[clamp(80px,10vw,160px)] animate-float-delayed"
+          style={{ animationDelay: '3s', borderColor: 'rgba(30, 64, 175, 0.12)' }}
+        />
+        {/* Bottom-left accent */}
+        <div
+          className="absolute bottom-[25%] left-[5%] h-[clamp(60px,8vw,120px)] w-[clamp(60px,8vw,120px)] rotate-45 border border-[rgba(30,64,175,0.1)] animate-float"
+          style={{ animationDelay: '2s' }}
+        />
+        {/* Dot cluster — right center */}
+        <div className="absolute right-[12%] top-[55%] grid grid-cols-4 gap-3 opacity-30">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-1 w-1 rounded-full bg-pulse-700"
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Hero content ── */}
+      <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-24 pt-36 sm:px-10 sm:pb-28 sm:pt-44">
+
+        {/* Eyebrow badge */}
+        <div className="mb-8 flex items-center gap-3">
+          <span className="tag-pill">
+            <span className="pulse-dot" aria-hidden="true" />
+            Software Studio · Nagpur, India
           </span>
-          <span aria-hidden="true" className="hidden h-px w-12 bg-ink-600 sm:block" />
-          <span className="hidden sm:inline">Software studio · Nagpur, IN</span>
-          <span aria-hidden="true" className="hidden h-px w-12 bg-ink-600 lg:block" />
-          <span className="hidden lg:inline">21.15°N&nbsp;79.09°E</span>
         </div>
 
-        {/* Oversized, constructed display headline. */}
+        {/* Main headline */}
         <SplitText
           as="h1"
           by="word"
           text={headline}
           trigger="mount"
-          className="max-w-[16ch] font-display text-[clamp(3rem,9.5vw,9.5rem)] font-semibold leading-[0.92] tracking-[-0.03em] text-mist-100"
+          className="max-w-[16ch] font-display text-[clamp(2.75rem,8vw,8rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100"
         />
 
+        {/* Sub-content row */}
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-          <p className="max-w-xl font-sans text-body-l leading-relaxed text-mist-300">
+          <p className="max-w-lg font-sans text-body-l leading-relaxed text-mist-300">
             {SUBHEADLINE}
           </p>
 
-          <div className="flex flex-shrink-0 items-center gap-8">
-            <MagneticButton as="a" href="/contact" ariaLabel="Start a project">
+          <div className="flex flex-shrink-0 items-center gap-6">
+            <MagneticButton
+              as="a"
+              href="/contact"
+              ariaLabel="Start a project"
+              className="btn-gradient-pulse"
+            >
               Start a project
             </MagneticButton>
             <a
               href="/portfolio"
               data-cursor="link"
-              className="group inline-flex items-center gap-2 font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-mist-100 transition-colors duration-200 ease-out hover:text-pulse-500 focus-visible:text-pulse-500"
+              className="group inline-flex items-center gap-2 font-display font-bold text-mono-eyebrow uppercase tracking-[0.2em] text-mist-100 transition-colors duration-200 ease-out hover:text-pulse-500 focus-visible:text-pulse-500"
             >
               See our work
               <span
                 aria-hidden="true"
-                className="transition-transform duration-200 ease-out group-hover:translate-x-1"
+                className="transition-transform duration-200 ease-out group-hover:translate-x-1.5"
               >
                 →
               </span>
@@ -209,11 +128,25 @@ export function Hero({ headline, eyebrow }: HeroProps): JSX.Element {
           </div>
         </div>
 
-        {/* Hairline rule anchoring the hero to the grid. */}
-        <div className="rule-pulse mt-16 w-full" aria-hidden="true" />
+        {/* Stats row */}
+        <div className="mt-16 flex flex-wrap items-center gap-x-10 gap-y-4 border-t border-ink-600 pt-8">
+          {HERO_STATS.map((stat, i) => (
+            <div key={stat.label} className="flex flex-col gap-0.5">
+              <span className="font-display text-2xl font-bold text-mist-100 stat-glow">
+                {stat.value}
+              </span>
+              <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-mist-300">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+          <div className="ml-auto hidden lg:block">
+            <div className="rule-pulse h-px w-32" aria-hidden="true" />
+          </div>
+        </div>
       </div>
 
-      {/* Scroll affordance pinned to the bottom of the hero. */}
+      {/* Scroll affordance */}
       <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
         <ScrollIndicator />
       </div>

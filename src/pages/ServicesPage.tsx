@@ -220,7 +220,7 @@ export function ServicesPage(): JSX.Element {
         {/* Support / maintenance band — inverted brand blue (Req 9.2) */}
         <section
           aria-label="We Don't Stop at Launch"
-          className="bg-pulse-600 text-ink-900"
+          className="bg-pulse-700 text-ink-900"
         >
           <div className="mx-auto w-full max-w-site px-6 py-[clamp(4.5rem,12vh,8.5rem)] sm:px-10">
             <AnimationWrapper variant="fade">

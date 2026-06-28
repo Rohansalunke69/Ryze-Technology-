@@ -18,7 +18,7 @@ export const navItems: NavItem[] = [
     label: 'Work',
     children: [
       { label: 'Portfolio', path: '/portfolio', description: 'Selected projects across web, mobile, and systems' },
-      { label: 'Case Studies', path: '/portfolio', description: 'Deep dives into challenge, solution, and results' },
+      { label: 'Blog', path: '/blog', description: 'Engineering insights, design thinking, and studio news' },
     ],
   },
   {
@@ -56,7 +56,7 @@ export const footerNav: FooterNavGroup[] = [
     title: 'Work',
     links: [
       { label: 'Portfolio', path: '/portfolio' },
-      { label: 'Case Studies', path: '/portfolio' },
+      { label: 'Blog', path: '/blog' },
     ],
   },
   {

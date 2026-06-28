@@ -115,8 +115,8 @@ function useScrollProgress(max = 600): number {
  * brand blue (once scrolled) based on `progress` in [0,1].
  */
 function underlineColor(progress: number): string {
-  const from = { r: 10, g: 10, b: 8 }; // #0a0a08 — black
-  const to = { r: 33, g: 86, b: 201 }; // #2156c9 — brand blue
+  const from = { r: 3, g: 0, b: 20 }; // #030014 — dark background
+  const to = { r: 59, g: 130, b: 246 }; // #3b82f6 — brand blue
   const r = Math.round(from.r + (to.r - from.r) * progress);
   const g = Math.round(from.g + (to.g - from.g) * progress);
   const b = Math.round(from.b + (to.b - from.b) * progress);
@@ -163,7 +163,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
         aria-expanded={open}
         aria-controls={menuId}
         data-cursor="link"
-        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+        className="inline-flex items-center gap-1 px-3 py-2 font-display font-semibold text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
         onClick={() => setOpen((prev) => !prev)}
       >
         {item.label}
@@ -198,7 +198,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
                   className="flex h-full flex-col gap-1 rounded-lg border border-transparent px-3.5 py-3 transition-colors hover:border-ink-600 hover:bg-ink-700 focus-visible:border-ink-600 focus-visible:bg-ink-700"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="font-mono text-sm font-medium tracking-wide text-mist-100">
+                  <span className="font-display text-sm font-semibold tracking-wide text-mist-100">
                     {child.label}
                   </span>
                   {child.description !== undefined ? (
@@ -224,7 +224,12 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
         if (item.cta === true) {
           return (
             <li key={item.label}>
-              <MagneticButton as="a" href={item.path ?? CONTACT_PATH} ariaLabel={item.label}>
+              <MagneticButton 
+                as="a" 
+                href={item.path ?? CONTACT_PATH} 
+                ariaLabel={item.label}
+                className="btn-gradient-pulse"
+              >
                 {item.label}
               </MagneticButton>
             </li>
@@ -240,7 +245,7 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
             <NavLink
               to={item.path ?? '/'}
               data-cursor="link"
-              className="inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+              className="inline-flex items-center px-3 py-2 font-display font-semibold text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
             >
               {item.label}
             </NavLink>
