@@ -31,12 +31,13 @@
  *
  * _Requirements: 5.3, 5.4, 20.3, 26.2, 38.1_
  */
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { Navigation } from '@components/Navigation';
 import { Footer } from '@components/Footer';
 import { PageTransition } from '@components/PageTransition';
+import { SmoothScrollContext } from '@providers/SmoothScrollProvider';
 
 /**
  * Map of top-level route pathnames → a dynamic-import thunk for that route's
@@ -181,9 +182,37 @@ function useRoutePrefetch(): void {
 
 export function AppLayout(): JSX.Element {
   const location = useLocation();
+  const smooth = useContext(SmoothScrollContext);
 
   useScrollTriggerRefreshOnRouteChange(location.pathname);
   useRoutePrefetch();
+
+  // Reset scroll to the top on every route change. `window.scrollTo` alone is
+  // not enough when the Lenis smooth-scroll engine is active: Lenis keeps its
+  // own scroll position and would re-apply the previous offset on the next
+  // frame, leaving the new page scrolled to the middle/bottom. So we also tell
+  // Lenis to jump to the top immediately. Runs after paint so the new page's
+  // layout is in place. Guarded for SSR/jsdom and the native-scroll fallback.
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    // Opt out of the browser restoring a remembered scroll position on
+    // client-side navigations, which can fight our reset.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    const reset = (): void => {
+      window.scrollTo(0, 0);
+      if (smooth?.lenis) {
+        smooth.scrollTo(0, { immediate: true });
+      }
+    };
+
+    reset();
+    const raf = window.requestAnimationFrame(reset);
+    return () => window.cancelAnimationFrame(raf);
+  }, [location.pathname, smooth]);
 
   return (
     <>
