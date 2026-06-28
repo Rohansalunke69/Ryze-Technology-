@@ -163,7 +163,7 @@ function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } })
         aria-expanded={open}
         aria-controls={menuId}
         data-cursor="link"
-        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-base tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
         onClick={() => setOpen((prev) => !prev)}
       >
         {item.label}
@@ -240,7 +240,7 @@ function DesktopNav({ items }: { items: NavItem[] }): JSX.Element {
             <NavLink
               to={item.path ?? '/'}
               data-cursor="link"
-              className="inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
+              className="inline-flex items-center px-3 py-2 font-mono text-base tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
             >
               {item.label}
             </NavLink>
