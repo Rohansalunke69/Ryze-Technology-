@@ -46,6 +46,7 @@ import { MarqueeText } from '@components/MarqueeText';
 import { SectionHeader } from '@components/SectionHeader';
 import { SplitText } from '@components/SplitText';
 import { TeamCard } from '@components/TeamCard';
+import { ServiceCard } from '@components/ServiceCard';
 import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
