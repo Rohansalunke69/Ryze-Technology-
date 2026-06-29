@@ -41,36 +41,54 @@ function Strip({ hidden }: { hidden?: boolean }) {
 export function PremiumMarquee() {
   const skewerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+  const { lenis } = useLenis();
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion) return undefined;
     const skewer = skewerRef.current;
-    if (!skewer) return;
+    if (!skewer) return undefined;
 
+    // A single eased setter — no per-frame tween spawning, no standalone RAF.
+    const setSkew = gsap.quickTo(skewer, 'skewX', {
+      duration: 0.5,
+      ease: 'power3.out',
+    });
+    const clamp = gsap.utils.clamp(-12, 12);
+
+    // Preferred path: drive skew from Lenis scroll velocity. Lenis is advanced
+    // by the app's single GSAP ticker, and keeps emitting until it settles to
+    // rest (velocity → 0), so the skew eases back to 0 on its own.
+    if (lenis) {
+      const onScroll = (): void => setSkew(clamp(lenis.velocity * 0.08));
+      lenis.on('scroll', onScroll);
+      return () => {
+        lenis.off('scroll', onScroll);
+      };
+    }
+
+    // Native-scroll fallback (reduced motion is already handled above; this is
+    // the Lenis-init-failed case): update only on scroll events — no always-on
+    // RAF — and settle back to 0 shortly after scrolling stops.
     let lastY = window.scrollY;
-    let rafId: number;
-
-    const tick = () => {
+    let lastT = performance.now();
+    let resetId: ReturnType<typeof setTimeout>;
+    const onScroll = (): void => {
+      const now = performance.now();
       const y = window.scrollY;
-      const delta = y - lastY;
+      const dt = Math.max(now - lastT, 1);
+      const vel = ((y - lastY) / dt) * 16; // ≈ px per frame
       lastY = y;
-
-      // Map scroll delta → skewX; clamp so it never looks broken.
-      const target = gsap.utils.clamp(-14, 14, delta * 0.55);
-
-      gsap.to(skewer, {
-        skewX: target,
-        duration: 0.85,
-        ease: 'power3.out',
-        overwrite: 'auto',
-      });
-
-      rafId = requestAnimationFrame(tick);
+      lastT = now;
+      setSkew(clamp(vel * 0.5));
+      clearTimeout(resetId);
+      resetId = setTimeout(() => setSkew(0), 120);
     };
-
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [reducedMotion]);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(resetId);
+    };
+  }, [lenis, reducedMotion]);
 
   if (reducedMotion) {
     return (
