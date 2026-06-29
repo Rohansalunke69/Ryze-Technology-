@@ -50,7 +50,6 @@ export const DEFAULT_LABEL_MAP: Record<string, string> = {
   'sales-strategy': 'Sales & Strategy',
   'maintenance-support': 'Maintenance & Support',
   about: 'About',
-  manifesto: 'Manifesto',
   contact: 'Contact',
   blog: 'Blog',
   resources: 'Resources',

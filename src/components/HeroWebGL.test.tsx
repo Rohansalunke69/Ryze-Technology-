@@ -149,7 +149,7 @@ describe('heroCards data', () => {
     expect(filenames).toContain('brand-glowup.jpg');
     expect(filenames).toContain('developers.jpg');
     expect(filenames).toContain('social-collage.jpg');
-    expect(filenames).toContain('team-collab.webp');
+    expect(filenames).toContain('stopwatch-collab.png');
   });
 
   it('heroCards drives slot repeat — 14 desktop slots cycle the 9-card array', () => {

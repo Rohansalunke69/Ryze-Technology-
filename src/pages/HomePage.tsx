@@ -35,10 +35,8 @@
  */
 import type { SEOMeta } from '@app-types';
 
-import { AnimatedCounter } from '@components/AnimatedCounter';
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { FeaturedWork } from '@components/FeaturedWork';
-import { ProcessTimeline } from '@components/ProcessTimeline';
 import { CapabilitiesShowcase, type Capability } from '@components/CapabilitiesShowcase';
 import { CTA } from '@components/CTA';
 import { Hero } from '@components/Hero';
@@ -46,39 +44,11 @@ import { MarqueeText } from '@components/MarqueeText';
 import { SectionHeader } from '@components/SectionHeader';
 import { SplitText } from '@components/SplitText';
 import { TeamCard } from '@components/TeamCard';
-import { ServiceCard } from '@components/ServiceCard';
 import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
-import { services } from '@data/services';
 import { team } from '@data/team';
-import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
-import { studioMetrics } from '@data/metrics';
-
-/** Four-step delivery process shown in the "How we work" band. */
-const PROCESS_STEPS: { title: string; detail: string }[] = [
-  {
-    title: 'Discover',
-    detail:
-      'We map your goals, users, and constraints, then pressure-test the idea before a line of code is written.',
-  },
-  {
-    title: 'Design',
-    detail:
-      'We shape the system and the key flows early, so you react to something real — not a slide deck.',
-  },
-  {
-    title: 'Build',
-    detail:
-      'We engineer in vertical slices, shipping working software continuously with tests baked in from day one.',
-  },
-  {
-    title: 'Sustain',
-    detail:
-      'We stay on after launch — monitoring, hardening, and evolving the product so it keeps earning its place.',
-  },
-];
 
 /** Homepage document metadata (Requirement 40.1). */
 const homeMeta: SEOMeta = {
@@ -122,9 +92,6 @@ const PROBLEMS: ReadonlyArray<{ title: string; detail: string }> = [
   },
 ];
 
-/** "Why Us" metrics — sourced from the shared studio metrics (single source of truth). */
-const METRICS = studioMetrics.slice(0, 3);
-
 /**
  * The disciplines shown in the pinned "What we build" showcase. These are the
  * technical capabilities (each with its own animated scene), authored
@@ -161,14 +128,6 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
     tagline: 'SEO, social, ads, and campaigns that turn attention into customers.',
     techStack: ['SEO', 'Social', 'Ads', 'Analytics'],
   },
-];
-
-/** What sets the studio apart — the differentiator list under the metrics. */
-const DIFFERENTIATORS: ReadonlyArray<string> = [
-  'We own outcomes end to end — strategy, design, and engineering under one roof.',
-  'We build for real Indian conditions: patchy networks, low-end devices, high stakes.',
-  'We write software that the next engineer can actually maintain.',
-  'We stay after launch, because durable means supported.',
 ];
 
 export function HomePage(): JSX.Element {
@@ -279,66 +238,6 @@ export function HomePage(): JSX.Element {
       {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
       <FeaturedWork caseStudies={featuredCaseStudies} />
 
-      {/* 5 — Services: the five service cards. */}
-      <section
-        aria-label="Services"
-        className="section-glow mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <SectionHeader eyebrow="What we do" title="Five ways we build" />
-        <AnimationWrapper variant="rise" stagger={0.08}>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {services.map((service, index) => (
-              <ServiceCard key={service.slug} service={service} index={index} />
-            ))}
-          </div>
-        </AnimationWrapper>
-      </section>
-      {/* How we work — process band with a scroll-drawn progress line. */}
-      <ProcessTimeline steps={PROCESS_STEPS} />
-
-      {/* 6 — Why Us: AnimatedCounter metric row + differentiators (Req 6.3). */}
-      <section
-        aria-label="Why Ryze"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
-        <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
-          {METRICS.map((metric) => (
-            <div key={metric.label} className="flex flex-col gap-3 border-t border-ink-600 pt-6">
-              <dt className="sr-only">{metric.label}</dt>
-              <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
-                <AnimatedCounter
-                  value={metric.value}
-                  decimals={metric.decimals ?? 0}
-                  suffix={metric.suffix}
-                />
-              </dd>
-              <p
-                aria-hidden="true"
-                className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
-              >
-                {metric.label}
-              </p>
-            </div>
-          ))}
-        </dl>
-        <AnimationWrapper variant="rise" stagger={0.08}>
-          <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
-            {DIFFERENTIATORS.map((item) => (
-              <li
-                key={item}
-                className="flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300"
-              >
-                <span aria-hidden="true" className="font-mono text-pulse-500">
-                  ↗
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </AnimationWrapper>
-      </section>
-
       {/* 7 — Team: the team cards + a marquee of names/roles. */}
       <section
         aria-label="Team"
@@ -356,37 +255,6 @@ export function HomePage(): JSX.Element {
           <MarqueeText items={marqueeItems} />
         </div>
       </section>
-
-      {/* Testimonial pull-quote (added content). */}
-      {testimonials[0] !== undefined ? (
-        <section
-          aria-label="Client testimonial"
-          className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-        >
-          <AnimationWrapper variant="rise">
-            <figure className="mx-auto max-w-5xl">
-              <p
-                aria-hidden="true"
-                className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none text-pulse-500"
-              >
-                &ldquo;
-              </p>
-              <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
-                {testimonials[0].quote}
-              </blockquote>
-              <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
-                <span className="text-mist-100">{testimonials[0].author}</span>
-                <span aria-hidden="true" className="text-pulse-500">
-                  /
-                </span>
-                <span>
-                  {testimonials[0].authorRole}, {testimonials[0].company}
-                </span>
-              </figcaption>
-            </figure>
-          </AnimationWrapper>
-        </section>
-      ) : null}
 
       {/* 8 — CTA: MagneticButton → /contact (Requirement 6.4). */}
       <CTA

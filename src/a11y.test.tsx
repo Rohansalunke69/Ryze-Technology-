@@ -61,7 +61,6 @@ import { CaseStudyPage } from '@pages/CaseStudyPage';
 import { ServicesPage } from '@pages/ServicesPage';
 import { ServiceDetailPage } from '@pages/ServiceDetailPage';
 import { AboutPage } from '@pages/AboutPage';
-import { ManifestoPage } from '@pages/ManifestoPage';
 import { ContactPage } from '@pages/ContactPage';
 import { BlogListPage } from '@pages/BlogListPage';
 import { BlogPostPage } from '@pages/BlogPostPage';
@@ -141,7 +140,6 @@ const pageCases: ReadonlyArray<{ name: string; node: ReactElement }> = [
     ),
   },
   { name: 'AboutPage', node: <MemoryRouter><AboutPage /></MemoryRouter> },
-  { name: 'ManifestoPage', node: <MemoryRouter><ManifestoPage /></MemoryRouter> },
   { name: 'ContactPage', node: <MemoryRouter><ContactPage /></MemoryRouter> },
   { name: 'BlogListPage', node: <MemoryRouter><BlogListPage /></MemoryRouter> },
   {
@@ -308,7 +306,7 @@ describe('Reduced-motion end-state rendering (Req 37.2, 37.4)', () => {
 
     // Representative gated content is present and reachable.
     expect(
-      screen.getByRole('region', { name: 'Why Ryze' }),
+      screen.getByRole('region', { name: 'Team' }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { level: 1 }),

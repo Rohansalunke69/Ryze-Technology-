@@ -26,18 +26,20 @@
  */
 import {
   useCallback,
+  useContext,
   useEffect,
   useId,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { navItems as defaultNavItems } from '@data/navigation';
 import type { NavChild, NavItem } from '@app-types';
 import { useViewportCategory } from '@hooks/useViewportCategory';
+import { SmoothScrollContext } from '@providers/SmoothScrollProvider';
 import { MagneticButton } from './MagneticButton';
 import { Logo } from './Logo';
 
@@ -145,28 +147,34 @@ function useScrolledPastHero(enabled: boolean): boolean {
  * footer) currently sits under the top header band — the cue to flip the header
  * to its light-on-dark treatment. Recomputes on scroll/resize. SSR/jsdom-safe.
  */
-function useOverDarkSection(): boolean {
-  const [overDark, setOverDark] = useState(false);
+/**
+ * Tracks whether the header's bottom edge has reached/passed the top edge of a
+ * dark section (tagged `data-nav-dark`, e.g. the footer) — i.e. the header is
+ * now overlapping that dark surface. Used solely to flip the LOGO to its white
+ * variant. Recomputes on scroll/resize and reverts symmetrically on scroll-up.
+ * SSR/jsdom-safe.
+ */
+function useFooterBehindLogo(): boolean {
+  const [behind, setBehind] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const update = (): void => {
-      const vh = window.innerHeight || 0;
-      let dark = false;
+      const header = document.querySelector('header');
+      // The visible bottom edge of the header bar (its overlap line).
+      const navBottom = header ? header.getBoundingClientRect().bottom : 64;
+      let over = false;
       const els = document.querySelectorAll<HTMLElement>('[data-nav-dark]');
       for (const el of Array.from(els)) {
         const r = el.getBoundingClientRect();
-        // Adopt the dark treatment once a dark section is prominently in view —
-        // i.e. its top has scrolled above ~60% of the viewport while it is
-        // still on screen. This fires as the footer rises into view near the
-        // bottom of the page (the header itself sits over it only if it were
-        // full-height, so we key off visibility instead of the top band).
-        if (r.bottom > 0 && r.top < vh * 0.6) {
-          dark = true;
+        // The dark section's top has scrolled to/above the header's bottom edge
+        // while the section still extends past it → header overlaps the footer.
+        if (r.top <= navBottom && r.bottom > navBottom) {
+          over = true;
           break;
         }
       }
-      setOverDark(dark);
+      setBehind(over);
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
@@ -177,7 +185,7 @@ function useOverDarkSection(): boolean {
     };
   }, []);
 
-  return overDark;
+  return behind;
 }
 
 /**
@@ -218,7 +226,7 @@ function underlineColor(progress: number): string {
  * keyboard focus, exposing a disclosure button with `aria-haspopup` /
  * `aria-expanded` so the menu is reachable and announced (Requirement 1.3).
  */
-function DesktopDropdown({ item, dark }: { item: NavItem & { children: NavChild[] }; dark: boolean }): JSX.Element {
+function DesktopDropdown({ item }: { item: NavItem & { children: NavChild[] } }): JSX.Element {
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const containerRef = useRef<HTMLLIElement>(null);
@@ -253,7 +261,7 @@ function DesktopDropdown({ item, dark }: { item: NavItem & { children: NavChild[
         aria-expanded={open}
         aria-controls={menuId}
         data-cursor="link"
-        className={`inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 ${dark ? 'text-white' : 'text-mist-100'}`}
+        className="inline-flex items-center gap-1 px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
         onClick={() => setOpen((prev) => !prev)}
       >
         {item.label}
@@ -303,7 +311,13 @@ function DesktopDropdown({ item, dark }: { item: NavItem & { children: NavChild[
 }
 
 /** Desktop / tablet inline navigation row. */
-function DesktopNav({ items, dark }: { items: NavItem[]; dark: boolean }): JSX.Element {
+function DesktopNav({
+  items,
+  onNavClick,
+}: {
+  items: NavItem[];
+  onNavClick: (path: string) => void;
+}): JSX.Element {
   return (
     <ul className="hidden items-center gap-2 md:flex">
       {items.map((item) => {
@@ -323,7 +337,7 @@ function DesktopNav({ items, dark }: { items: NavItem[]; dark: boolean }): JSX.E
         }
 
         if (isDropdownParent(item)) {
-          return <DesktopDropdown key={item.label} item={item} dark={dark} />;
+          return <DesktopDropdown key={item.label} item={item} />;
         }
 
         return (
@@ -331,7 +345,8 @@ function DesktopNav({ items, dark }: { items: NavItem[]; dark: boolean }): JSX.E
             <NavLink
               to={item.path ?? '/'}
               data-cursor="link"
-              className={`inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 ${dark ? 'text-white' : 'text-mist-100'}`}
+              onClick={() => onNavClick(item.path ?? '/')}
+              className="inline-flex items-center px-3 py-2 font-mono text-sm tracking-wide text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
             >
               {item.label}
             </NavLink>
@@ -350,10 +365,12 @@ function MobileMenu({
   id,
   items,
   onClose,
+  onNavClick,
 }: {
   id: string;
   items: NavItem[];
   onClose: () => void;
+  onNavClick: (path: string) => void;
 }): JSX.Element {
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -433,7 +450,10 @@ function MobileMenu({
             to={link.path}
             data-cursor="link"
             className="block border-b border-ink-700 py-4 font-display text-2xl text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500"
-            onClick={onClose}
+            onClick={() => {
+              onNavClick(link.path);
+              onClose();
+            }}
           >
             {link.label}
           </Link>
@@ -452,6 +472,23 @@ export function Navigation({
   const category = useViewportCategory();
   const isMobile = category === 'mobile';
   const scrolled = useScrolledPastTop(transparentUntilScroll);
+  const location = useLocation();
+  const smooth = useContext(SmoothScrollContext);
+
+  // Clicking a nav link that points to the page you're already on should bring
+  // you back to the top (e.g. Home → hero) rather than do nothing. Smooth-scroll
+  // via Lenis when available, otherwise the native smooth scroll.
+  const handleNavClick = useCallback(
+    (path: string) => {
+      if (path !== location.pathname) return;
+      if (smooth?.lenis) {
+        smooth.scrollTo(0);
+      } else if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    },
+    [location.pathname, smooth],
+  );
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
@@ -479,26 +516,29 @@ export function Navigation({
   // visitor scrolls past the first viewport, re-hide on scroll back up.
   const pastHero = useScrolledPastHero(hideUntilScrolled);
   const hidden = hideUntilScrolled && !pastHero;
-  const overDark = useOverDarkSection();
+  const footerBehindLogo = useFooterBehindLogo();
   // When the hero-reveal mode is on, the header is solid the moment it appears
   // (it now sits over page content, never over the hero).
   const isSolid = hideUntilScrolled ? pastHero : solid;
 
-  // The header adopts a dark treatment whenever it sits over a dark surface — a
-  // dark section under the header band (e.g. the footer) or while transparent
-  // over the dark hero — flipping the logo, links, and bar to light-on-dark.
-  const darkTheme = overDark || (!isSolid && heroIsDark);
-  const logoTone: 'default' | 'light' = darkTheme ? 'light' : 'default';
+  // ONLY the logo switches to its white variant — when the header's bottom edge
+  // reaches/passes the footer's top edge (header overlapping the dark footer),
+  // or while the header is transparent over the dark hero. The bar background
+  // and the nav links are intentionally left unchanged.
+  const logoTone: 'default' | 'light' =
+    footerBehindLogo || (!isSolid && heroIsDark) ? 'light' : 'default';
 
-  const surfaceClass = darkTheme
-    ? 'bg-mist-100/80 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(0,0,0,0.6)]'
+  // While the header overlaps the footer, drop the bar to transparent so the
+  // dark footer shows through and the white logo stays visible (we don't paint
+  // a dark bar — only the logo changes, per the requested behaviour).
+  const surfaceClass = footerBehindLogo
+    ? 'bg-transparent'
     : isSolid
       ? 'bg-ink-700/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]'
       : 'bg-transparent';
 
   return (
     <header
-      data-nav-theme={darkTheme ? 'dark' : 'light'}
       style={{
         borderBottomColor: underlineColor(scrollProgress),
         transform: hidden ? 'translateY(-100%)' : 'translateY(0)',
@@ -515,14 +555,12 @@ export function Navigation({
         aria-label="Primary"
         className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2"
       >
-        <Link
-          to="/"
-          data-cursor="link"
-          aria-label="Ryze Technology home"
-          className="transition-opacity hover:opacity-80 focus-visible:opacity-80"
+        <span
+          aria-hidden="true"
+          className="inline-flex select-none items-center"
         >
           <Logo variant="full" height={32} tone={logoTone} />
-        </Link>
+        </span>
 
         {isMobile ? (
           <button
@@ -532,7 +570,7 @@ export function Navigation({
             aria-expanded={menuOpen}
             aria-controls={menuId}
             data-cursor="link"
-            className={`inline-flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 md:hidden ${darkTheme ? 'text-white' : 'text-mist-100'}`}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-mist-100 transition-colors hover:text-pulse-500 focus-visible:text-pulse-500 md:hidden"
             onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
           >
             <svg
@@ -560,12 +598,12 @@ export function Navigation({
             </svg>
           </button>
         ) : (
-          <DesktopNav items={items} dark={darkTheme} />
+          <DesktopNav items={items} onNavClick={handleNavClick} />
         )}
       </nav>
 
       {isMobile && menuOpen ? (
-        <MobileMenu id={menuId} items={items} onClose={closeMenu} />
+        <MobileMenu id={menuId} items={items} onClose={closeMenu} onNavClick={handleNavClick} />
       ) : null}
     </header>
   );

@@ -51,7 +51,6 @@ const PREFETCHABLE_ROUTES: Record<string, () => Promise<unknown>> = {
   '/portfolio': () => import('@pages/PortfolioListPage'),
   '/services': () => import('@pages/ServicesPage'),
   '/about': () => import('@pages/AboutPage'),
-  '/manifesto': () => import('@pages/ManifestoPage'),
   '/contact': () => import('@pages/ContactPage'),
   '/blog': () => import('@pages/BlogListPage'),
   '/resources': () => import('@pages/ResourcesPage'),

@@ -97,12 +97,12 @@ describe('Hero', () => {
     expect(screen.getByTestId('hero-fallback')).toBeInTheDocument();
   });
 
-  it('renders headline and CTA content', () => {
+  it('renders headline and subtitle content', () => {
     mockReducedMotion(false);
     renderHero(<Hero headline="Design. Develop. Grow." />);
 
     expect(screen.getByRole('heading', { level: 1, name: 'Design. Develop. Grow.' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /get in touch/i })).toBeInTheDocument();
+    expect(screen.getByText(/software that means business/i)).toBeInTheDocument();
   });
 
   it('renders only the fallback under reduced motion and never mounts WebGL (Requirement 19.2)', () => {
