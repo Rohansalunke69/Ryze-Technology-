@@ -139,16 +139,16 @@ export function HomePage(): JSX.Element {
             <Hero headline="Design. Develop. Grow." />
           </div>
 
-          {/* Layer 2 — The Problem: opaque card that scrolls up over the Hero.
-              `relative` (not sticky) so its full height — including challenge 03 —
-              scrolls into view. PremiumMarquee is the card's top strip. */}
-          <div className="relative z-[2] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+          {/* Layer 2 — The Problem: sticky card. Its content is compact + fits one
+              viewport (see ProblemSection min-h-screen), so all three challenges are
+              visible while it is pinned — AND the Philosophy card slides up over it.
+              PremiumMarquee is the card's top strip. */}
+          <div className="sticky top-0 z-[2] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
             <PremiumMarquee />
             <ProblemSection problems={PROBLEMS} />
           </div>
 
-          {/* Layer 3 — Our Philosophy: opaque card that scrolls up after The Problem,
-              with the same rounded-top + shadow card edge for visual continuity. */}
+          {/* Layer 3 — Our Philosophy: opaque card that slides up over The Problem. */}
           <div className="relative z-[3] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
             <section aria-label="Philosophy" className="min-h-screen bg-pulse-500 text-ink-900">
               <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
