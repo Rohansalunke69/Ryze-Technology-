@@ -3,8 +3,6 @@
  */
 import { useEffect, useRef } from 'react';
 import type { SEOMeta } from '@app-types';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { FeaturedWork } from '@components/FeaturedWork';
