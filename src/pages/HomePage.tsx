@@ -122,57 +122,66 @@ export function HomePage(): JSX.Element {
        * plain section (single scroll, no pin, no 3-step storytelling).
        */}
       <main>
-        {/* 1 — Hero, with "The Problem" card sliding up over it. */}
+        {/*
+         * Stacked-card overlap — pure CSS (sticky + z-index), no GSAP, so nothing
+         * fights the other ScrollTriggers:
+         *   Hero (base)  ←  The Problem slides over it  ←  Our Philosophy slides over that.
+         *
+         * Each panel is `sticky top-0` with an increasing z-index, so every new
+         * panel rises over the previous and covers it. The container wraps ONLY
+         * these three panels (Services is its sibling, outside), so the whole
+         * stack releases before Services — nothing can reappear later.
+         */}
         <div className="relative">
-          {/* Hero is the backdrop. `sticky` is scoped to THIS wrapper only, so it
-              pins just while the Problem card slides over it, then releases — it
-              can never reappear later in the page. */}
-          <div className="sticky top-0 z-0">
+          {/* Layer 1 — Hero (base backdrop) */}
+          <div className="sticky top-0 z-[1]">
             <Hero headline="Design. Develop. Grow." />
           </div>
 
-          {/* The Problem — an opaque card (rounded top + soft shadow) that scrolls
-              up and overlaps the Hero. PremiumMarquee is the card's top strip. */}
-          <div className="relative z-10 overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+          {/* Layer 2 — The Problem: opaque card that slides up over the Hero.
+              PremiumMarquee is the card's top strip. */}
+          <div className="sticky top-0 z-[2] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
             <PremiumMarquee />
             <ProblemSection problems={PROBLEMS} />
           </div>
-        </div>
 
-        {/* 2 — Our Philosophy — one normal section, single scroll, no pin. */}
-        <section aria-label="Philosophy" className="bg-pulse-500 text-ink-900">
-          <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
-            <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
-              Our philosophy
-            </p>
-            <AnimationWrapper variant="rise">
-              <h2 className="mt-8 max-w-[18ch] font-display text-[clamp(2.25rem,6vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.02em]">
-                {PHILOSOPHY_POINTS[0]!.heading}
-              </h2>
-            </AnimationWrapper>
-            <AnimationWrapper variant="fade" delay={0.1}>
-              <p className="mt-8 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
-                {PHILOSOPHY_POINTS[0]!.body}
-              </p>
-            </AnimationWrapper>
+          {/* Layer 3 — Our Philosophy: opaque card that slides up over The Problem.
+              Single scroll, no pin, no 3-step storytelling. */}
+          <div className="sticky top-0 z-[3] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+            <section aria-label="Philosophy" className="min-h-screen bg-pulse-500 text-ink-900">
+              <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
+                <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
+                  Our philosophy
+                </p>
+                <AnimationWrapper variant="rise">
+                  <h2 className="mt-8 max-w-[18ch] font-display text-[clamp(2.25rem,6vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.02em]">
+                    {PHILOSOPHY_POINTS[0]!.heading}
+                  </h2>
+                </AnimationWrapper>
+                <AnimationWrapper variant="fade" delay={0.1}>
+                  <p className="mt-8 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
+                    {PHILOSOPHY_POINTS[0]!.body}
+                  </p>
+                </AnimationWrapper>
 
-            {/* Two supporting points — same scroll, no extra pinning. */}
-            <AnimationWrapper variant="rise" stagger={0.1}>
-              <div className="mt-16 grid gap-x-12 gap-y-10 border-t border-ink-900/20 pt-12 md:grid-cols-2">
-                {PHILOSOPHY_POINTS.slice(1).map((point) => (
-                  <div key={point.heading}>
-                    <h3 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight">
-                      {point.heading}
-                    </h3>
-                    <p className="mt-4 font-sans text-body leading-relaxed text-ink-900/80">
-                      {point.body}
-                    </p>
+                <AnimationWrapper variant="rise" stagger={0.1}>
+                  <div className="mt-16 grid gap-x-12 gap-y-10 border-t border-ink-900/20 pt-12 md:grid-cols-2">
+                    {PHILOSOPHY_POINTS.slice(1).map((point) => (
+                      <div key={point.heading}>
+                        <h3 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight">
+                          {point.heading}
+                        </h3>
+                        <p className="mt-4 font-sans text-body leading-relaxed text-ink-900/80">
+                          {point.body}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </AnimationWrapper>
               </div>
-            </AnimationWrapper>
+            </section>
           </div>
-        </section>
+        </div>
 
         {/* 3 — Services (pinned horizontal showcase, reserves its own space) */}
         <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
