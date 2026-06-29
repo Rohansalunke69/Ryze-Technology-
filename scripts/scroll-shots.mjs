@@ -1,4 +1,5 @@
-import { chromium } from '/Users/rohansalunke/.npm/_npx/705bc6b22212b352/node_modules/playwright/index.js';
+import pw from '/Users/rohansalunke/.npm/_npx/705bc6b22212b352/node_modules/playwright/index.js';
+const { chromium } = pw;
 
 const URL = 'http://localhost:5175/';
 const OUT = '/tmp/ryze-shots';
