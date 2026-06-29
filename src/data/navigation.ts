@@ -26,7 +26,6 @@ export const navItems: NavItem[] = [
       { label: 'Digital Marketing', path: '/services/digital-marketing', description: 'SEO, social, paid ads, content, email & WhatsApp' },
       { label: 'Sales & Strategy', path: '/services/sales-strategy', description: 'Lead gen, funnels, CRM setup, business consulting' },
       { label: 'Maintenance & Support', path: '/services/maintenance-support', description: 'Maintenance plans, support, hosting, optimization, AMC' },
-      { label: 'All Services', path: '/services', description: 'Overview of how we work and everything we offer' },
     ],
   },
   {
@@ -65,7 +64,6 @@ export const footerNav: FooterNavGroup[] = [
       { label: 'Digital Marketing', path: '/services/digital-marketing' },
       { label: 'Sales & Strategy', path: '/services/sales-strategy' },
       { label: 'Maintenance & Support', path: '/services/maintenance-support' },
-      { label: 'All Services', path: '/services' },
     ],
   },
   {

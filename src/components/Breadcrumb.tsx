@@ -69,8 +69,8 @@ export function Breadcrumb({ trail, labelMap }: BreadcrumbProps = {}): JSX.Eleme
     });
 
   return (
-    <nav aria-label="Breadcrumb" className="text-sm">
-      <ol className="flex flex-wrap items-center gap-2 font-mono text-mist-300">
+    <nav aria-label="Breadcrumb" className="text-base font-medium">
+      <ol className="flex flex-wrap items-center justify-start gap-3 font-mono text-mist-300">
         {resolvedTrail.map((item, index) => {
           const isLast = index === resolvedTrail.length - 1;
           return (
