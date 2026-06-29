@@ -23,7 +23,7 @@ import { SEOHead } from './SEOHead';
 const baseMeta: SEOMeta = {
   title: 'Services',
   description: 'We design and engineer durable software systems.',
-  canonical: 'https://ryze.technology/services',
+  canonical: 'https://ryze-technology.pages.dev/services',
 };
 
 function renderSEO(meta: SEOMeta, jsonLd?: object): void {
@@ -70,7 +70,7 @@ describe('SEOHead', () => {
     renderSEO(baseMeta);
     await waitFor(() => {
       const canonical = document.head.querySelector('link[rel="canonical"]');
-      expect(canonical?.getAttribute('href')).toBe('https://ryze.technology/services');
+      expect(canonical?.getAttribute('href')).toBe('https://ryze-technology.pages.dev/services');
     });
   });
 

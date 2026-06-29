@@ -18,7 +18,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'A Nagpur grocery chain wanted online ordering without losing the neighbourhood feel. We built a fast storefront and a subscription engine that keeps regulars coming back.',
     hero: {
-      src: '/images/case-studies/orange-city-grocers-hero.jpg',
+      src: '/images/case-studies/orange-city-grocers-hero.svg',
       width: 1600,
       height: 900,
       alt: 'Orange City Grocers storefront homepage on a laptop and phone',
@@ -35,25 +35,25 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/orange-city-grocers-gallery-1.jpg',
+        src: '/images/case-studies/orange-city-grocers-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Product listing grid with category filters',
       },
       {
-        src: '/images/case-studies/orange-city-grocers-gallery-2.jpg',
+        src: '/images/case-studies/orange-city-grocers-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Subscription management screen on mobile',
       },
       {
-        src: '/images/case-studies/orange-city-grocers-gallery-3.jpg',
+        src: '/images/case-studies/orange-city-grocers-gallery-3.svg',
         width: 1280,
         height: 800,
         alt: 'Store inventory dashboard with stock levels',
       },
       {
-        src: '/images/case-studies/orange-city-grocers-gallery-4.jpg',
+        src: '/images/case-studies/orange-city-grocers-gallery-4.svg',
         width: 1280,
         height: 800,
         alt: 'Delivery route map for the driver app',
@@ -70,7 +70,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'Orange City Grocers — Grocery storefront & subscriptions',
       description:
         'How we helped a Nagpur grocery chain grow online revenue 240% with a fast storefront and recurring delivery engine.',
-      canonical: 'https://ryze.technology/portfolio/orange-city-grocers',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/orange-city-grocers',
     },
   },
   {
@@ -86,7 +86,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'A clinic network needed a patient app that works on patchy networks across Vidarbha. We built an offline-first companion for medication reminders and follow-ups.',
     hero: {
-      src: '/images/case-studies/mednudge-care-companion-hero.jpg',
+      src: '/images/case-studies/mednudge-care-companion-hero.svg',
       width: 1600,
       height: 900,
       alt: 'MedNudge care companion app shown on two smartphones',
@@ -103,19 +103,19 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/mednudge-care-companion-gallery-1.jpg',
+        src: '/images/case-studies/mednudge-care-companion-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Daily medication schedule screen',
       },
       {
-        src: '/images/case-studies/mednudge-care-companion-gallery-2.jpg',
+        src: '/images/case-studies/mednudge-care-companion-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Reminder notification on a lock screen',
       },
       {
-        src: '/images/case-studies/mednudge-care-companion-gallery-3.jpg',
+        src: '/images/case-studies/mednudge-care-companion-gallery-3.svg',
         width: 1280,
         height: 800,
         alt: 'Caregiver dashboard tracking a relative',
@@ -131,7 +131,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'MedNudge — Offline-first patient care companion app',
       description:
         'An offline-first mobile app that lifted medication adherence to 82% across patchy networks in Vidarbha.',
-      canonical: 'https://ryze.technology/portfolio/mednudge-care-companion',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/mednudge-care-companion',
     },
   },
   {
@@ -147,7 +147,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'A freight operator ran dispatch on spreadsheets and phone calls. We built a real-time operations hub plus a desktop dispatch console for the control room.',
     hero: {
-      src: '/images/case-studies/vidarbha-logistics-hub-hero.jpg',
+      src: '/images/case-studies/vidarbha-logistics-hub-hero.svg',
       width: 1600,
       height: 900,
       alt: 'Vidarbha Logistics operations dashboard on a wide monitor',
@@ -164,25 +164,25 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/vidarbha-logistics-hub-gallery-1.jpg',
+        src: '/images/case-studies/vidarbha-logistics-hub-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Live shipment tracking map',
       },
       {
-        src: '/images/case-studies/vidarbha-logistics-hub-gallery-2.jpg',
+        src: '/images/case-studies/vidarbha-logistics-hub-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Desktop dispatch console across two monitors',
       },
       {
-        src: '/images/case-studies/vidarbha-logistics-hub-gallery-3.jpg',
+        src: '/images/case-studies/vidarbha-logistics-hub-gallery-3.svg',
         width: 1280,
         height: 800,
         alt: 'Automated billing summary screen',
       },
       {
-        src: '/images/case-studies/vidarbha-logistics-hub-gallery-4.jpg',
+        src: '/images/case-studies/vidarbha-logistics-hub-gallery-4.svg',
         width: 1280,
         height: 800,
         alt: 'Role-based access settings panel',
@@ -199,7 +199,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'Vidarbha Logistics — Real-time fleet operations hub',
       description:
         'A real-time operations hub and desktop dispatch console that cut dispatch errors 91% for a regional freight fleet.',
-      canonical: 'https://ryze.technology/portfolio/vidarbha-logistics-hub',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/vidarbha-logistics-hub',
     },
   },
   {
@@ -215,7 +215,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'A boutique investment firm drowned in spreadsheets. We built a real-time portfolio dashboard that surfaces risk, returns, and cash flow at a glance.',
     hero: {
-      src: '/images/case-studies/aurora-finance-dashboard-hero.jpg',
+      src: '/images/case-studies/aurora-finance-dashboard-hero.svg',
       width: 1600,
       height: 900,
       alt: 'Aurora Capital portfolio dashboard with charts',
@@ -232,13 +232,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/aurora-finance-dashboard-gallery-1.jpg',
+        src: '/images/case-studies/aurora-finance-dashboard-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Portfolio performance overview',
       },
       {
-        src: '/images/case-studies/aurora-finance-dashboard-gallery-2.jpg',
+        src: '/images/case-studies/aurora-finance-dashboard-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Risk breakdown by asset class',
@@ -253,7 +253,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'Aurora Capital — Real-time finance dashboard',
       description:
         'A real-time portfolio dashboard that cut an investment firm\u2019s reporting time by 90%.',
-      canonical: 'https://ryze.technology/portfolio/aurora-finance-dashboard',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/aurora-finance-dashboard',
     },
   },
   {
@@ -269,7 +269,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'A network of boutique homestays needed direct bookings to escape high OTA commissions. We built a conversion-focused booking platform with dynamic pricing.',
     hero: {
-      src: '/images/case-studies/trailhead-booking-platform-hero.jpg',
+      src: '/images/case-studies/trailhead-booking-platform-hero.svg',
       width: 1600,
       height: 900,
       alt: 'Trailhead Stays booking website with a property gallery',
@@ -286,13 +286,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/trailhead-booking-platform-gallery-1.jpg',
+        src: '/images/case-studies/trailhead-booking-platform-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Property detail page with availability calendar',
       },
       {
-        src: '/images/case-studies/trailhead-booking-platform-gallery-2.jpg',
+        src: '/images/case-studies/trailhead-booking-platform-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Checkout flow with instant payment',
@@ -307,7 +307,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'Trailhead Stays — Direct booking platform',
       description:
         'A direct-booking platform that took 73% of reservations off commission-heavy OTAs.',
-      canonical: 'https://ryze.technology/portfolio/trailhead-booking-platform',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/trailhead-booking-platform',
     },
   },
   {
@@ -323,7 +323,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'Inspectors logged site visits on paper and re-keyed them at night. We built an offline mobile app that captures structured reports and photos in the field.',
     hero: {
-      src: '/images/case-studies/fieldwise-inspection-app-hero.jpg',
+      src: '/images/case-studies/fieldwise-inspection-app-hero.svg',
       width: 1600,
       height: 900,
       alt: 'FieldWise inspection app on a rugged phone at a work site',
@@ -340,13 +340,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/fieldwise-inspection-app-gallery-1.jpg',
+        src: '/images/case-studies/fieldwise-inspection-app-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Structured inspection checklist screen',
       },
       {
-        src: '/images/case-studies/fieldwise-inspection-app-gallery-2.jpg',
+        src: '/images/case-studies/fieldwise-inspection-app-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Photo annotation tool in the field',
@@ -361,7 +361,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'FieldWise — Offline field inspection app',
       description:
         'An offline-first inspection app that cut report turnaround by 95% for remote field teams.',
-      canonical: 'https://ryze.technology/portfolio/fieldwise-inspection-app',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/fieldwise-inspection-app',
     },
   },
   {
@@ -377,7 +377,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'An ed-tech startup had great content but poor retention. We rebuilt the mobile experience around streaks, spaced repetition, and bite-sized lessons.',
     hero: {
-      src: '/images/case-studies/lumen-learning-app-hero.jpg',
+      src: '/images/case-studies/lumen-learning-app-hero.svg',
       width: 1600,
       height: 900,
       alt: 'Lumen learning app lesson and streak screens',
@@ -394,13 +394,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/lumen-learning-app-gallery-1.jpg',
+        src: '/images/case-studies/lumen-learning-app-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Daily lesson screen with progress ring',
       },
       {
-        src: '/images/case-studies/lumen-learning-app-gallery-2.jpg',
+        src: '/images/case-studies/lumen-learning-app-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Streak and achievements screen',
@@ -415,7 +415,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'Lumen Education — Habit-forming learning app',
       description:
         'A mobile learning app rebuilt around streaks and spaced repetition that tripled day-30 retention.',
-      canonical: 'https://ryze.technology/portfolio/lumen-learning-app',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/lumen-learning-app',
     },
   },
   {
@@ -431,7 +431,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       'A manufacturer\u2019s team copy-pasted between five tools every day. We built an automation layer that connects them and runs the busywork on its own.',
     hero: {
-      src: '/images/case-studies/cobalt-ops-automation-hero.jpg',
+      src: '/images/case-studies/cobalt-ops-automation-hero.svg',
       width: 1600,
       height: 900,
       alt: 'Cobalt Manufacturing automation workflow board',
@@ -448,13 +448,13 @@ export const caseStudies: CaseStudy[] = [
     ],
     gallery: [
       {
-        src: '/images/case-studies/cobalt-ops-automation-gallery-1.jpg',
+        src: '/images/case-studies/cobalt-ops-automation-gallery-1.svg',
         width: 1280,
         height: 800,
         alt: 'Automation workflow builder',
       },
       {
-        src: '/images/case-studies/cobalt-ops-automation-gallery-2.jpg',
+        src: '/images/case-studies/cobalt-ops-automation-gallery-2.svg',
         width: 1280,
         height: 800,
         alt: 'Run history and monitoring console',
@@ -469,7 +469,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'Cobalt Manufacturing — Back-office automation layer',
       description:
         'An automation layer that removed 85% of manual data entry and made month-end close 5x faster.',
-      canonical: 'https://ryze.technology/portfolio/cobalt-ops-automation',
+      canonical: 'https://ryze-technology.pages.dev/portfolio/cobalt-ops-automation',
     },
   },
 ];

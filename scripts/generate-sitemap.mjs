@@ -105,7 +105,7 @@ export function extractBaseUrl(source) {
  * @param {{ path: string, noIndex?: boolean }[]} routes - static route table
  * @param {Record<string, string[]>} slugs - dynamic slugs keyed by group key
  *   (see DYNAMIC_ROUTE_GROUPS) → array of slug strings
- * @param {string} baseUrl - site origin, e.g. https://ryze.technology
+ * @param {string} baseUrl - site origin, e.g. https://ryze-technology.pages.dev
  * @returns {string[]} absolute URLs, noIndex routes excluded
  */
 export function buildSitemapUrls(routes, slugs, baseUrl) {

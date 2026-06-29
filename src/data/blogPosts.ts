@@ -9,12 +9,12 @@ import type { BlogPost, ImageAsset, SEOMeta } from '@app-types';
 import { computeReadingTime } from '../lib/readingTime';
 import { authors } from './authors';
 
-const SITE_URL = 'https://ryze.technology';
+const SITE_URL = 'https://ryze-technology.pages.dev';
 
 /** Build a 16:9 cover ImageAsset from a slug. Placeholder art lives under /images/blog. */
 function cover(slug: string, alt: string): ImageAsset {
   return {
-    src: `/images/blog/${slug}.jpg`,
+    src: `/images/blog/${slug}.svg`,
     width: 1200,
     height: 675,
     alt,

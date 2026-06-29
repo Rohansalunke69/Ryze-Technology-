@@ -43,7 +43,7 @@ export const services: Service[] = [
     seo: {
       title: 'Software Development',
       description: 'Custom web and mobile app development, business websites, e-commerce, dashboards, APIs, and backend systems.',
-      canonical: 'https://ryze.technology/services/development',
+      canonical: 'https://ryze-technology.pages.dev/services/development',
     },
   },
   {
@@ -80,7 +80,7 @@ export const services: Service[] = [
     seo: {
       title: 'Design Services',
       description: 'UI/UX design, branding and logo design, wireframing, website redesigns, marketing creatives, and design systems.',
-      canonical: 'https://ryze.technology/services/design',
+      canonical: 'https://ryze-technology.pages.dev/services/design',
     },
   },
   {
@@ -117,7 +117,7 @@ export const services: Service[] = [
     seo: {
       title: 'Digital Marketing',
       description: 'SEO, social media marketing, paid ads, content, WhatsApp, email, and local SEO that grow your business.',
-      canonical: 'https://ryze.technology/services/digital-marketing',
+      canonical: 'https://ryze-technology.pages.dev/services/digital-marketing',
     },
   },
   {
@@ -152,7 +152,7 @@ export const services: Service[] = [
     seo: {
       title: 'Sales & Strategy',
       description: 'Lead generation, sales funnel setup, CRM setup and consulting, and business consulting for growth.',
-      canonical: 'https://ryze.technology/services/sales-strategy',
+      canonical: 'https://ryze-technology.pages.dev/services/sales-strategy',
     },
   },
   {
@@ -189,7 +189,7 @@ export const services: Service[] = [
     seo: {
       title: 'Maintenance & Support',
       description: 'Website and app maintenance, 24/7 support, performance optimization, hosting, and annual maintenance contracts.',
-      canonical: 'https://ryze.technology/services/maintenance-support',
+      canonical: 'https://ryze-technology.pages.dev/services/maintenance-support',
     },
   },
 ];
