@@ -4,12 +4,11 @@
  * Resolves the `:slug` route param (a `ServiceKey`) against the `services`
  * collection via `resolveBySlug`. When a Service is found the page renders, in
  * order: Breadcrumb → hero (icon, name, tagline) → "What we do" → Features
- * (staggered grid) → Related case studies (`getCaseStudiesByService`) → Tech
- * stack → Process timeline → FAQ (accessible accordion) → CTA
- * (Requirements 10.1, 10.2, 10.3). When the slug resolves to no Service the page
- * renders an in-route not-found state with a link back to `/services` and a
- * `noIndex` document so the dead URL stays out of search results
- * (Requirement 10.4).
+ * (staggered grid) → Proof/portfolio block (development only) → FAQ (accessible
+ * accordion) → CTA (Requirements 10.1, 10.2, 10.3). When the slug resolves to no
+ * Service the page renders an in-route not-found state with a link back to
+ * `/services` and a `noIndex` document so the dead URL stays out of search
+ * results (Requirement 10.4).
  *
  * The FAQ accordion is keyboard-operable: each question is a native `<button>`
  * carrying `aria-expanded` and `aria-controls`, and each answer is a region
@@ -23,13 +22,10 @@ import { Link, useParams } from 'react-router-dom';
 import type { Service, ServiceKey } from '@app-types';
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { Breadcrumb } from '@components/Breadcrumb';
-import { CaseStudyCard } from '@components/CaseStudyCard';
 import { CTA } from '@components/CTA';
 import { SectionHeader } from '@components/SectionHeader';
 import { SEOHead } from '@components/SEOHead';
-import { caseStudies } from '@data/caseStudies';
 import { services } from '@data/services';
-import { getCaseStudiesByService } from '@lib/filter';
 import { resolveBySlug } from '@lib/slug';
 
 /** In-route 404 shown when `:slug` matches no Service (Requirement 10.4). */
@@ -131,8 +127,6 @@ export function ServiceDetailPage(): JSX.Element {
   if (!service) {
     return <ServiceNotFound />;
   }
-
-  const relatedCaseStudies = getCaseStudiesByService(caseStudies, service.slug);
 
   return (
     <main className="mx-auto flex max-w-6xl flex-col gap-24 px-6 pb-24 pt-[clamp(7rem,16vh,10rem)]">

@@ -10,7 +10,6 @@
  * Covered behaviors:
  *  - a known slug renders the service name, features, and FAQ (Requirement 10.1);
  *  - the FAQ accordion toggles `aria-expanded` on click (Requirement 10.3);
- *  - related-by-service case study cards are present (Requirement 10.2);
  *  - an unknown slug renders the in-route not-found state (Requirement 10.4).
  */
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -80,18 +79,6 @@ describe('ServiceDetailPage', () => {
 
     fireEvent.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  it('renders related-by-service case study cards (getCaseStudiesByService)', () => {
-    // We test the 'design' service because the 'development' service overrides this section with a custom callout.
-    renderAt('/services/design');
-
-    // mednudge-care-companion lists 'design' in its services[] (Requirement 10.2).
-    const card = screen.getByRole('link', {
-      name: /keeps patients on track between visits/i,
-    });
-    expect(card).toBeInTheDocument();
-    expect(card).toHaveAttribute('href', '/portfolio/mednudge-care-companion');
   });
 
   it('renders the in-route not-found state for an unknown slug', () => {
