@@ -123,34 +123,32 @@ export function HomePage(): JSX.Element {
        */}
       <main>
         {/*
-         * Stacked-card overlap — pure CSS (sticky + z-index), no GSAP, so nothing
-         * fights the other ScrollTriggers:
-         *   Hero (base)  ←  The Problem slides over it  ←  Our Philosophy slides over that.
+         * Card-overlap — pure CSS (sticky + z-index), no GSAP:
+         *   Hero (sticky base)  ←  The Problem & Our Philosophy scroll up over it.
          *
-         * Each panel is `sticky top-0` with an increasing z-index, so every new
-         * panel rises over the previous and covers it. The container wraps ONLY
-         * these three panels (Services is its sibling, outside), so the whole
-         * stack releases before Services — nothing can reappear later.
+         * ONLY the Hero is `sticky` (the backdrop). The Problem and Philosophy
+         * cards are `relative` so they SCROLL fully through the viewport — this is
+         * essential: a sticky card taller than the viewport hides its own lower
+         * content (the next card covers it before you can reach it). Keeping them
+         * relative guarantees every item (incl. challenge 03) is fully visible and
+         * lets the section grow naturally with its content.
          */}
         <div className="relative">
-          {/* Layer 1 — Hero (base backdrop) */}
+          {/* Layer 1 — Hero (sticky base backdrop) */}
           <div className="sticky top-0 z-[1]">
             <Hero headline="Design. Develop. Grow." />
           </div>
 
-          {/* Layer 2 — The Problem: opaque card that slides up over the Hero.
-              PremiumMarquee is the card's top strip. */}
-          <div className="sticky top-0 z-[2] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+          {/* Layer 2 — The Problem: opaque card that scrolls up over the Hero.
+              `relative` (not sticky) so its full height — including challenge 03 —
+              scrolls into view. PremiumMarquee is the card's top strip. */}
+          <div className="relative z-[2] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
             <PremiumMarquee />
             <ProblemSection problems={PROBLEMS} />
           </div>
 
-          {/* Layer 3 — Our Philosophy: opaque card that slides up over The Problem.
-              `relative` (NOT sticky): it is the TOP card so nothing slides over it,
-              and keeping it non-sticky means the sticky stack ends at The Problem —
-              so the ScrollTrigger-pinned Services section that follows measures its
-              position cleanly (a sticky element right before a ScrollTrigger pin makes
-              the pin flip on/off → the stutter). It still overlaps the sticky Problem. */}
+          {/* Layer 3 — Our Philosophy: opaque card that scrolls up after The Problem,
+              with the same rounded-top + shadow card edge for visual continuity. */}
           <div className="relative z-[3] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
             <section aria-label="Philosophy" className="min-h-screen bg-pulse-500 text-ink-900">
               <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
