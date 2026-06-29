@@ -11,7 +11,6 @@ import { Hero } from '@components/Hero';
 import { MarqueeText } from '@components/MarqueeText';
 import { PremiumMarquee } from '@components/PremiumMarquee';
 import { PhilosophyStorytelling } from '@components/PhilosophyStorytelling';
-import { StackSection } from '@components/StackSection';
 import { SectionHeader } from '@components/SectionHeader';
 import { TeamCard } from '@components/TeamCard';
 import { SEOHead } from '@components/SEOHead';
