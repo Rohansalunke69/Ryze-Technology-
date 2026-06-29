@@ -146,8 +146,12 @@ export function HomePage(): JSX.Element {
           </div>
 
           {/* Layer 3 — Our Philosophy: opaque card that slides up over The Problem.
-              Single scroll, no pin, no 3-step storytelling. */}
-          <div className="sticky top-0 z-[3] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+              `relative` (NOT sticky): it is the TOP card so nothing slides over it,
+              and keeping it non-sticky means the sticky stack ends at The Problem —
+              so the ScrollTrigger-pinned Services section that follows measures its
+              position cleanly (a sticky element right before a ScrollTrigger pin makes
+              the pin flip on/off → the stutter). It still overlaps the sticky Problem. */}
+          <div className="relative z-[3] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
             <section aria-label="Philosophy" className="min-h-screen bg-pulse-500 text-ink-900">
               <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
                 <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
