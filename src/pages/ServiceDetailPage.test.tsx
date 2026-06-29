@@ -51,7 +51,7 @@ describe('ServiceDetailPage', () => {
     ).toBeInTheDocument();
 
     // A feature from the development service (Requirement 10.1).
-    expect(screen.getByText('Custom Web Application Development')).toBeInTheDocument();
+    expect(screen.getByText('Business Websites')).toBeInTheDocument();
 
     // A FAQ question rendered as an accordion trigger (Requirements 10.1, 10.3).
     expect(
@@ -83,14 +83,15 @@ describe('ServiceDetailPage', () => {
   });
 
   it('renders related-by-service case study cards (getCaseStudiesByService)', () => {
-    renderAt('/services/development');
+    // We test the 'design' service because the 'development' service overrides this section with a custom callout.
+    renderAt('/services/design');
 
-    // orange-city-grocers lists 'development' in its services[] (Requirement 10.2).
+    // mednudge-care-companion lists 'design' in its services[] (Requirement 10.2).
     const card = screen.getByRole('link', {
-      name: /aisle browsers into loyal subscribers/i,
+      name: /keeps patients on track between visits/i,
     });
     expect(card).toBeInTheDocument();
-    expect(card).toHaveAttribute('href', '/portfolio/orange-city-grocers');
+    expect(card).toHaveAttribute('href', '/portfolio/mednudge-care-companion');
   });
 
   it('renders the in-route not-found state for an unknown slug', () => {
