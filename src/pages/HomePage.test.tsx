@@ -82,7 +82,7 @@ describe('HomePage', () => {
 
     const expectedOrder = [
       'Intro', // Hero
-      'Problems',
+      'Challenges',
       'Philosophy',
       'Featured work', // Portfolio preview
       'Team',
