@@ -161,28 +161,35 @@ export function HomePage(): JSX.Element {
             <section aria-label="Philosophy" className="min-h-screen bg-pulse-500 text-ink-900">
               <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
                 <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
-                  Our philosophy
+                  {PHILOSOPHY.tagline}
                 </p>
                 <AnimationWrapper variant="rise">
-                  <h2 className="mt-8 max-w-[18ch] font-display text-[clamp(2.25rem,6vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.02em]">
-                    {PHILOSOPHY_POINTS[0]!.heading}
+                  <h2 className="mt-7 max-w-[22ch] font-display text-[clamp(2rem,4.6vw,4.25rem)] font-bold leading-[1.03] tracking-[-0.02em]">
+                    {PHILOSOPHY.heading}
                   </h2>
                 </AnimationWrapper>
                 <AnimationWrapper variant="fade" delay={0.1}>
-                  <p className="mt-8 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
-                    {PHILOSOPHY_POINTS[0]!.body}
+                  <p className="mt-8 max-w-2xl font-sans text-body-l leading-relaxed text-ink-900/80">
+                    {PHILOSOPHY.intro}
                   </p>
                 </AnimationWrapper>
 
+                {/* Three pillars — equal visual weight; 1-col → 3-col grid. */}
                 <AnimationWrapper variant="rise" stagger={0.1}>
-                  <div className="mt-16 grid gap-x-12 gap-y-10 border-t border-ink-900/20 pt-12 md:grid-cols-2">
-                    {PHILOSOPHY_POINTS.slice(1).map((point) => (
-                      <div key={point.heading}>
-                        <h3 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight">
-                          {point.heading}
+                  <div className="mt-[clamp(3.5rem,7vh,5.5rem)] grid gap-x-10 gap-y-12 border-t border-ink-900/15 pt-[clamp(2.5rem,5vh,3.5rem)] md:grid-cols-3">
+                    {PHILOSOPHY_PILLARS.map((pillar, index) => (
+                      <div key={pillar.title} className="flex flex-col">
+                        <span
+                          aria-hidden="true"
+                          className="font-mono text-mono-eyebrow font-medium tracking-[0.18em] text-ink-900/45"
+                        >
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <h3 className="mt-4 font-display text-[clamp(1.3rem,2vw,1.7rem)] font-semibold leading-snug">
+                          {pillar.title}
                         </h3>
-                        <p className="mt-4 font-sans text-body leading-relaxed text-ink-900/80">
-                          {point.body}
+                        <p className="mt-3 max-w-sm font-sans text-body leading-relaxed text-ink-900/75">
+                          {pillar.body}
                         </p>
                       </div>
                     ))}
