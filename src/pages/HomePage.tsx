@@ -1,7 +1,6 @@
 /**
  * HomePage — the `/` route module.
  */
-import { useEffect, useRef } from 'react';
 import type { SEOMeta } from '@app-types';
 
 import { AnimationWrapper } from '@components/AnimationWrapper';
@@ -11,12 +10,11 @@ import { CTA } from '@components/CTA';
 import { Hero } from '@components/Hero';
 import { MarqueeText } from '@components/MarqueeText';
 import { PremiumMarquee } from '@components/PremiumMarquee';
+import { PhilosophyStorytelling } from '@components/PhilosophyStorytelling';
 import { StackSection } from '@components/StackSection';
 import { SectionHeader } from '@components/SectionHeader';
-import { SplitText } from '@components/SplitText';
 import { TeamCard } from '@components/TeamCard';
 import { SEOHead } from '@components/SEOHead';
-import { useReducedMotion } from '@hooks/useReducedMotion';
 
 import { caseStudies } from '@data/caseStudies';
 import { team } from '@data/team';
