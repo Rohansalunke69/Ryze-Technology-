@@ -51,7 +51,7 @@ describe('ServiceDetailPage', () => {
     ).toBeInTheDocument();
 
     // A feature from the development service (Requirement 10.1).
-    expect(screen.getByText('E-commerce Stores')).toBeInTheDocument();
+    expect(screen.getByText('Business Websites')).toBeInTheDocument();
 
     // A FAQ question rendered as an accordion trigger (Requirements 10.1, 10.3).
     expect(
@@ -82,14 +82,16 @@ describe('ServiceDetailPage', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('renders the development portfolio call-to-action block', () => {
-    renderAt('/services/development');
+  it('renders related-by-service case study cards (getCaseStudiesByService)', () => {
+    // We test the 'design' service because the 'development' service overrides this section with a custom callout.
+    renderAt('/services/design');
 
-    // The development page now surfaces a portfolio CTA block instead of
-    // related case-study cards.
-    const viewAll = screen.getByRole('link', { name: /view all projects/i });
-    expect(viewAll).toBeInTheDocument();
-    expect(viewAll).toHaveAttribute('href', '/portfolio');
+    // mednudge-care-companion lists 'design' in its services[] (Requirement 10.2).
+    const card = screen.getByRole('link', {
+      name: /keeps patients on track between visits/i,
+    });
+    expect(card).toBeInTheDocument();
+    expect(card).toHaveAttribute('href', '/portfolio/mednudge-care-companion');
   });
 
   it('renders the in-route not-found state for an unknown slug', () => {
