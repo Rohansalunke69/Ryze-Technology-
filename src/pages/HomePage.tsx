@@ -86,8 +86,8 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
   },
 ];
 
-/** Philosophy storytelling statements — cross-fade while the card is pinned. */
-const PHILOSOPHY_SLIDES = [
+/** Philosophy statements — shown together in one normal section (no pin). */
+const PHILOSOPHY_POINTS = [
   {
     heading: 'Most software is built to ship. We build it to last.',
     body:
