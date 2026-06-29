@@ -138,15 +138,19 @@ export function ServiceDetailPage(): JSX.Element {
     <main className="mx-auto flex max-w-6xl flex-col gap-24 px-6 pb-24 pt-[clamp(7rem,16vh,10rem)]">
       <SEOHead meta={service.seo} />
 
-      <div className="flex flex-col gap-8 items-center text-center relative w-full">
+      {/* Breadcrumbs aligned to the left side of the website */}
+      <div className="w-full flex justify-start">
         <Breadcrumb />
+      </div>
+
+      <div className="flex flex-col gap-8 items-center text-center relative w-full">
 
         {/* Hero */}
         <AnimationWrapper variant="rise">
           <header className="relative flex flex-col gap-6 items-center text-center mt-4 py-8">
             {/* Attractive Background Glow to fill empty space */}
             <div className="absolute inset-0 -z-10 flex items-center justify-center">
-              <div className="h-[250px] w-full max-w-[800px] rounded-full bg-pulse-500/15 blur-[100px]" />
+              <div className="aurora" />
             </div>
 
             <h1 className="max-w-4xl font-display text-[clamp(3.5rem,8vw,5.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-pulse-500">
@@ -176,17 +180,36 @@ export function ServiceDetailPage(): JSX.Element {
         <SectionHeader eyebrow="Capabilities" title="What you get" />
         <AnimationWrapper stagger={0.08}>
           <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {service.features.map((feature) => (
+            {service.features.map((feature, index) => (
               <li
                 key={feature.title}
-                className="glass-card group flex flex-col gap-5 p-10 h-full w-full"
+                className="glass-card group relative flex flex-col justify-center items-center text-center p-8 min-h-[240px] w-full overflow-hidden"
               >
-                <h3 className="font-display text-2xl font-extrabold tracking-tight text-pulse-700 group-hover:text-pulse-500 transition-colors duration-300">
-                  {feature.title}
-                </h3>
-                <p className="font-sans text-body-m text-mist-300 leading-relaxed font-medium">
-                  {feature.description}
-                </p>
+                {/* Huge Watermark Number for premium agency aesthetic - Centered and Theme Aligned */}
+                <div className="absolute inset-0 flex items-center justify-center z-0 select-none pointer-events-none overflow-hidden">
+                  <span className="text-[14rem] leading-none font-display font-extrabold text-pulse-500 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-110 transition-all duration-700 ease-out-expo">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center w-full">
+                  {/* Title starts centered, slides up slightly on hover */}
+                  <h3 className="font-display text-[1.6rem] leading-tight font-extrabold tracking-tight text-pulse-700 group-hover:text-pulse-500 transform group-hover:-translate-y-2 transition-all duration-500 ease-out-expo max-w-[80%] mx-auto">
+                    {feature.title}
+                  </h3>
+                  
+                  {/* Description is hidden/down, slides open and fades in on hover */}
+                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-out-expo w-full">
+                    <div className="overflow-hidden">
+                      <p className="font-sans text-base text-mist-300 leading-relaxed font-medium opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-700 delay-75 ease-out-expo pt-3 px-2">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Animated bottom accent bar */}
+                <div className="absolute bottom-0 left-0 h-1.5 w-0 bg-pulse-500 group-hover:w-full transition-all duration-700 ease-out-expo" />
               </li>
             ))}
           </ul>
@@ -198,39 +221,30 @@ export function ServiceDetailPage(): JSX.Element {
         <AnimationWrapper variant="rise">
           <section className="flex flex-col gap-10 items-center text-center">
             <SectionHeader eyebrow="Proof" title="Our Work Speaks for Itself" align="center" />
-            <div className="flex flex-col items-center gap-10 w-full max-w-5xl rounded-[40px] border border-pulse-500/20 bg-gradient-to-b from-pulse-500/10 to-transparent p-12 lg:p-20 shadow-xl shadow-pulse-500/5">
-              <p className="font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.15] font-extrabold tracking-tight text-mist-100 text-balance">
-                We're currently building our public portfolio. Reach out to see what we've built for our clients in Nagpur and beyond.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-6 mt-4">
-                <Link
-                  to="/portfolio"
-                  className="inline-flex min-h-[56px] items-center justify-center rounded-2xl bg-ink-800 border border-ink-600 px-8 py-3 font-mono text-base font-semibold text-mist-100 shadow-sm transition-all hover:-translate-y-1 hover:bg-ink-700 hover:border-pulse-500/40 hover:shadow-lg"
-                >
-                  View All Projects →
-                </Link>
-                <Link
-                  to="/contact"
-                  className="inline-flex min-h-[56px] items-center justify-center rounded-2xl bg-pulse-500 px-8 py-3 font-mono text-base font-bold text-ink-900 shadow-lg shadow-pulse-500/20 transition-all hover:-translate-y-1 hover:bg-pulse-400 hover:shadow-xl hover:shadow-pulse-500/30 hover:scale-105"
-                >
-                  Talk to Us →
-                </Link>
+            <div className="relative flex flex-col items-center gap-10 w-full max-w-5xl rounded-[40px] border border-pulse-500/20 p-12 lg:p-20 shadow-2xl shadow-pulse-500/10 overflow-hidden bg-[#0a0a08]">
+              {/* Pure CSS Animated 'Thought Mesh' Background */}
+              <div className="absolute inset-0 z-0 bg-[#0a0a08]">
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[60%] rounded-full bg-pulse-500/40 blur-[80px] thought-node-1 mix-blend-screen" />
+                <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[70%] rounded-full bg-blue-500/30 blur-[100px] thought-node-2 mix-blend-screen" />
+                <div className="absolute top-[20%] right-[20%] w-[40%] h-[40%] rounded-full bg-indigo-500/30 blur-[60px] thought-node-3 mix-blend-screen" />
               </div>
-            </div>
-          </section>
-        </AnimationWrapper>
-      ) : relatedCaseStudies.length > 0 ? (
-        <AnimationWrapper variant="rise" stagger={0.08}>
-          <section className="flex flex-col gap-8">
-            <SectionHeader eyebrow="Proof" title="Related work" />
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {relatedCaseStudies.map((caseStudy, index) => (
-                <CaseStudyCard
-                  key={caseStudy.slug}
-                  caseStudy={caseStudy}
-                  index={index}
-                />
-              ))}
+              {/* Soft gradient overlay to ensure text remains perfectly readable */}
+              <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-[#0a0a08]/80" />
+
+              {/* Content */}
+              <div className="relative z-10 flex flex-col items-center text-center gap-10">
+                <p className="font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.15] font-extrabold tracking-tight text-[#f3f1ea] text-balance drop-shadow-sm">
+                  We're currently building our public portfolio. Reach out to see what we've built for our clients in Nagpur and beyond.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-6 mt-4">
+                  <Link
+                    to="/contact"
+                    className="group inline-flex items-center justify-center px-12 w-auto h-[64px] border-2 border-pulse-500 rounded-full text-[#f3f1ea] font-mono text-lg font-bold transition-all duration-[600ms] ease-in-out hover:bg-pulse-500 hover:rounded-md hover:shadow-lg hover:shadow-pulse-500/30 hover:text-[#0a0a08]"
+                  >
+                    <span className="whitespace-nowrap">Talk to Us</span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </section>
         </AnimationWrapper>
