@@ -139,7 +139,7 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           <div className="absolute inset-0" style={webglLayerStyle}>
             <Suspense fallback={null}>
               <HeroWebGLLayer
-                paused={!inView}
+                paused={!inView || scrolledPast}
                 onReady={() => setWebglReady(true)}
               />
             </Suspense>
