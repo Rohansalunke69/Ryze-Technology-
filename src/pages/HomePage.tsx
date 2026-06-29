@@ -86,22 +86,30 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
   },
 ];
 
-/** Philosophy statements — shown together in one normal section (no pin). */
-const PHILOSOPHY_POINTS = [
+/** Philosophy section — tagline, heading, and intro paragraph. */
+const PHILOSOPHY = {
+  tagline: 'We Build. We Maintain. We Grow.',
+  heading: 'Technology should create momentum, not maintenance headaches.',
+  intro:
+    'We believe software is only valuable when it continues delivering results long after launch. That’s why we don’t stop at development. We build reliable systems, maintain them proactively, and help businesses use technology to grow with confidence.',
+};
+
+/** The three philosophy pillars — equal visual weight, numbered 01–03. */
+const PHILOSOPHY_PILLARS = [
   {
-    heading: 'Most software is built to ship. We build it to last.',
+    title: 'We build with purpose, not just speed.',
     body:
-      'Anything worth building is worth building to last. We make order that holds — structured, tested, and maintainable.',
+      'Every product starts with a strong foundation—clean architecture, scalable systems, and thoughtful user experiences designed for long-term success.',
   },
   {
-    heading: 'We engineer for the decade, not the demo.',
+    title: 'We maintain what we create.',
     body:
-      'Clean architecture and real test coverage mean the next change is a small one — not a rewrite that starts from zero.',
+      'Technology requires ongoing care. Through monitoring, updates, optimization, and support, we keep software secure, stable, and ready for what’s next.',
   },
   {
-    heading: 'Durable means supported, long after launch day.',
+    title: 'We help businesses grow.',
     body:
-      'We stay on after release: monitoring, hardening, and evolving the product so it keeps earning its place in your business.',
+      'Great software is only part of the equation. We help clients attract customers, improve operations, and unlock new opportunities through digital strategy and marketing.',
   },
 ];
 
