@@ -2,7 +2,7 @@
  * Unit tests for HomePage (task 14.1 / 14.2).
  *
  * Verifies the homepage contract from Requirement 6:
- *  - the sections render in the mandated order: Hero → Problems → Philosophy →
+ *  - the sections render in the mandated order: Hero → Challenges → Philosophy →
  *    Portfolio-preview → Services → Why-Us → Team → CTA (Requirement 6.1);
  *  - the Portfolio-preview surfaces only `featured` case studies (Requirement 6.2);
  *  - the Why-Us metric values render (AnimatedCounter, Requirement 6.3);
@@ -82,7 +82,7 @@ describe('HomePage', () => {
 
     const expectedOrder = [
       'Intro', // Hero
-      'Problems',
+      'Challenges',
       'Philosophy',
       'Featured work', // Portfolio preview
       'Team',
