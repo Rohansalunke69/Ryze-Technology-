@@ -17,16 +17,21 @@ export interface ProblemSectionProps {
 
 export function ProblemSection({ problems }: ProblemSectionProps): JSX.Element {
   return (
-    <section aria-label="Challenges" className="w-full bg-ink-900">
-      <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10">
-        <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="lg:sticky lg:top-28 lg:self-start">
+    // `min-h-screen` + vertically centered: the panel is exactly one viewport
+    // tall and its (compact) content fits inside it — so when the wrapper is
+    // sticky, all three challenges are fully visible AND the Philosophy card can
+    // slide up over this panel. Compact scale keeps everything within the fold.
+    <section
+      aria-label="Challenges"
+      className="flex min-h-screen w-full items-center bg-ink-900"
+    >
+      <div className="mx-auto w-full max-w-site px-6 py-14 sm:px-10">
+        <div className="grid items-center gap-x-12 gap-y-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
             <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
               The challenges
             </p>
-            {/* max-w widened 12ch → 15ch so the longer heading wraps to balanced
-                lines ("What's holding" / "businesses back"); font scale unchanged. */}
-            <h2 className="mt-6 max-w-[15ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100">
+            <h2 className="mt-4 max-w-[14ch] font-display text-[clamp(1.9rem,4vw,3.5rem)] font-bold leading-[1.02] tracking-[-0.02em] text-mist-100">
               What&apos;s holding businesses back
             </h2>
           </div>
@@ -35,19 +40,19 @@ export function ProblemSection({ problems }: ProblemSectionProps): JSX.Element {
             {problems.map((problem, index) => (
               <li
                 key={problem.title}
-                className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8"
+                className="grid grid-cols-[auto_1fr] items-start gap-5 border-t border-ink-600 py-5"
               >
                 <span
                   aria-hidden="true"
-                  className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)]"
+                  className="ghost-numeral text-[clamp(1.75rem,3.5vw,2.75rem)]"
                 >
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <div className="flex flex-col gap-3 pt-1">
-                  <h3 className="font-display text-h3 font-semibold text-mist-100">
+                <div className="flex flex-col gap-1.5 pt-0.5">
+                  <h3 className="font-display text-[clamp(1.2rem,1.9vw,1.6rem)] font-semibold leading-tight text-mist-100">
                     {problem.title}
                   </h3>
-                  <p className="max-w-md font-sans text-body text-mist-300">
+                  <p className="max-w-md font-sans text-[0.95rem] leading-relaxed text-mist-300">
                     {problem.detail}
                   </p>
                 </div>
