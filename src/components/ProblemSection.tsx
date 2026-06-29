@@ -17,15 +17,17 @@ export interface ProblemSectionProps {
 
 export function ProblemSection({ problems }: ProblemSectionProps): JSX.Element {
   return (
-    <section aria-label="Problems" className="w-full bg-ink-900">
+    <section aria-label="Challenges" className="w-full bg-ink-900">
       <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10">
         <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
-              The problem
+              The challenges
             </p>
-            <h2 className="mt-6 max-w-[12ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100">
-              Software that rots
+            {/* max-w widened 12ch → 15ch so the longer heading wraps to balanced
+                lines ("What's holding" / "businesses back"); font scale unchanged. */}
+            <h2 className="mt-6 max-w-[15ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100">
+              What&apos;s holding businesses back
             </h2>
           </div>
 
