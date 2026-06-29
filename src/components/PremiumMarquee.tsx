@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@hooks/useReducedMotion';
-import { useLenis } from '@hooks/useLenis';
+import { SmoothScrollContext } from '@providers/SmoothScrollProvider';
 
 const ITEMS = [
   'MAINTENANCE & SUPPORT',
