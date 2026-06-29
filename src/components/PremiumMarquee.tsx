@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useReducedMotion } from '@hooks/useReducedMotion';
+import { useLenis } from '@hooks/useLenis';
 
 const ITEMS = [
   'MAINTENANCE & SUPPORT',
