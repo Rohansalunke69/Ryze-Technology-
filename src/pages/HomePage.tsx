@@ -37,19 +37,19 @@ const organizationJsonLd = {
 
 const PROBLEMS: ReadonlyArray<{ title: string; detail: string }> = [
   {
-    title: 'Broken handoffs',
+    title: 'Inefficient software',
     detail:
-      'Projects shipped by one team and abandoned by the next, until nobody knows how it works.',
+      'Applications become difficult to scale, maintain, and improve, slowing business growth.',
   },
   {
-    title: 'Abandoned codebases',
+    title: 'Missed digital opportunities',
     detail:
-      'Dependencies rot, builds stop working, and a small change becomes a rewrite.',
+      'Your business exists online, but the right customers never discover it.',
   },
   {
-    title: 'Fragile automations',
+    title: 'Unsupported systems',
     detail:
-      'Scripts held together with duct tape that fail silently the moment reality shifts.',
+      'Without ongoing maintenance and support, performance declines and risks increase.',
   },
 ];
 
