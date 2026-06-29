@@ -89,10 +89,7 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
   },
 ];
 
-// px of Problems section left visible above the Philosophy panel during overlap.
-const PHILOSOPHY_PEEK = 160;
-
-// How many px of the Problems section to keep visible above the Philosophy panel.
+// px of Problems section left visible above the Philosophy panel.
 const PANEL_PEEK = 200;
 
 export function HomePage(): JSX.Element {
