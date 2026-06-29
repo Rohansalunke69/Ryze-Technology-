@@ -61,7 +61,9 @@ export function PremiumMarquee() {
     // by the app's single GSAP ticker, and keeps emitting until it settles to
     // rest (velocity → 0), so the skew eases back to 0 on its own.
     if (lenis) {
-      const onScroll = (): void => setSkew(clamp(lenis.velocity * 0.08));
+      const onScroll = (): void => {
+        setSkew(clamp(lenis.velocity * 0.08));
+      };
       lenis.on('scroll', onScroll);
       return () => {
         lenis.off('scroll', onScroll);
