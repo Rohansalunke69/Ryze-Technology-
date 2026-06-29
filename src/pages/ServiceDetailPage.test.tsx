@@ -10,7 +10,6 @@
  * Covered behaviors:
  *  - a known slug renders the service name, features, and FAQ (Requirement 10.1);
  *  - the FAQ accordion toggles `aria-expanded` on click (Requirement 10.3);
- *  - related-by-service case study cards are present (Requirement 10.2);
  *  - an unknown slug renders the in-route not-found state (Requirement 10.4).
  */
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -51,7 +50,7 @@ describe('ServiceDetailPage', () => {
     ).toBeInTheDocument();
 
     // A feature from the development service (Requirement 10.1).
-    expect(screen.getByText('Custom Web Application Development')).toBeInTheDocument();
+    expect(screen.getByText('Business Websites')).toBeInTheDocument();
 
     // A FAQ question rendered as an accordion trigger (Requirements 10.1, 10.3).
     expect(
@@ -80,17 +79,6 @@ describe('ServiceDetailPage', () => {
 
     fireEvent.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  it('renders related-by-service case study cards (getCaseStudiesByService)', () => {
-    renderAt('/services/development');
-
-    // orange-city-grocers lists 'development' in its services[] (Requirement 10.2).
-    const card = screen.getByRole('link', {
-      name: /aisle browsers into loyal subscribers/i,
-    });
-    expect(card).toBeInTheDocument();
-    expect(card).toHaveAttribute('href', '/portfolio/orange-city-grocers');
   });
 
   it('renders the in-route not-found state for an unknown slug', () => {

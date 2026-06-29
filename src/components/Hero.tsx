@@ -89,6 +89,27 @@ export function Hero({ headline }: HeroProps): JSX.Element {
 
   const [webglReady, setWebglReady] = useState(false);
 
+  // Pause the WebGL render loop once the Hero is scrolled past (~one viewport),
+  // i.e. when the next section has covered it. `useInView` here latches `true`
+  // (once:true) and never detects the sticky-overlap occlusion, so without this
+  // the Three.js loop would keep rendering for the entire page — a constant GPU
+  // cost that makes the whole scroll feel heavy. Resumes when scrolled back up.
+  const [scrolledPast, setScrolledPast] = useState(false);
+  useEffect(() => {
+    if (reducedMotion) return undefined;
+    let past = false;
+    const check = (): void => {
+      const now = window.scrollY > window.innerHeight * 0.85;
+      if (now !== past) {
+        past = now;
+        setScrolledPast(now);
+      }
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, [reducedMotion]);
+
   const shouldMountWebGL = !reducedMotion && capable && inView;
 
   const fallbackLayerStyle: CSSProperties = {
@@ -118,7 +139,7 @@ export function Hero({ headline }: HeroProps): JSX.Element {
           <div className="absolute inset-0" style={webglLayerStyle}>
             <Suspense fallback={null}>
               <HeroWebGLLayer
-                paused={!inView}
+                paused={!inView || scrolledPast}
                 onReady={() => setWebglReady(true)}
               />
             </Suspense>
@@ -133,21 +154,6 @@ export function Hero({ headline }: HeroProps): JSX.Element {
         />
       </div>
 
-      {/* Top meta row — studio identity · location · coordinates. Styled for
-          the dark hero (brand-blue marker, muted-white mono text, hairline
-          connectors). Collapses gracefully on small screens. */}
-      <div className="absolute inset-x-0 top-0 z-10 mx-auto w-full max-w-site px-6 pt-20 sm:px-10">
-        <div className="flex items-center gap-4 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-white/55">
-          <span className="flex items-center gap-2 whitespace-nowrap text-white/75">
-            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-pulse-500" />
-            Ryze Technology
-          </span>
-          <span aria-hidden="true" className="hidden h-px flex-1 bg-white/15 sm:block" />
-          <span className="hidden whitespace-nowrap md:inline">Software Studio · Nagpur, IN</span>
-          <span aria-hidden="true" className="hidden h-px flex-1 bg-white/15 sm:block" />
-          <span className="hidden whitespace-nowrap sm:inline">21.15°N 79.09°E</span>
-        </div>
-      </div>
 
       {/* Hero content — always DOM, always sharp, always on top of canvas. */}
       <div className="relative z-10 mx-auto w-full max-w-site px-6 pb-28 pt-32 text-center sm:px-10">

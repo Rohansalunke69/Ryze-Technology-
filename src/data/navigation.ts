@@ -15,6 +15,10 @@ import type { NavChild, NavItem } from '@app-types';
  */
 export const navItems: NavItem[] = [
   {
+    label: 'Home',
+    path: '/',
+  },
+  {
     label: 'Work',
     path: '/portfolio',
   },
@@ -26,15 +30,11 @@ export const navItems: NavItem[] = [
       { label: 'Digital Marketing', path: '/services/digital-marketing', description: 'SEO, social, paid ads, content, email & WhatsApp' },
       { label: 'Sales & Strategy', path: '/services/sales-strategy', description: 'Lead gen, funnels, CRM setup, business consulting' },
       { label: 'Maintenance & Support', path: '/services/maintenance-support', description: 'Maintenance plans, support, hosting, optimization, AMC' },
-      { label: 'All Services', path: '/services', description: 'Overview of how we work and everything we offer' },
     ],
   },
   {
     label: 'About',
-    children: [
-      { label: 'Team & Story', path: '/about', description: 'Who we are and how we got here' },
-      { label: 'Manifesto', path: '/manifesto', description: 'What we believe and what we stand against' },
-    ],
+    path: '/about',
   },
   { label: 'Blog', path: '/blog' },
   { label: 'Contact', path: '/contact', cta: true },
@@ -65,14 +65,12 @@ export const footerNav: FooterNavGroup[] = [
       { label: 'Digital Marketing', path: '/services/digital-marketing' },
       { label: 'Sales & Strategy', path: '/services/sales-strategy' },
       { label: 'Maintenance & Support', path: '/services/maintenance-support' },
-      { label: 'All Services', path: '/services' },
     ],
   },
   {
     title: 'Team',
     links: [
       { label: 'About', path: '/about' },
-      { label: 'Manifesto', path: '/manifesto' },
     ],
   },
   {

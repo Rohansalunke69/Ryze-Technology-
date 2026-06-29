@@ -2,7 +2,7 @@
  * Unit tests for HomePage (task 14.1 / 14.2).
  *
  * Verifies the homepage contract from Requirement 6:
- *  - the sections render in the mandated order: Hero → Problems → Philosophy →
+ *  - the sections render in the mandated order: Hero → Challenges → Philosophy →
  *    Portfolio-preview → Services → Why-Us → Team → CTA (Requirement 6.1);
  *  - the Portfolio-preview surfaces only `featured` case studies (Requirement 6.2);
  *  - the Why-Us metric values render (AnimatedCounter, Requirement 6.3);
@@ -82,10 +82,9 @@ describe('HomePage', () => {
 
     const expectedOrder = [
       'Intro', // Hero
-      'Problems',
+      'Challenges',
       'Philosophy',
       'Featured work', // Portfolio preview
-      'Why Ryze', // Why Us
       'Team',
     ];
 
@@ -125,15 +124,6 @@ describe('HomePage', () => {
     const cards = within(preview).getAllByRole('link', { name: /.+/ });
     // One "View all work" link + one link per featured card.
     expect(cards.length).toBe(featured.length + 1);
-  });
-
-  it('renders the Why-Us metric values via AnimatedCounter (Requirement 6.3)', () => {
-    renderHome();
-    const why = screen.getByRole('region', { name: 'Why Ryze' });
-    // Under reduced motion the counters render their final target immediately.
-    expect(within(why).getByText('50+')).toBeInTheDocument();
-    expect(within(why).getByText('8')).toBeInTheDocument();
-    expect(within(why).getByText('99.9%')).toBeInTheDocument();
   });
 
   it('renders a TeamCard for each team member', () => {

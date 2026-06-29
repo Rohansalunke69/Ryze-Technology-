@@ -456,9 +456,40 @@ body::before {
   animation: scene-packet 2.4s var(--ease-in-out-quint) infinite;
 }
 
-/* Soft floating bob for whole scenes. */
 @keyframes scene-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
 .scene-float { animation: scene-float 6s ease-in-out infinite; }
+
+/* Custom Glassmorphism Card Effect from User Request */
+.glass-card {
+  box-sizing: border-box;
+  background: rgba(244, 243, 237, 0.7); /* Warm cream color from user image */
+  border: 1px solid white;
+  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px);
+  border-radius: 24px;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+}
+
+.glass-card:hover {
+  border: 1px solid var(--pulse-500);
+  transform: scale(1.03);
+}
+
+.glass-card:active {
+  transform: scale(0.95) rotateZ(1.7deg);
+}
+
+/* Custom Thought Mesh Animation */
+@keyframes thought-drift {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  33% { transform: translate(40px, -60px) scale(1.1); opacity: 0.7; }
+  66% { transform: translate(-30px, 40px) scale(0.9); opacity: 0.5; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+}
+.thought-node-1 { animation: thought-drift 12s ease-in-out infinite; }
+.thought-node-2 { animation: thought-drift 15s ease-in-out infinite reverse; }
+.thought-node-3 { animation: thought-drift 18s ease-in-out infinite 2s; }

@@ -1,93 +1,30 @@
 /**
- * HomePage — the `/` route module (task 14.1).
- *
- * Renders the homepage story in the exact order mandated by Requirement 6.1:
- *
- *   Hero → Problems → Philosophy → Portfolio-preview → Services →
- *   Why-Us → Team → CTA
- *
- * (The Footer and Navigation are part of the global App shell, not this
- * module. HomePage renders its own single `<main>` landmark wrapping the
- * ordered sections, matching every other page — the shell deliberately does
- * not add a `<main>` so there is exactly one per page.)
- *
- * Motion discipline (Requirement 20.5): the page has exactly ONE heavy "hero
- * moment" — the WebGL particle→lattice field owned by {@link Hero}. Every
- * subsequent section uses only the lighter scroll-reveal primitives
- * (`AnimationWrapper`, `SplitText`, `AnimatedCounter`, `MarqueeText`), each of
- * which degrades to a static end-state under `prefers-reduced-motion`.
- *
- * Section specifics:
- *  - Portfolio-preview surfaces only the Case_Study entities flagged `featured`
- *    (Requirement 6.2). The selector is a boolean flag rather than a category,
- *    so we filter on `.featured` directly.
- *  - Why-Us renders its metric row with {@link AnimatedCounter} (Requirement 6.3).
- *  - CTA links to `/contact` through a MagneticButton (Requirement 6.4), which
- *    {@link CTA} composes internally.
- *  - {@link SEOHead} sets the homepage title/description/canonical/OG metadata
- *    (Requirement 40.1).
- *
- * Heading hierarchy (Requirement 38.1): the Hero owns the single page `h1`;
- * every section opener is an `h2` (via `SectionHeader`/`CTA`), and the cards
- * within use `h3`.
- *
- * _Requirements: 6.1, 6.2, 6.3, 6.4, 20.5, 40.1_
+ * HomePage — the `/` route module.
  */
 import type { SEOMeta } from '@app-types';
 
-import { AnimatedCounter } from '@components/AnimatedCounter';
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { FeaturedWork } from '@components/FeaturedWork';
-import { ProcessTimeline } from '@components/ProcessTimeline';
 import { CapabilitiesShowcase, type Capability } from '@components/CapabilitiesShowcase';
 import { CTA } from '@components/CTA';
 import { Hero } from '@components/Hero';
 import { MarqueeText } from '@components/MarqueeText';
+import { PremiumMarquee } from '@components/PremiumMarquee';
+import { ProblemSection } from '@components/ProblemSection';
 import { SectionHeader } from '@components/SectionHeader';
-import { SplitText } from '@components/SplitText';
 import { TeamCard } from '@components/TeamCard';
 import { SEOHead } from '@components/SEOHead';
 
 import { caseStudies } from '@data/caseStudies';
 import { team } from '@data/team';
-import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
-import { studioMetrics } from '@data/metrics';
 
-/** Four-step delivery process shown in the "How we work" band. */
-const PROCESS_STEPS: { title: string; detail: string }[] = [
-  {
-    title: 'Discover',
-    detail:
-      'We map your goals, users, and constraints, then pressure-test the idea before a line of code is written.',
-  },
-  {
-    title: 'Design',
-    detail:
-      'We shape the system and the key flows early, so you react to something real — not a slide deck.',
-  },
-  {
-    title: 'Build',
-    detail:
-      'We engineer in vertical slices, shipping working software continuously with tests baked in from day one.',
-  },
-  {
-    title: 'Sustain',
-    detail:
-      'We stay on after launch — monitoring, hardening, and evolving the product so it keeps earning its place.',
-  },
-];
-
-/** Homepage document metadata (Requirement 40.1). */
 const homeMeta: SEOMeta = {
-  // Using the site name collapses to `siteMetadata.defaultTitle` in SEOHead,
-  // avoiding a doubled-up "Ryze Technology — Ryze Technology".
   title: siteMetadata.siteName,
   description: siteMetadata.defaultDescription,
   canonical: siteMetadata.baseUrl,
 };
 
-/** Organization structured data for richer search results. */
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -98,57 +35,45 @@ const organizationJsonLd = {
   sameAs: siteMetadata.social.map((s) => s.url),
 };
 
-/**
- * The failure modes the studio exists to prevent — "software that rots". Pure
- * content; revealed with split-text/stagger when motion is allowed.
- */
 const PROBLEMS: ReadonlyArray<{ title: string; detail: string }> = [
   {
-    title: 'Broken handoffs',
+    title: 'Inefficient software',
     detail:
-      'Projects shipped by one team and abandoned by the next, until nobody knows how it works.',
+      'Applications become difficult to scale, maintain, and improve, slowing business growth.',
   },
   {
-    title: 'Abandoned codebases',
+    title: 'Missed digital opportunities',
     detail:
-      'Dependencies rot, builds stop working, and a small change becomes a rewrite.',
+      'Your business exists online, but the right customers never discover it.',
   },
   {
-    title: 'Fragile automations',
+    title: 'Unsupported systems',
     detail:
-      'Scripts held together with duct tape that fail silently the moment reality shifts.',
+      'Without ongoing maintenance and support, performance declines and risks increase.',
   },
 ];
 
-/** "Why Us" metrics — sourced from the shared studio metrics (single source of truth). */
-const METRICS = studioMetrics.slice(0, 3);
-
-/**
- * The disciplines shown in the pinned "What we build" showcase. These are the
- * technical capabilities (each with its own animated scene), authored
- * independently of the service catalogue so the showcase scenes stay stable.
- */
 const CAPABILITIES: ReadonlyArray<Capability> = [
   {
-    kind: 'websites',
+    kind: 'development',
     name: 'Web Platforms',
     tagline: 'Fast, accessible websites, storefronts, and web apps that convert.',
     techStack: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
   },
   {
-    kind: 'mobile-apps',
+    kind: 'design',
     name: 'Mobile Apps',
     tagline: 'Native-quality iOS and Android apps from one codebase.',
     techStack: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
   },
   {
-    kind: 'desktop',
+    kind: 'digital-marketing',
     name: 'Dashboards & Systems',
     tagline: 'Admin panels, dashboards, and the back-end systems that run a business.',
     techStack: ['Node.js', 'PostgreSQL', 'Prisma', 'Redis'],
   },
   {
-    kind: 'business-systems',
+    kind: 'sales-strategy',
     name: 'Automation & APIs',
     tagline: 'Workflow automation and integrations that remove manual busywork.',
     techStack: ['APIs', 'Webhooks', 'Automation', 'Integrations'],
@@ -161,224 +86,136 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
   },
 ];
 
-/** What sets the studio apart — the differentiator list under the metrics. */
-const DIFFERENTIATORS: ReadonlyArray<string> = [
-  'We own outcomes end to end — strategy, design, and engineering under one roof.',
-  'We build for real Indian conditions: patchy networks, low-end devices, high stakes.',
-  'We write software that the next engineer can actually maintain.',
-  'We stay after launch, because durable means supported.',
+/** Philosophy statements — shown together in one normal section (no pin). */
+const PHILOSOPHY_POINTS = [
+  {
+    heading: 'Most software is built to ship. We build it to last.',
+    body:
+      'Anything worth building is worth building to last. We make order that holds — structured, tested, and maintainable.',
+  },
+  {
+    heading: 'We engineer for the decade, not the demo.',
+    body:
+      'Clean architecture and real test coverage mean the next change is a small one — not a rewrite that starts from zero.',
+  },
+  {
+    heading: 'Durable means supported, long after launch day.',
+    body:
+      'We stay on after release: monitoring, hardening, and evolving the product so it keeps earning its place in your business.',
+  },
 ];
 
 export function HomePage(): JSX.Element {
-  // Portfolio-preview shows only featured case studies (Requirement 6.2).
   const featuredCaseStudies = caseStudies.filter((c) => c.featured);
-
-  // Marquee of team names + roles for the Team section.
   const marqueeItems = team.map((member) => `${member.name} — ${member.role}`);
 
   return (
     <>
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
+      {/*
+       * Linear scroll flow — every section appears once, in order:
+       *   Hero → [Problem card overlaps Hero] → Philosophy → Services → Work → Team → CTA
+       *
+       * The ONLY overlap is Hero ← Problem, done with pure CSS (sticky + z-index),
+       * so there is no GSAP pin to fight the other ScrollTriggers. Philosophy is a
+       * plain section (single scroll, no pin, no 3-step storytelling).
+       */}
       <main>
-        {/* 1 — Hero: the single heavy "hero moment" (Requirement 20.5). */}
-        <Hero headline="Design. Develop. Grow." />
-
-        {/* Kinetic marquee band — full-bleed brand statement strip. */}
-        <div className="overflow-hidden border-y border-ink-600 bg-ink-800 py-5">
-          <div className="font-display text-[clamp(1.75rem,5vw,4rem)] font-bold uppercase tracking-tight text-mist-100">
-            <MarqueeText
-              items={[
-                'Built to last',
-                'Engineered permanence',
-                'Web — Mobile — Systems',
-                'Ryze Technology',
-              ]}
-            />
-          </div>
-        </div>
-
-      {/* 2 — Problems: "software that rots". */}
-      <section
-        aria-label="Problems"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <div className="grid gap-x-12 gap-y-14 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-pulse-500">
-              The problem
-            </p>
-            <SplitText
-              as="h2"
-              by="word"
-              text="Software that rots"
-              className="mt-6 max-w-[12ch] font-display text-[clamp(2.5rem,6vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100"
-            />
+        {/*
+         * Card-overlap — pure CSS (sticky + z-index), no GSAP:
+         *   Hero (sticky base)  ←  The Problem & Our Philosophy scroll up over it.
+         *
+         * ONLY the Hero is `sticky` (the backdrop). The Problem and Philosophy
+         * cards are `relative` so they SCROLL fully through the viewport — this is
+         * essential: a sticky card taller than the viewport hides its own lower
+         * content (the next card covers it before you can reach it). Keeping them
+         * relative guarantees every item (incl. challenge 03) is fully visible and
+         * lets the section grow naturally with its content.
+         */}
+        <div className="relative">
+          {/* Layer 1 — Hero (sticky base backdrop) */}
+          <div className="sticky top-0 z-[1]">
+            <Hero headline="Design. Develop. Grow." />
           </div>
 
-          <AnimationWrapper variant="rise" stagger={0.12}>
-            <ul className="flex flex-col">
-              {PROBLEMS.map((problem, index) => (
-                <li
-                  key={problem.title}
-                  className="grid grid-cols-[auto_1fr] items-start gap-6 border-t border-ink-600 py-8"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="ghost-numeral text-[clamp(2.5rem,6vw,4.5rem)]"
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div className="flex flex-col gap-3 pt-1">
-                    <h3 className="font-display text-h3 font-semibold text-mist-100">
-                      {problem.title}
-                    </h3>
-                    <p className="max-w-md font-sans text-body text-mist-300">
-                      {problem.detail}
-                    </p>
+          {/* Layer 2 — The Problem: sticky card. Its content is compact + fits one
+              viewport (see ProblemSection min-h-screen), so all three challenges are
+              visible while it is pinned — AND the Philosophy card slides up over it.
+              PremiumMarquee is the card's top strip. */}
+          <div className="sticky top-0 z-[2] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+            <PremiumMarquee />
+            <ProblemSection problems={PROBLEMS} />
+          </div>
+
+          {/* Layer 3 — Our Philosophy: opaque card that slides up over The Problem. */}
+          <div className="relative z-[3] overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+            <section aria-label="Philosophy" className="min-h-screen bg-pulse-500 text-ink-900">
+              <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
+                <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
+                  Our philosophy
+                </p>
+                <AnimationWrapper variant="rise">
+                  <h2 className="mt-8 max-w-[18ch] font-display text-[clamp(2.25rem,6vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.02em]">
+                    {PHILOSOPHY_POINTS[0]!.heading}
+                  </h2>
+                </AnimationWrapper>
+                <AnimationWrapper variant="fade" delay={0.1}>
+                  <p className="mt-8 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
+                    {PHILOSOPHY_POINTS[0]!.body}
+                  </p>
+                </AnimationWrapper>
+
+                <AnimationWrapper variant="rise" stagger={0.1}>
+                  <div className="mt-16 grid gap-x-12 gap-y-10 border-t border-ink-900/20 pt-12 md:grid-cols-2">
+                    {PHILOSOPHY_POINTS.slice(1).map((point) => (
+                      <div key={point.heading}>
+                        <h3 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight">
+                          {point.heading}
+                        </h3>
+                        <p className="mt-4 font-sans text-body leading-relaxed text-ink-900/80">
+                          {point.body}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                </li>
-              ))}
-            </ul>
-          </AnimationWrapper>
-        </div>
-      </section>
-
-      {/* 3 — Philosophy: full-bleed inverted brand-blue statement. */}
-      <section
-        aria-label="Philosophy"
-        className="bg-pulse-500 text-ink-900"
-      >
-        <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
-          <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
-            Our philosophy
-          </p>
-          <AnimationWrapper variant="rise">
-            <SplitText
-              as="h2"
-              by="word"
-              text="Most software is built to ship. We build it to last."
-              className="mt-8 max-w-[18ch] font-display text-[clamp(2.5rem,7vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-ink-900"
-            />
-          </AnimationWrapper>
-          <AnimationWrapper variant="fade" delay={0.1}>
-            <p className="mt-10 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
-              Anything worth building is worth building to last. We make order
-              that holds — structured, tested, and maintainable — so the
-              products we ship keep working long after launch day.
-            </p>
-          </AnimationWrapper>
-        </div>
-      </section>
-
-      {/* What we build — pinned horizontal-scroll capabilities showcase. */}
-      <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
-
-      {/* 4 — Portfolio preview: featured case studies only (Requirement 6.2). */}
-      <FeaturedWork caseStudies={featuredCaseStudies} />
-
-      {/* How we work — process band with a scroll-drawn progress line. */}
-      <ProcessTimeline steps={PROCESS_STEPS} />
-
-      {/* 6 — Why Us: AnimatedCounter metric row + differentiators (Req 6.3). */}
-      <section
-        aria-label="Why Ryze"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <SectionHeader eyebrow="Why Ryze" title="Durability, by the numbers" />
-        <dl className="mt-16 grid gap-x-10 gap-y-12 sm:grid-cols-3">
-          {METRICS.map((metric) => (
-            <div key={metric.label} className="flex flex-col gap-3 border-t border-ink-600 pt-6">
-              <dt className="sr-only">{metric.label}</dt>
-              <dd className="font-display text-[clamp(3.5rem,10vw,7.5rem)] font-bold leading-[0.9] tracking-[-0.03em] text-mist-100">
-                <AnimatedCounter
-                  value={metric.value}
-                  decimals={metric.decimals ?? 0}
-                  suffix={metric.suffix}
-                />
-              </dd>
-              <p
-                aria-hidden="true"
-                className="font-mono text-mono-eyebrow uppercase tracking-[0.2em] text-pulse-500"
-              >
-                {metric.label}
-              </p>
-            </div>
-          ))}
-        </dl>
-        <AnimationWrapper variant="rise" stagger={0.08}>
-          <ul className="mt-16 grid gap-x-10 gap-y-5 md:grid-cols-2">
-            {DIFFERENTIATORS.map((item) => (
-              <li
-                key={item}
-                className="flex gap-4 border-t border-ink-600 pt-5 font-sans text-body-l text-mist-300"
-              >
-                <span aria-hidden="true" className="font-mono text-pulse-500">
-                  ↗
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </AnimationWrapper>
-      </section>
-
-      {/* 7 — Team: the team cards + a marquee of names/roles. */}
-      <section
-        aria-label="Team"
-        className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
-      >
-        <SectionHeader eyebrow="The studio" title="The people who build it" />
-        <AnimationWrapper variant="rise" stagger={0.1}>
-          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((member, index) => (
-              <TeamCard key={member.id} member={member} index={index} />
-            ))}
+                </AnimationWrapper>
+              </div>
+            </section>
           </div>
-        </AnimationWrapper>
-        <div className="mt-16 font-display text-h3 text-mist-100">
-          <MarqueeText items={marqueeItems} />
         </div>
-      </section>
 
-      {/* Testimonial pull-quote (added content). */}
-      {testimonials[0] !== undefined ? (
+        {/* 3 — Services (pinned horizontal showcase, reserves its own space) */}
+        <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
+
+        {/* 4 — Case studies (scrubbed parallax, no pin) */}
+        <FeaturedWork caseStudies={featuredCaseStudies} />
+
+        {/* 5 — Team */}
         <section
-          aria-label="Client testimonial"
+          aria-label="Team"
           className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
         >
-          <AnimationWrapper variant="rise">
-            <figure className="mx-auto max-w-5xl">
-              <p
-                aria-hidden="true"
-                className="font-display text-[clamp(3rem,9vw,7rem)] font-bold leading-none text-pulse-500"
-              >
-                &ldquo;
-              </p>
-              <blockquote className="-mt-6 font-display text-[clamp(1.75rem,4.2vw,3.25rem)] font-semibold leading-[1.1] tracking-[-0.01em] text-mist-100">
-                {testimonials[0].quote}
-              </blockquote>
-              <figcaption className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-mono-eyebrow uppercase tracking-[0.18em] text-mist-300">
-                <span className="text-mist-100">{testimonials[0].author}</span>
-                <span aria-hidden="true" className="text-pulse-500">
-                  /
-                </span>
-                <span>
-                  {testimonials[0].authorRole}, {testimonials[0].company}
-                </span>
-              </figcaption>
-            </figure>
+          <SectionHeader eyebrow="The studio" title="The people who build it" />
+          <AnimationWrapper variant="rise" stagger={0.1}>
+            <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+              {team.map((member, index) => (
+                <TeamCard key={member.id} member={member} index={index} />
+              ))}
+            </div>
           </AnimationWrapper>
+          <div className="mt-16 font-display text-h3 text-mist-100">
+            <MarqueeText items={marqueeItems} />
+          </div>
         </section>
-      ) : null}
 
-      {/* 8 — CTA: MagneticButton → /contact (Requirement 6.4). */}
-      <CTA
-        heading="Let's build something permanent"
-        sub="Tell us what you're building. We'll help you make it last."
-        href="/contact"
-        label="Start a project"
-      />
+        {/* 6 — CTA */}
+        <CTA
+          heading="Let's build something permanent"
+          sub="Tell us what you're building. We'll help you make it last."
+          href="/contact"
+          label="Start a project"
+        />
       </main>
     </>
   );
