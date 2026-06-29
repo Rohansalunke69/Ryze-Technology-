@@ -109,16 +109,18 @@ export function PhilosophyStorytelling({
 }: PhilosophyStorytellingProps): JSX.Element {
   const reducedMotion = useReducedMotion();
 
-  const pinRef    = useRef<HTMLDivElement>(null);
+  const trackRef  = useRef<HTMLDivElement>(null);  // tall outer scroll track
+  const pinRef    = useRef<HTMLDivElement>(null);  // inner 100vh pinned stage
   const cardRef   = useRef<HTMLDivElement>(null);
   const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (reducedMotion) return undefined;
-    const pin  = pinRef.current;
-    const card = cardRef.current;
+    const track = trackRef.current;
+    const pin   = pinRef.current;
+    const card  = cardRef.current;
     const slideEls = slidesRef.current.filter(Boolean) as HTMLDivElement[];
-    if (!pin || !card || slideEls.length === 0) return undefined;
+    if (!track || !pin || !card || slideEls.length === 0) return undefined;
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -130,13 +132,15 @@ export function PhilosophyStorytelling({
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: pin,
+          // The TRACK provides the scroll distance; the inner stage is pinned.
+          // pinSpacing:false because the track itself already reserves the space
+          // — this is what prevents the empty pin-spacer gap on release.
+          trigger: track,
           start: 'top top',
-          // ~4 viewport heights of scroll while pinned → long, deliberate
-          // storytelling (3–4× the previous duration).
-          end: '+=400%',
+          end: 'bottom bottom',
           scrub: 1,
-          pin: true,
+          pin: pin,
+          pinSpacing: false,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -159,9 +163,9 @@ export function PhilosophyStorytelling({
         );
       }
 
-      // PHASE 3 — hold on the final statement before the pin releases.
-      tl.to({}, { duration: 1.2 });
-    }, pinRef);
+      // PHASE 3 — brief hold on the final statement before the pin releases.
+      tl.to({}, { duration: 0.8 });
+    }, trackRef);
 
     return () => ctx.revert();
   }, [reducedMotion]);
