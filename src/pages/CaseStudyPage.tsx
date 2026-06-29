@@ -55,7 +55,7 @@ function CaseStudyNotFound(): JSX.Element {
     title: 'Project not found',
     description:
       'We could not find that case study. Explore our recent work or head back to the full portfolio.',
-    canonical: 'https://ryze.technology/portfolio',
+    canonical: 'https://ryze-technology.pages.dev/portfolio',
     noIndex: true,
   };
 

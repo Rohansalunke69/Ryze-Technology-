@@ -37,7 +37,7 @@ function ServiceNotFound(): JSX.Element {
           title: 'Service not found',
           description:
             'The service you are looking for does not exist. Browse the full range of Ryze Technology services.',
-          canonical: 'https://ryze.technology/services',
+          canonical: 'https://ryze-technology.pages.dev/services',
           noIndex: true,
         }}
       />

@@ -36,7 +36,7 @@ function readRealSlugs() {
   return slugs;
 }
 
-const BASE_URL = 'https://ryze.technology';
+const BASE_URL = 'https://ryze-technology.pages.dev';
 
 describe('extractSlugs', () => {
   it('pulls single- and double-quoted slug literals in order, de-duped', () => {

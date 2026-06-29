@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ryze.technology/sitemap.xml
+Sitemap: https://ryze-technology.pages.dev/sitemap.xml

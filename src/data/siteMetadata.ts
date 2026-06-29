@@ -13,10 +13,11 @@ import type { ImageAsset, SiteMetadata, SocialLink } from '@app-types';
 
 /**
  * Fallback used when no `VITE_CONTACT_ENDPOINT` is injected at build time.
- * Keeps the form wired to a sensible default during local development while
- * allowing the deploy environment to override it.
+ * A SAME-ORIGIN relative path so the form always posts to the site's own
+ * Cloudflare Pages Function (`functions/api/contact.ts`) regardless of which
+ * domain the site is served from (pages.dev preview or the custom domain).
  */
-const DEFAULT_CONTACT_ENDPOINT = 'https://ryze.technology/api/contact';
+const DEFAULT_CONTACT_ENDPOINT = '/api/contact';
 
 /**
  * The form POST target, injected per environment. Reads
@@ -48,7 +49,7 @@ export const siteMetadata: SiteMetadata = {
   // 142 chars: within the 50–160 range for clean search/social previews.
   defaultDescription:
     'Ryze Technology is a software studio that designs and engineers durable websites, web apps, mobile apps, and business systems built to last.',
-  baseUrl: 'https://ryze.technology',
+  baseUrl: 'https://ryze-technology.pages.dev',
   defaultOgImage,
   social,
   contactEmail: 'ryzetechonologyy@gmail.com',
