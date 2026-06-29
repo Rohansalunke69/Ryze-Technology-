@@ -2,15 +2,13 @@
  * Unit tests for AboutPage (task 14.11).
  *
  * AboutPage composes motion-aware components (SectionHeader/SplitText,
- * AnimationWrapper, AnimatedCounter, TeamCard, TestimonialCard, CTA) and
- * SEOHead, so renders are wrapped in `MemoryRouter` (CTA link),
- * `ReducedMotionProvider` (motion prefs), and `HelmetProvider` (SEOHead).
- * `matchMedia` and `IntersectionObserver` are stubbed because jsdom does not
- * implement them.
+ * AnimationWrapper, TeamCard, CTA) and SEOHead, so renders are wrapped in
+ * `MemoryRouter` (CTA link), `ReducedMotionProvider` (motion prefs), and
+ * `HelmetProvider` (SEOHead). `matchMedia` and `IntersectionObserver` are
+ * stubbed because jsdom does not implement them.
  *
- * Requirements: 11.1 (story/mission/team/differentiators/by-the-numbers/
- * testimonials/CTA sections), 11.2 (a TeamCard per member with social links),
- * 11.3 (by-the-numbers metrics via AnimatedCounter).
+ * Requirements: 11.1 (story/mission/team/differentiators/CTA sections),
+ * 11.2 (a TeamCard per member with social links).
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
@@ -20,7 +18,6 @@ import { axe } from 'jest-axe';
 import { ReducedMotionProvider } from '@providers/ReducedMotionProvider';
 import { mockReducedMotion, resetMatchMedia } from '@/test/matchMedia';
 import { team } from '@data/team';
-import { testimonials } from '@data/testimonials';
 
 import { AboutPage } from './AboutPage';
 
@@ -66,7 +63,7 @@ describe('AboutPage', () => {
     expect(h1.tagName).toBe('H1');
   });
 
-  it('renders all seven required sections (Req 11.1)', () => {
+  it('renders the remaining required sections (Req 11.1)', () => {
     renderPage();
 
     // Story hero (h1) + the remaining section openers as h2.
@@ -74,8 +71,6 @@ describe('AboutPage', () => {
       'Software that earns its keep', // mission
       'Meet the team', // team profiles
       'What sets us apart', // differentiators
-      'By the numbers', // by-the-numbers
-      'What clients say', // testimonials
       'Want to work with us?', // CTA
     ]) {
       expect(
@@ -89,9 +84,6 @@ describe('AboutPage', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole('region', { name: 'Our team' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('region', { name: 'By the numbers' }),
     ).toBeInTheDocument();
   });
 
@@ -112,41 +104,6 @@ describe('AboutPage', () => {
       });
       const links = within(socialList).getAllByRole('link');
       expect(links).toHaveLength(member.socials.length);
-    }
-  });
-
-  it('renders the by-the-numbers metrics with AnimatedCounters (Req 11.3)', () => {
-    renderPage();
-
-    const region = screen.getByRole('region', { name: 'By the numbers' });
-    for (const label of [
-      'Products shipped',
-      'Years building software',
-      'Uptime sustained',
-      'Client retention',
-    ]) {
-      expect(within(region).getByText(label)).toBeInTheDocument();
-    }
-  });
-
-  it('renders the metric counters at their target values under reduced motion (Req 11.3)', () => {
-    mockReducedMotion(true);
-    renderPage();
-
-    const region = screen.getByRole('region', { name: 'By the numbers' });
-    // Under reduced motion AnimatedCounter renders its final value immediately.
-    expect(within(region).getByText('50+')).toBeInTheDocument();
-    expect(within(region).getByText('98%')).toBeInTheDocument();
-  });
-
-  it('renders a testimonial for each entry (Req 11.1)', () => {
-    renderPage();
-
-    const region = screen.getByRole('region', { name: 'What clients say' });
-    for (const testimonial of testimonials) {
-      expect(
-        within(region).getByText(`“${testimonial.quote}”`),
-      ).toBeInTheDocument();
     }
   });
 

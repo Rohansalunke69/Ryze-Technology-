@@ -21,15 +21,11 @@
 import type { SEOMeta } from '@app-types';
 import { SectionHeader } from '@components/SectionHeader';
 import { TeamCard } from '@components/TeamCard';
-import { TestimonialCard } from '@components/TestimonialCard';
-import { AnimatedCounter } from '@components/AnimatedCounter';
 import { CTA } from '@components/CTA';
 import { SEOHead } from '@components/SEOHead';
 import { AnimationWrapper } from '@components/AnimationWrapper';
 import { team } from '@data/team';
-import { testimonials } from '@data/testimonials';
 import { siteMetadata } from '@data/siteMetadata';
-import { studioMetrics } from '@data/metrics';
 
 /** Per-route metadata. Canonical resolves to `/about` on the site origin. */
 const seo: SEOMeta = {
@@ -67,9 +63,6 @@ const DIFFERENTIATORS: Differentiator[] = [
       'We stay on after launch to monitor, maintain, and improve, treating your product as something we are in for the long run.',
   },
 ];
-
-/** Headline metrics for the by-the-numbers band (Req 11.3) — shared source of truth. */
-const METRICS = studioMetrics;
 
 /** Team members rendered in profile order (lowest `order` first). */
 const orderedTeam = [...team].sort((a, b) => a.order - b.order);
@@ -175,56 +168,6 @@ export function AboutPage(): JSX.Element {
             </ul>
           </AnimationWrapper>
           </div>
-        </section>
-
-        {/* By-the-numbers (Req 11.3) */}
-        <section aria-label="By the numbers" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
-          <SectionHeader
-            as="h2"
-            align="center"
-            eyebrow="Track record"
-            title="By the numbers"
-          />
-          <AnimationWrapper variant="rise" stagger={0.08}>
-            <dl className="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-8 text-center lg:grid-cols-4">
-              {METRICS.map((metric) => (
-                <div
-                  key={metric.label}
-                  className="flex flex-col-reverse gap-2"
-                >
-                  <dt className="font-mono text-mono-eyebrow uppercase tracking-widest text-mist-300">
-                    {metric.label}
-                  </dt>
-                  <dd>
-                    <AnimatedCounter
-                      value={metric.value}
-                      suffix={metric.suffix}
-                      className="font-display text-display-l text-mist-100"
-                    />
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </AnimationWrapper>
-        </section>
-
-        {/* Testimonials (Req 11.1) */}
-        <section aria-label="What clients say" className="mx-auto w-full max-w-site px-6 py-[clamp(5rem,12vh,9rem)] sm:px-10">
-          <SectionHeader
-            as="h2"
-            eyebrow="In their words"
-            title="What clients say"
-          />
-          <AnimationWrapper variant="rise" stagger={0.08}>
-            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-              {testimonials.map((testimonial) => (
-                <TestimonialCard
-                  key={testimonial.id}
-                  testimonial={testimonial}
-                />
-              ))}
-            </div>
-          </AnimationWrapper>
         </section>
 
         {/* Closing CTA (Req 11.1) */}
