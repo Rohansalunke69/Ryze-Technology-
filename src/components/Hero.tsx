@@ -89,6 +89,27 @@ export function Hero({ headline }: HeroProps): JSX.Element {
 
   const [webglReady, setWebglReady] = useState(false);
 
+  // Pause the WebGL render loop once the Hero is scrolled past (~one viewport),
+  // i.e. when the next section has covered it. `useInView` here latches `true`
+  // (once:true) and never detects the sticky-overlap occlusion, so without this
+  // the Three.js loop would keep rendering for the entire page — a constant GPU
+  // cost that makes the whole scroll feel heavy. Resumes when scrolled back up.
+  const [scrolledPast, setScrolledPast] = useState(false);
+  useEffect(() => {
+    if (reducedMotion) return undefined;
+    let past = false;
+    const check = (): void => {
+      const now = window.scrollY > window.innerHeight * 0.85;
+      if (now !== past) {
+        past = now;
+        setScrolledPast(now);
+      }
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, [reducedMotion]);
+
   const shouldMountWebGL = !reducedMotion && capable && inView;
 
   const fallbackLayerStyle: CSSProperties = {
