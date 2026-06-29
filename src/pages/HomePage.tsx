@@ -114,27 +114,31 @@ export function HomePage(): JSX.Element {
     <>
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
+      {/*
+       * Single linear scroll flow — every section appears exactly once, in order:
+       *   Hero → Marquee → Problem/Philosophy → Services → Work → Team → CTA
+       *
+       * No z-index stacking, no overlap pins. The ONLY pinned sections are
+       * PhilosophyStorytelling and CapabilitiesShowcase, and both reserve their
+       * own scroll space (pinSpacing:true) so nothing overlaps or reappears.
+       */}
       <main>
-        {/* ── Layer 1 — Hero (z:10) ─────────────────────────────────────────── */}
-        <StackSection zIndex={10} isFirst overlap>
-          <Hero headline="Design. Develop. Grow." />
-          <PremiumMarquee />
-        </StackSection>
+        {/* 1 — Hero */}
+        <Hero headline="Design. Develop. Grow." />
 
-        {/* ── Pinned storytelling overlap: Problems → Philosophy ──────────── */}
+        {/* Marquee strip */}
+        <PremiumMarquee />
+
+        {/* 2 — Problem → Philosophy (one pinned storytelling timeline) */}
         <PhilosophyStorytelling problems={PROBLEMS} slides={PHILOSOPHY_SLIDES} />
 
-        {/* ── Layer 4 — Services / CapabilitiesShowcase (z:40) ─────────────── */}
-        <StackSection zIndex={40}>
-          <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
-        </StackSection>
+        {/* 3 — Services (pinned horizontal showcase, reserves its own space) */}
+        <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
 
-        {/* ── Layer 5 — Work / FeaturedWork (z:50) ─────────────────────────── */}
-        <StackSection zIndex={50}>
-          <FeaturedWork caseStudies={featuredCaseStudies} />
-        </StackSection>
+        {/* 4 — Case studies (scrubbed parallax, no pin) */}
+        <FeaturedWork caseStudies={featuredCaseStudies} />
 
-        {/* ── Team ─────────────────────────────────────────────────────────── */}
+        {/* 5 — Team */}
         <section
           aria-label="Team"
           className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,14vh,11rem)] sm:px-10"
