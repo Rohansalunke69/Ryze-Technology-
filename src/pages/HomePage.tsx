@@ -89,29 +89,28 @@ const CAPABILITIES: ReadonlyArray<Capability> = [
   },
 ];
 
-// px of Problems section left visible above the Philosophy panel.
-const PANEL_PEEK = 200;
+/** Philosophy storytelling statements — cross-fade while the card is pinned. */
+const PHILOSOPHY_SLIDES = [
+  {
+    heading: 'Most software is built to ship. We build it to last.',
+    body:
+      'Anything worth building is worth building to last. We make order that holds — structured, tested, and maintainable.',
+  },
+  {
+    heading: 'We engineer for the decade, not the demo.',
+    body:
+      'Clean architecture and real test coverage mean the next change is a small one — not a rewrite that starts from zero.',
+  },
+  {
+    heading: 'Durable means supported, long after launch day.',
+    body:
+      'We stay on after release: monitoring, hardening, and evolving the product so it keeps earning its place in your business.',
+  },
+];
 
 export function HomePage(): JSX.Element {
   const featuredCaseStudies = caseStudies.filter((c) => c.featured);
   const marqueeItems = team.map((member) => `${member.name} — ${member.role}`);
-
-  // Shared wrapper for the stacked-panels sequence.
-  // Its paddingBottom controls how long both panels stay pinned (storytelling time).
-  const panelsWrapperRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const el = panelsWrapperRef.current;
-    if (!el) return;
-    const update = () => {
-      // Give the philosophy panel ~2 viewport heights of storytelling scroll time.
-      el.style.paddingBottom = reducedMotion ? '0px' : `${window.innerHeight * 2}px`;
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [reducedMotion]);
 
   return (
     <>
