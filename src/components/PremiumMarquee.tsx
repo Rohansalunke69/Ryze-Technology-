@@ -41,7 +41,9 @@ function Strip({ hidden }: { hidden?: boolean }) {
 export function PremiumMarquee() {
   const skewerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
-  const { lenis } = useLenis();
+  // Read the context directly (not the throwing `useLenis`) so this presentational
+  // component degrades gracefully when rendered outside the provider (e.g. tests).
+  const lenis = useContext(SmoothScrollContext)?.lenis ?? null;
 
   useEffect(() => {
     if (reducedMotion) return undefined;
