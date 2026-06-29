@@ -531,10 +531,15 @@ export function Navigation({
   // While the header overlaps the footer, drop the bar to transparent so the
   // dark footer shows through and the white logo stays visible (we don't paint
   // a dark bar — only the logo changes, per the requested behaviour).
+  // NOTE: use an explicit rgba fill, NOT `bg-ink-700/90`. `ink-700` is a CSS-var
+  // hex (`--ink-700: #e9e6dc`); Tailwind's `/90` opacity modifier on a hex-var
+  // emits an invalid `rgb(#e9e6dc / 0.9)` that resolves to transparent — leaving
+  // the bar with only a backdrop-blur, so dark content behind it (the card's dark
+  // marquee strip / sticky hero) bled through as a black haze over the nav.
   const surfaceClass = footerBehindLogo
     ? 'bg-transparent'
     : isSolid
-      ? 'bg-ink-700/90 backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]'
+      ? 'bg-[rgba(233,230,220,0.92)] backdrop-blur-md shadow-[0_1px_14px_-6px_rgba(10,10,8,0.5)]'
       : 'bg-transparent';
 
   return (
