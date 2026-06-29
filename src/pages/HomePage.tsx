@@ -114,22 +114,65 @@ export function HomePage(): JSX.Element {
       <SEOHead meta={homeMeta} jsonLd={organizationJsonLd} />
 
       {/*
-       * Single linear scroll flow — every section appears exactly once, in order:
-       *   Hero → Marquee → Problem/Philosophy → Services → Work → Team → CTA
+       * Linear scroll flow — every section appears once, in order:
+       *   Hero → [Problem card overlaps Hero] → Philosophy → Services → Work → Team → CTA
        *
-       * No z-index stacking, no overlap pins. The ONLY pinned sections are
-       * PhilosophyStorytelling and CapabilitiesShowcase, and both reserve their
-       * own scroll space (pinSpacing:true) so nothing overlaps or reappears.
+       * The ONLY overlap is Hero ← Problem, done with pure CSS (sticky + z-index),
+       * so there is no GSAP pin to fight the other ScrollTriggers. Philosophy is a
+       * plain section (single scroll, no pin, no 3-step storytelling).
        */}
       <main>
-        {/* 1 — Hero */}
-        <Hero headline="Design. Develop. Grow." />
+        {/* 1 — Hero, with "The Problem" card sliding up over it. */}
+        <div className="relative">
+          {/* Hero is the backdrop. `sticky` is scoped to THIS wrapper only, so it
+              pins just while the Problem card slides over it, then releases — it
+              can never reappear later in the page. */}
+          <div className="sticky top-0 z-0">
+            <Hero headline="Design. Develop. Grow." />
+          </div>
 
-        {/* Marquee strip */}
-        <PremiumMarquee />
+          {/* The Problem — an opaque card (rounded top + soft shadow) that scrolls
+              up and overlaps the Hero. PremiumMarquee is the card's top strip. */}
+          <div className="relative z-10 overflow-hidden rounded-t-[28px] shadow-[0_-26px_70px_rgba(0,0,0,0.28)]">
+            <PremiumMarquee />
+            <ProblemSection problems={PROBLEMS} />
+          </div>
+        </div>
 
-        {/* 2 — Problem → Philosophy (one pinned storytelling timeline) */}
-        <PhilosophyStorytelling problems={PROBLEMS} slides={PHILOSOPHY_SLIDES} />
+        {/* 2 — Our Philosophy — one normal section, single scroll, no pin. */}
+        <section aria-label="Philosophy" className="bg-pulse-500 text-ink-900">
+          <div className="mx-auto w-full max-w-site px-6 py-[clamp(6rem,16vh,12rem)] sm:px-10">
+            <p className="font-mono text-mono-eyebrow uppercase tracking-[0.22em] text-ink-900/70">
+              Our philosophy
+            </p>
+            <AnimationWrapper variant="rise">
+              <h2 className="mt-8 max-w-[18ch] font-display text-[clamp(2.25rem,6vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.02em]">
+                {PHILOSOPHY_POINTS[0]!.heading}
+              </h2>
+            </AnimationWrapper>
+            <AnimationWrapper variant="fade" delay={0.1}>
+              <p className="mt-8 max-w-xl font-sans text-body-l leading-relaxed text-ink-900/80">
+                {PHILOSOPHY_POINTS[0]!.body}
+              </p>
+            </AnimationWrapper>
+
+            {/* Two supporting points — same scroll, no extra pinning. */}
+            <AnimationWrapper variant="rise" stagger={0.1}>
+              <div className="mt-16 grid gap-x-12 gap-y-10 border-t border-ink-900/20 pt-12 md:grid-cols-2">
+                {PHILOSOPHY_POINTS.slice(1).map((point) => (
+                  <div key={point.heading}>
+                    <h3 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight">
+                      {point.heading}
+                    </h3>
+                    <p className="mt-4 font-sans text-body leading-relaxed text-ink-900/80">
+                      {point.body}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </AnimationWrapper>
+          </div>
+        </section>
 
         {/* 3 — Services (pinned horizontal showcase, reserves its own space) */}
         <CapabilitiesShowcase capabilities={[...CAPABILITIES]} />
