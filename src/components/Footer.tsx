@@ -99,20 +99,20 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
       className="bg-mist-100 text-mist-300"
     >
       {/* Main: brand + contact block, then the link columns. */}
-      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 py-16 md:grid-cols-[1.6fr_repeat(3,1fr)]">
+      <div className="mx-auto grid w-full max-w-7xl gap-x-10 gap-y-8 px-6 py-12 md:grid-cols-[1.5fr_1fr_1.4fr_1fr]">
         {/* Brand + contact */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           <Link
             to="/"
             aria-label="Ryze Technology home"
             className="inline-flex transition-opacity hover:opacity-80 focus-visible:opacity-80"
           >
-            <Logo variant="full" height={34} tone="light" />
+            <Logo variant="full" height={32} tone="light" />
           </Link>
-          <p className="max-w-sm text-base leading-relaxed text-ink-700">
+          <p className="max-w-sm text-sm leading-relaxed text-ink-700">
             {metadata.defaultDescription}
           </p>
-          <div className="mt-2 flex flex-col gap-1">
+          <div className="mt-1 flex flex-col gap-1">
             <a
               href={`mailto:${metadata.contactEmail}`}
               className="font-mono text-sm text-ink-900 transition-colors hover:text-pulse-400"
@@ -131,38 +131,21 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
               Nagpur, India · Worldwide
             </p>
           </div>
-
-          {/* Follow us — brand social icons. */}
-          <div className="mt-4 flex flex-col gap-3">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-700">
-              Follow us
-            </p>
-            <ul className="flex flex-nowrap items-center gap-2" aria-label="Social media">
-              {metadata.social.map((link) => (
-                <li key={link.platform}>
-                  <a
-                    href={socialHref(link)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={SOCIAL_LABELS[link.platform]}
-                    title={SOCIAL_LABELS[link.platform]}
-                    className="flex h-7 w-7 items-center justify-center rounded-full border border-ink-600/40 text-ink-700 transition-colors duration-200 hover:border-pulse-500 hover:bg-pulse-500 hover:text-ink-900 focus-visible:border-pulse-500 focus-visible:bg-pulse-500 focus-visible:text-ink-900"
-                  >
-                    <SocialGlyph platform={link.platform} />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        {/* Link columns (first three groups). */}
+        {/* Link columns (first three groups). Columns with many links wrap into
+            two sub-columns to stay short and fill the horizontal space. */}
         {footerNav.slice(0, 3).map((group) => (
           <nav key={group.title} aria-label={group.title}>
             <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-ink-700">
               {group.title}
             </h3>
-            <ul className="mt-5 space-y-3">
+            <ul
+              className={[
+                'mt-4 gap-x-6 gap-y-2.5',
+                group.links.length > 4 ? 'grid grid-cols-2' : 'flex flex-col',
+              ].join(' ')}
+            >
               {group.links.map((link) => (
                 <li key={`${group.title}-${link.label}-${link.path}`}>
                   <Link
@@ -178,9 +161,26 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
         ))}
       </div>
 
-      {/* Slim bottom bar: copyright + legal. */}
+      {/* Slim bottom bar: social + copyright + legal. */}
       <div className="border-t border-ink-600/30">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 py-5 md:flex-row md:items-center md:justify-between">
+          <ul className="flex flex-nowrap items-center gap-2" aria-label="Social media">
+            {metadata.social.map((link) => (
+              <li key={link.platform}>
+                <a
+                  href={socialHref(link)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={SOCIAL_LABELS[link.platform]}
+                  title={SOCIAL_LABELS[link.platform]}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-ink-600/40 text-ink-700 transition-colors duration-200 hover:border-pulse-500 hover:bg-pulse-500 hover:text-ink-900 focus-visible:border-pulse-500 focus-visible:bg-pulse-500 focus-visible:text-ink-900"
+                >
+                  <SocialGlyph platform={link.platform} />
+                </a>
+              </li>
+            ))}
+          </ul>
+
           <p className="font-mono text-sm text-ink-600">
             © {year} {metadata.siteName}. All rights reserved.
           </p>

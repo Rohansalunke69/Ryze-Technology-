@@ -48,7 +48,6 @@ export const STATIC_ROUTES = [
   { path: '/portfolio' },
   { path: '/services' },
   { path: '/about' },
-  { path: '/manifesto' },
   { path: '/contact' },
   { path: '/blog' },
   { path: '/resources' },

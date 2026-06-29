@@ -35,10 +35,7 @@ export const navItems: NavItem[] = [
   },
   {
     label: 'About',
-    children: [
-      { label: 'Team & Story', path: '/about', description: 'Who we are and how we got here' },
-      { label: 'Manifesto', path: '/manifesto', description: 'What we believe and what we stand against' },
-    ],
+    path: '/about',
   },
   { label: 'Blog', path: '/blog' },
   { label: 'Contact', path: '/contact', cta: true },
@@ -76,7 +73,6 @@ export const footerNav: FooterNavGroup[] = [
     title: 'Team',
     links: [
       { label: 'About', path: '/about' },
-      { label: 'Manifesto', path: '/manifesto' },
     ],
   },
   {

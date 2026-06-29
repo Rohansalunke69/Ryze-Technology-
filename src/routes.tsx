@@ -88,7 +88,6 @@ const CaseStudyPage = lazyWithReload(() => import('@pages/CaseStudyPage'));
 const ServicesPage = lazyWithReload(() => import('@pages/ServicesPage'));
 const ServiceDetailPage = lazyWithReload(() => import('@pages/ServiceDetailPage'));
 const AboutPage = lazyWithReload(() => import('@pages/AboutPage'));
-const ManifestoPage = lazyWithReload(() => import('@pages/ManifestoPage'));
 const ContactPage = lazyWithReload(() => import('@pages/ContactPage'));
 const BlogListPage = lazyWithReload(() => import('@pages/BlogListPage'));
 const BlogPostPage = lazyWithReload(() => import('@pages/BlogPostPage'));
@@ -125,7 +124,6 @@ export const appRoutes: RouteObject[] = [
       { path: 'services', element: withRouteShell(<ServicesPage />) },
       { path: 'services/:slug', element: withRouteShell(<ServiceDetailPage />) },
       { path: 'about', element: withRouteShell(<AboutPage />) },
-      { path: 'manifesto', element: withRouteShell(<ManifestoPage />) },
       { path: 'contact', element: withRouteShell(<ContactPage />) },
       { path: 'blog', element: withRouteShell(<BlogListPage />) },
       { path: 'blog/:slug', element: withRouteShell(<BlogPostPage />) },
