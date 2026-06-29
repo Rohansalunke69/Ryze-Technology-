@@ -1,5 +1,5 @@
 /**
- * ProblemSection — the "Software that rots" panel.
+ * ProblemSection — the "What's holding businesses back" challenges panel.
  *
  * Purely presentational. The card-overlap (this panel sliding up over the Hero)
  * is done in HomePage with CSS `position: sticky` + z-index on the wrapper —
