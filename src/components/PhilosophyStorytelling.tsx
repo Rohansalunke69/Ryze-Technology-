@@ -193,42 +193,52 @@ export function PhilosophyStorytelling({
 
   /* ── Motion: pinned three-phase storytelling overlap ────────────────── */
   return (
+    // TRACK — a tall scroll container (5× viewport). It defines exactly how
+    // much scroll the storytelling consumes, so the pinned stage releases with
+    // no leftover empty space afterwards.
     <section
-      ref={pinRef}
+      ref={trackRef}
       aria-label="Philosophy"
-      className="relative h-screen overflow-hidden bg-ink-900"
+      className="relative"
+      style={{ height: '500vh' }}
     >
-      {/* Problem panel — fills the pinned viewport; its top slice stays
-          visible in the `peek` gap above the rising card. */}
-      <div className="absolute inset-0">
-        <div className="mx-auto w-full max-w-site px-6 pt-[max(96px,12vh)] sm:px-10">
-          <ProblemContent problems={problems} />
-        </div>
-      </div>
-
-      {/* Philosophy floating card — rises from the bottom, parks at `peek`. */}
+      {/* STAGE — pinned for the track's length; 100vh, clips the card. */}
       <div
-        ref={cardRef}
-        className="absolute inset-x-0"
-        style={{ top: peek, bottom: 0, willChange: 'transform' }}
+        ref={pinRef}
+        className="relative h-screen overflow-hidden bg-ink-900"
       >
+        {/* Problem panel — fills the stage; its top slice stays visible in the
+            `peek` gap above the rising card. */}
+        <div className="absolute inset-0">
+          <div className="mx-auto w-full max-w-site px-6 pt-[max(96px,12vh)] sm:px-10">
+            <ProblemContent problems={problems} />
+          </div>
+        </div>
+
+        {/* Philosophy floating card — rises from the bottom, parks at `peek`. */}
         <div
-          className="h-full overflow-hidden bg-pulse-500 text-ink-900"
-          style={{ borderRadius: '24px 24px 0 0', boxShadow: CARD_SHADOW }}
+          ref={cardRef}
+          className="absolute inset-x-0"
+          style={{ top: peek, bottom: 0, willChange: 'transform' }}
         >
-          {/* Slides stacked absolutely; the timeline cross-fades between them. */}
-          <div className="relative h-full">
-            {slides.map((slide, i) => (
-              <div
-                key={slide.heading}
-                ref={(el) => {
-                  slidesRef.current[i] = el;
-                }}
-                className="absolute inset-0 flex items-center"
-              >
-                <SlideContent slide={slide} />
-              </div>
-            ))}
+          <div
+            className="h-full overflow-hidden bg-pulse-500 text-ink-900"
+            style={{ borderRadius: '24px 24px 0 0', boxShadow: CARD_SHADOW }}
+          >
+            {/* Slides stacked absolutely; the timeline cross-fades between them. */}
+            <div className="relative h-full">
+              {slides.map((slide, i) => (
+                <div
+                  key={slide.heading}
+                  ref={(el) => {
+                    slidesRef.current[i] = el;
+                  }}
+                  className="absolute inset-0 flex items-center"
+                >
+                  <SlideContent slide={slide} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
