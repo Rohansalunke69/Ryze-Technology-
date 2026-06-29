@@ -156,7 +156,7 @@ export function HomePage(): JSX.Element {
           </div>
         </section>
 
-        {/* ── CTA ──────────────────────────────────────────────────────────── */}
+        {/* 6 — CTA */}
         <CTA
           heading="Let's build something permanent"
           sub="Tell us what you're building. We'll help you make it last."
