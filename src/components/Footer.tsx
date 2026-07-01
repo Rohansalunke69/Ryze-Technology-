@@ -164,7 +164,7 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
       {/* Slim bottom bar: social + copyright + legal. */}
       <div className="border-t border-ink-600/30">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 py-5 md:flex-row md:items-center md:justify-between">
-          <ul className="flex flex-nowrap items-center gap-2" aria-label="Social media">
+          <ul className="flex flex-wrap items-center gap-2" aria-label="Social media">
             {metadata.social.map((link) => (
               <li key={link.platform}>
                 <a
