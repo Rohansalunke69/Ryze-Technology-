@@ -123,7 +123,7 @@ export function ContactPage(): JSX.Element {
                 </p>
                 <a
                   href={`mailto:${siteMetadata.contactEmail}`}
-                  className="font-display text-[clamp(1.75rem,5vw,3.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100 underline-offset-4 transition-colors hover:text-pulse-500 hover:underline"
+                  className="font-display text-[clamp(1.75rem,5vw,3.5rem)] font-bold leading-[0.95] tracking-[-0.02em] text-mist-100 underline-offset-4 transition-colors [overflow-wrap:anywhere] hover:text-pulse-500 hover:underline"
                 >
                   {siteMetadata.contactEmail}
                 </a>
