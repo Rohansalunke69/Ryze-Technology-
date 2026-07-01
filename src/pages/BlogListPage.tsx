@@ -182,7 +182,7 @@ export function BlogListPage(): JSX.Element {
 
         {/* Pagination controls (Req 14.4, 14.5). Prev/next reflect hasPrev/hasNext. */}
         <nav aria-label="Pagination" className="mx-auto w-full max-w-site px-6 pb-24 sm:px-10">
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <button
               type="button"
               data-cursor="link"
