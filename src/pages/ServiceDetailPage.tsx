@@ -147,7 +147,7 @@ export function ServiceDetailPage(): JSX.Element {
               <div className="aurora" />
             </div>
 
-            <h1 className="max-w-4xl font-display text-[clamp(3.5rem,8vw,5.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-pulse-500">
+            <h1 className="max-w-4xl font-display text-[clamp(2.5rem,8vw,5.5rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-pulse-500">
               {service.name}
             </h1>
             <p className="max-w-3xl font-sans text-[clamp(1.125rem,2vw,1.35rem)] leading-relaxed text-mist-300">
