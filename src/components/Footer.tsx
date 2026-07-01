@@ -99,7 +99,7 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
       className="bg-mist-100 text-mist-300"
     >
       {/* Main: brand + contact block, then the link columns. */}
-      <div className="mx-auto grid w-full max-w-7xl gap-x-10 gap-y-8 px-6 py-12 md:grid-cols-[1.5fr_1fr_1.4fr_1fr]">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-x-10 gap-y-8 px-6 py-12 md:grid-cols-[1.5fr_1fr_1.4fr_1fr]">
         {/* Brand + contact */}
         <div className="flex flex-col gap-4">
           <Link
