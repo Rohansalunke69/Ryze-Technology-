@@ -115,7 +115,7 @@ export function Footer({ metadata = siteMetadata }: FooterProps = {}): JSX.Eleme
           <div className="mt-1 flex flex-col gap-1">
             <a
               href={`mailto:${metadata.contactEmail}`}
-              className="font-mono text-sm text-ink-900 transition-colors hover:text-pulse-400"
+              className="font-mono text-sm text-ink-900 transition-colors [overflow-wrap:anywhere] hover:text-pulse-400"
             >
               {metadata.contactEmail}
             </a>
